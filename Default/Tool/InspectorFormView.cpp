@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Tool.h"
 #include "InspectorFormView.h"
-
+#include "Functor.h"
 
 
 // CInspectorFormView
@@ -19,6 +19,10 @@ CInspectorFormView::CInspectorFormView()
 
 CInspectorFormView::~CInspectorFormView()
 {
+	Safe_Delete(dlg1);
+	Safe_Delete(dlg2);
+	Safe_Delete(dlg3);
+	//Safe_Delete(dlg4);
 }
 
 void CInspectorFormView::DoDataExchange(CDataExchange* pDX)

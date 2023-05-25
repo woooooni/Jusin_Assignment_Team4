@@ -44,6 +44,8 @@ public:
 	CDlgTab4* dlg4;
 
 	virtual void OnInitialUpdate();
+
+
 };
 
 
