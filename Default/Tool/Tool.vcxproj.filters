@@ -85,6 +85,9 @@
     <Filter Include="99. Manager\ToolObj">
       <UniqueIdentifier>{eef3f3e3-3c39-48dc-9b68-e360eea6ee0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Etc\01. Obj">
+      <UniqueIdentifier>{7da04bc1-c2ae-4103-9403-92c23acf8d1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="ToolObjMgr.h">
       <Filter>99. Manager\ToolObj</Filter>
     </ClInclude>
+    <ClInclude Include="Obj.h">
+      <Filter>05. Etc\01. Obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -226,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="ToolObjMgr.cpp">
       <Filter>99. Manager\ToolObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Obj.cpp">
+      <Filter>05. Etc\01. Obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
