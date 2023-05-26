@@ -223,8 +223,6 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_MainSplitter.GetPane(0, 1));
 	pMiniView->Invalidate(FALSE);
-
-
 }
 
 

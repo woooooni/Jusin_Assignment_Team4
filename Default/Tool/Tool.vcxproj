@@ -214,6 +214,7 @@
     <ClInclude Include="TextureMgr.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="ToolDoc.h" />
+    <ClInclude Include="ToolObjMgr.h" />
     <ClInclude Include="ToolView.h" />
     <ClInclude Include="UnitTool.h" />
   </ItemGroup>
@@ -242,6 +243,7 @@
     <ClCompile Include="TextureMgr.cpp" />
     <ClCompile Include="Tool.cpp" />
     <ClCompile Include="ToolDoc.cpp" />
+    <ClCompile Include="ToolObjMgr.cpp" />
     <ClCompile Include="ToolView.cpp" />
     <ClCompile Include="UnitTool.cpp" />
   </ItemGroup>
@@ -252,6 +254,7 @@
     <None Include="res\Tool.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\DirX.png" />
     <Image Include="res\Tool.ico" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\ToolDoc.ico" />

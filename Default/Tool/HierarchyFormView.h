@@ -1,4 +1,5 @@
 #pragma once
+#include "afxcmn.h"
 
 
 
@@ -27,6 +28,14 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CTreeCtrl m_TreeControl;
+	virtual void OnInitialUpdate();
+
+	//void AddObj(CObj* _pObj);
+
+private:
+	HTREEITEM m_rootItem;
 };
 
 

@@ -61,4 +61,6 @@
 #include <map>
 #include <algorithm>
 
+#include "Define.h"
+
 using namespace std;

@@ -79,11 +79,14 @@
     <Filter Include="06. FormView\03. InspectorView\Dialog_Tab\Tab1">
       <UniqueIdentifier>{130eda6b-726a-4e14-87ee-10d1dbb7611e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99. Manager">
+      <UniqueIdentifier>{da12cd63-79b0-48bb-871e-184e128f2f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Manager\ToolObj">
+      <UniqueIdentifier>{eef3f3e3-3c39-48dc-9b68-e360eea6ee0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Tool.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -150,6 +153,12 @@
     <ClInclude Include="DlgTab4.h">
       <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab4</Filter>
     </ClInclude>
+    <ClInclude Include="Tool.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolObjMgr.h">
+      <Filter>99. Manager\ToolObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -215,6 +224,9 @@
     <ClCompile Include="DlgTab4.cpp">
       <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab4</Filter>
     </ClCompile>
+    <ClCompile Include="ToolObjMgr.cpp">
+      <Filter>99. Manager\ToolObj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tool.rc">
@@ -234,6 +246,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\Toolbar.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\DirX.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
