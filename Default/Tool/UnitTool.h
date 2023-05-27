@@ -45,6 +45,7 @@ public:
 	map<CString, UNITDATA*>			m_mapUnitData;
 
 	CButton m_Bitmap;
+
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDeleteData();
 	afx_msg void OnSearchData();

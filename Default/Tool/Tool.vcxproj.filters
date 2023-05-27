@@ -85,6 +85,9 @@
     <Filter Include="99. Manager\ToolObj">
       <UniqueIdentifier>{eef3f3e3-3c39-48dc-9b68-e360eea6ee0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FileInfo_KJM">
+      <UniqueIdentifier>{28eb7c34-cba0-4442-b3c0-9b42f39e6e57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="ToolObjMgr.h">
       <Filter>99. Manager\ToolObj</Filter>
     </ClInclude>
+    <ClInclude Include="FileInfo_KJM.h">
+      <Filter>FileInfo_KJM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -226,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="ToolObjMgr.cpp">
       <Filter>99. Manager\ToolObj</Filter>
+    </ClCompile>
+    <ClCompile Include="FileInfo_KJM.cpp">
+      <Filter>FileInfo_KJM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
