@@ -121,13 +121,13 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	//SetColumnInfo(열 번호, 열의 크기 지정, 허용 가능한 최소 크기)
 
 	// m_MainSplitter를 3칸으로 나눴고, 각 칸마다 크기를 설정.
-	m_MainSplitter.SetColumnInfo(0, 800, 600);
-	m_MainSplitter.SetColumnInfo(1, 200, 100);
-	m_MainSplitter.SetColumnInfo(2, 600, 100);
+	m_MainSplitter.SetColumnInfo(0, 700, 100);
+	m_MainSplitter.SetColumnInfo(1, 300, 100);
+	m_MainSplitter.SetColumnInfo(2, 700, 100);
 
 	// 크기를 다시 계산해 반영.
 	m_MainSplitter.RecalcLayout();
-
+	m_SecondSplitter.RecalcLayout();
 
 	return TRUE;
 }

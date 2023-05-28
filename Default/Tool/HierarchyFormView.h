@@ -38,10 +38,17 @@ public:
 	void UpdateHierarchyView();
 
 public:
-	CListBox m_HiararchyList;
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+
 	afx_msg void OnBnClickedAddObjButton();
 	afx_msg void OnBnClickedDeleteObjButton();
+
+	afx_msg void OnBnClickedSaveButton();
+
+public:
+	static UINT		m_iObjCount;
+	CListBox		m_HiararchyList;
+	CComboBox		m_ComboObjType;
+	afx_msg void OnLbnSelchangeHierarchyList();
 };
 
 

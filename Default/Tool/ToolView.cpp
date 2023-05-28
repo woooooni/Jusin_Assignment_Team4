@@ -112,7 +112,6 @@ void CToolView::OnInitialUpdate()
 	}
 
 	m_pTerrain->Set_MainView(this);
-
 }
 
 void CToolView::OnDraw(CDC* /*pDC*/)
