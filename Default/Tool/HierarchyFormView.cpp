@@ -4,7 +4,10 @@
 #include "stdafx.h"
 #include "Tool.h"
 #include "HierarchyFormView.h"
-
+#include "ToolObjMgr.h"
+#include "Obj.h"
+#include "Player.h"
+#include "Monster.h"
 
 // CHierarchyFormView
 
@@ -28,6 +31,8 @@ void CHierarchyFormView::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CHierarchyFormView, CFormView)
 	ON_WM_MOUSEMOVE()
+	ON_BN_CLICKED(IDC_ADDOBJ_BUTTON, &CHierarchyFormView::OnBnClickedAddObjButton)
+	ON_BN_CLICKED(IDC_DELETE_OBJ_BUTTON2, &CHierarchyFormView::OnBnClickedDeleteObjButton)
 END_MESSAGE_MAP()
 
 
@@ -64,9 +69,67 @@ void CHierarchyFormView::OnInitialUpdate()
 }
 
 
+void CHierarchyFormView::UpdateHierarchyView()
+{
+	UpdateData(TRUE);
+
+
+
+
+	UpdateData(FALSE);
+}
+
 void CHierarchyFormView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
+	UpdateData(TRUE);
 	CFormView::OnMouseMove(nFlags, point);
+
+	UpdateData(FALSE);
 }
+
+
+
+void CHierarchyFormView::OnBnClickedAddObjButton()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+	CObj* pObj = nullptr;
+	//TODO :: ADD OBJ FROM OBJ_MGR
+	//CToolObjMgr::GetInst()->AddObj();
+	
+	
+	m_HiararchyList.AddString(L"OBJ");
+
+	m_HiararchyList.SetFocus();
+	if (m_HiararchyList.GetSelCount() == 0)
+		m_HiararchyList.SetCurSel(0);
+	else
+		m_HiararchyList.SetCurSel(m_HiararchyList.GetCurSel());
+
+
+	UpdateData(FALSE);
+	
+}
+
+
+void CHierarchyFormView::OnBnClickedDeleteObjButton()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+	CString		strFindName = L"";
+
+	int		iSelect = m_HiararchyList.GetCurSel();
+
+	if (LB_ERR == iSelect)
+		return;
+
+	m_HiararchyList.GetText(iSelect, strFindName);
+	//TODO :: DELETE OBJ FROM OBJ_MGR
+
+	m_HiararchyList.DeleteString(iSelect);
+
+	UpdateData(FALSE);
+}
+
+

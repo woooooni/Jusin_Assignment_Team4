@@ -5,10 +5,16 @@
 class CObj
 {
 public:
-	CObj();
+	CObj(OBJID _eID);
 	virtual ~CObj();
 
 public:
+	const wstring&	Get_ObjName() { return m_strName; }
+	void			Set_ObjName(wstring _strName) { m_strName = _strName; }
+
+	const OBJID		Get_ObjID() { return m_eID; }
+	void			Set_ObjID(OBJID _eID) { m_eID = _eID; }
+
 	const wstring&	Get_ObjKey()const { return m_wstrObjKey; }
 
 	const INFO&		Get_Info(void)const { return m_tInfo; }
@@ -22,22 +28,25 @@ public:
 	}
 
 public:
-	virtual HRESULT		Initialize(void)PURE;
-	virtual int			Update(void)PURE;
-	virtual void		Late_Update(void)PURE;
-	virtual void		Render(void)PURE;
-	virtual void		Release(void)PURE;
+	virtual HRESULT		Initialize(void)	PURE;
+	virtual int			Update(void)		PURE;
+	virtual void		Late_Update(void)	PURE;
+	virtual void		Render(void)		PURE;
+	virtual void		Release(void)		PURE;
 
 protected:
-	void		Move_Frame(void);
+	void				Move_Frame(void);
 
 protected:
 	static D3DXVECTOR3			m_vScroll;
 
-	INFO					m_tInfo;
-	FRAME					m_tFrame;
-	wstring					m_wstrObjKey = L"";
-	wstring					m_wstrStateKey = L"";
+	INFO						m_tInfo;
+	FRAME						m_tFrame;
+	wstring						m_wstrObjKey = L"";
+	wstring						m_wstrStateKey = L"";
 
+	wstring						m_strName = L"";
+		
+	OBJID						m_eID;
 };
 

@@ -88,6 +88,15 @@
     <Filter Include="05. Etc\01. Obj">
       <UniqueIdentifier>{7da04bc1-c2ae-4103-9403-92c23acf8d1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Etc\01. Obj\Player">
+      <UniqueIdentifier>{09b9a4ec-5908-4ed3-b0d4-bf56b46bed45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Etc\01. Obj\Monster">
+      <UniqueIdentifier>{47582ada-6e3e-473b-a94e-74ba4f380c37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Etc\01. Obj\Npc">
+      <UniqueIdentifier>{bbf81386-943c-4db6-aa42-5cf2f7f9a239}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -165,6 +174,12 @@
     <ClInclude Include="Obj.h">
       <Filter>05. Etc\01. Obj</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>05. Etc\01. Obj\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>05. Etc\01. Obj\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -235,6 +250,12 @@
     </ClCompile>
     <ClCompile Include="Obj.cpp">
       <Filter>05. Etc\01. Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>05. Etc\01. Obj\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>05. Etc\01. Obj\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

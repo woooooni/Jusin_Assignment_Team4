@@ -44,6 +44,8 @@
 #define IDC_EDIT_TEXT_POSITIONX         1028
 #define IDC_EDIT_TEXT_POSITIONY         1029
 #define IDC_HIERARCHY_LIST              1032
+#define IDC_ADDOBJ_BUTTON               1033
+#define IDC_DELETE_OBJ_BUTTON2          1034
 
 // Next default values for new objects
 // 
@@ -51,7 +53,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        324
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1033
+#define _APS_NEXT_CONTROL_VALUE         1035
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
 #endif

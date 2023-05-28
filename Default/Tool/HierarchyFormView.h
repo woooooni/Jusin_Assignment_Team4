@@ -35,8 +35,13 @@ public:
 	//void AddObj(CObj* _pObj);
 
 public:
+	void UpdateHierarchyView();
+
+public:
 	CListBox m_HiararchyList;
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedAddObjButton();
+	afx_msg void OnBnClickedDeleteObjButton();
 };
 
 
