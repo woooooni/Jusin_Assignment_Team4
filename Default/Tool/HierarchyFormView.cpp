@@ -23,10 +23,11 @@ CHierarchyFormView::~CHierarchyFormView()
 void CHierarchyFormView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_HIAERACHY_TREE, m_TreeControl);
+	DDX_Control(pDX, IDC_HIERARCHY_LIST, m_HiararchyList);
 }
 
 BEGIN_MESSAGE_MAP(CHierarchyFormView, CFormView)
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 
@@ -53,7 +54,6 @@ void CHierarchyFormView::Dump(CDumpContext& dc) const
 void CHierarchyFormView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
-	m_rootItem = m_TreeControl.InsertItem(L"ROOT", 0, 0, TVI_ROOT, TVI_LAST);
 
 
 	//// 스크롤 숨기기
@@ -61,4 +61,12 @@ void CHierarchyFormView::OnInitialUpdate()
 	sizeScroll.cx = 10;  //0을주면 아예 안보이고 컨트롤 표시를 위한 최소값을 지정
 	sizeScroll.cy = 800;
 	SetScrollSizes(MM_TEXT, sizeScroll);
+}
+
+
+void CHierarchyFormView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CFormView::OnMouseMove(nFlags, point);
 }

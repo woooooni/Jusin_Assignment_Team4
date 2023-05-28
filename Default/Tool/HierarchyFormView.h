@@ -1,5 +1,6 @@
 #pragma once
 #include "afxcmn.h"
+#include "afxwin.h"
 
 
 
@@ -29,13 +30,13 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CTreeCtrl m_TreeControl;
 	virtual void OnInitialUpdate();
 
 	//void AddObj(CObj* _pObj);
 
-private:
-	HTREEITEM m_rootItem;
+public:
+	CListBox m_HiararchyList;
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 
