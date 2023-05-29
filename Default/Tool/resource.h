@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++에서 생성한 포함 파일입니다.
-// Tool.rc에서 사용되고 있습니다.
+// Microsoft Visual C++ generated include file.
+// Used by Tool.rc
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
@@ -53,6 +53,26 @@
 #define IDC_OBJ_NAMETAG_STATIC          1044
 #define IDC_OBJ_TYPE_TAG_STATIC         1045
 #define IDC_OBJTYPE_TEXT_TAG            1047
+#define IDC_SPIN_PICTURELIST_KJM        1032
+#define IDC_PICTRUESTATIC_KJM           1035
+#define IDC_AnimLIST_KJM                1039
+#define IDC_ANIMLIST_KJM                1039
+#define IDC_BUTTON_Add                  1040
+#define IDC_BUTTON_ADD_KJM              1040
+#define IDC_AnimStatic_KJM              1041
+#define IDC_AnimSTATIC_KJM              1041
+#define IDC_AnimStatic_KJM              1041
+#define IDC_ANIMSTATIC_KJM              1041
+#define IDC_PictureLIST_KJM             1042
+#define IDC_PICTURELIST_KJM             1042
+#define IDC_BUTTON_Delete               1043
+#define IDC_BUTTON_PICTUREDELETE_KJM    1043
+#define IDC_BUTTON_Play                 1044
+#define IDC_BUTTON_PLAY_KJM             1044
+#define IDC_BUTTON_STOP_KJM             1045
+#define IDC_IMAGEFRAME_KJM              1046
+#define IDC_BUTTON_INIT_PICTURELIST_KJM 1047
+#define IDC_BUTTON_ANIMDELETE_KJM       1048
 
 // Next default values for new objects
 // 
@@ -61,6 +81,7 @@
 #define _APS_NEXT_RESOURCE_VALUE        324
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1048
+#define _APS_NEXT_CONTROL_VALUE         1049
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
 #endif

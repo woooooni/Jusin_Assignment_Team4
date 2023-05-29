@@ -198,6 +198,7 @@
     <ClInclude Include="DlgTab2.h" />
     <ClInclude Include="DlgTab3.h" />
     <ClInclude Include="DlgTab4.h" />
+    <ClInclude Include="FileInfo_KJM.h" />
     <ClInclude Include="HierarchyFormView.h" />
     <ClInclude Include="InspectorFormView.h" />
     <ClInclude Include="MainFrm.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="DlgTab2.cpp" />
     <ClCompile Include="DlgTab3.cpp" />
     <ClCompile Include="DlgTab4.cpp" />
+    <ClCompile Include="FileInfo_KJM.cpp" />
     <ClCompile Include="HierarchyFormView.cpp" />
     <ClCompile Include="InspectorFormView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
