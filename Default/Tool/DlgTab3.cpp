@@ -31,7 +31,7 @@ void CDlgTab3::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CHECK1_JWA, m_Check);
-	DDX_Control(pDX, IDC_LIST1, m_ListBox);
+	DDX_Control(pDX, IDC_LIST1_JWA, m_ListBox);
 	DDX_Control(pDX, IDC_PICTURE_JWA, m_TilePicControl);
 	DDX_Control(pDX, IDC_PICTURE_MINI_JWA, m_MiniPicControl);
 	DDX_Control(pDX, IDC_RADIO1_JWA, m_RadioTile);
@@ -117,7 +117,7 @@ void CDlgTab3::ShowForm(int iIndex)
 
 BEGIN_MESSAGE_MAP(CDlgTab3, CDialogEx)
 	ON_WM_DROPFILES()
-	ON_LBN_SELCHANGE(IDC_LIST1, &CDlgTab3::OnListBox)
+	ON_LBN_SELCHANGE(IDC_LIST1_JWA, &CDlgTab3::OnListBox)
 	ON_BN_CLICKED(IDC_RADIO2_JWA, &CDlgTab3::OnBnClickedRadio2)
 	ON_BN_CLICKED(IDC_RADIO1_JWA, &CDlgTab3::OnBnClickedRadio1)
 	ON_BN_CLICKED(IDC_CHECK1_JWA, &CDlgTab3::OnBnClickedInDexCheckBox)
