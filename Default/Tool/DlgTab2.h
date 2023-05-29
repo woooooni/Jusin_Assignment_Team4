@@ -69,4 +69,5 @@ public:
 
 
 	afx_msg void OnBnClickedButton_Init_AnimList_KJM();
+	virtual BOOL OnInitDialog();
 };

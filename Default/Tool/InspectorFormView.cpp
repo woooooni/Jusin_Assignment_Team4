@@ -33,7 +33,6 @@ void CInspectorFormView::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CInspectorFormView, CFormView)
-	
 	ON_NOTIFY(TCN_SELCHANGE, IDC_INSPECTOR_TAB, &CInspectorFormView::OnSelchangeInspectorTab)
 END_MESSAGE_MAP()
 
