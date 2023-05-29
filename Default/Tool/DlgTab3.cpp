@@ -42,7 +42,7 @@ BOOL CDlgTab3::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	pTerrainIndex = new CTerrain;
+	//pTerrainIndex = new CTerrain;
 
 	DragAcceptFiles(true);
 
@@ -50,21 +50,31 @@ BOOL CDlgTab3::OnInitDialog()
 	ChangeWindowMessageFilterEx(m_hWnd, WM_COPYDATA, MSGFLT_ALLOW, NULL);
 	ChangeWindowMessageFilterEx(m_hWnd, 0x0049/*WM_COPYGLOBALDATA*/, MSGFLT_ALLOW, NULL);
 
-	/*
 	TCHAR szTile[MAX_STR] = L"";
 	TCHAR szIndex[MIN_STR] = L"";
+	CString strRelative = L""; //
+	CString strFileName = L""; //
 
 	for (size_t i = 0; i < TILE_TEX; ++i)
 	{
 		TCHAR szTile[MAX_STR] = L"Tile";
 		TCHAR szIndex[MIN_STR] = L"";
 		swprintf_s(szIndex, L"%d", (int)i);
-		lstrcat(szTile, szIndex);
+		strFileName = lstrcat(szTile, szIndex); ///////
 
-		m_ListBox.AddString(szTile);
+		strRelative = L"../Texture/Stage/Terrain/Tile";
+
+		auto iter = m_mapPngImg.find(strFileName);
+
+		if (iter == m_mapPngImg.end())
+		{
+			CImage* pPngImg = new CImage;
+			pPngImg->Load(strRelative);
+
+			m_mapPngImg.insert({ strFileName, pPngImg });
+			m_ListBox.AddString(szTile);
+		}
 	}
-	*/
-
 	m_RadioTile.SetCheck(TRUE);
 	//m_Check.SetCheck(TRUE);
 
@@ -82,7 +92,7 @@ BOOL CDlgTab3::OnInitDialog()
 	m_pMini->OnInitialUpdate();
 	m_pMini->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_PICTURE_MINI_JWA)->DestroyWindow();
-
+	
 	// 맵
 	/*
 	CCreateContext mapcontext;
@@ -150,6 +160,7 @@ void CDlgTab3::OnListBox()
 	m_TilePicControl.SetBitmap(*(iter->second));
 
 	int i = 0;
+
 	for (; i < strSelect.GetLength(); ++i)
 	{
 		if (0 != isdigit(strSelect[i]))
@@ -159,7 +170,8 @@ void CDlgTab3::OnListBox()
 	strSelect.Delete(0, i);
 
 	// 문자열을 정수로 변환해주는 함수
-	m_iDrawID = _tstoi(strSelect);
+	//m_iDrawID = _tstoi(strSelect);
+	m_iDrawID = _wtoi(strSelect.GetString());
 
 	
 	CMainFrame* pFrameWnd = dynamic_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd());
