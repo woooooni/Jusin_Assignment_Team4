@@ -43,9 +43,26 @@
 #define IDC_EDIT_TEXT_ANGLE             1027
 #define IDC_EDIT_TEXT_POSITIONX         1028
 #define IDC_EDIT_TEXT_POSITIONY         1029
-#define IDC_SPIN1                       1032
-#define IDC_PictureStatic_KJM           1035
-#define IDC_SPIN2                       1037
+#define IDC_SPIN_PICTURELIST_KJM        1032
+#define IDC_PICTRUESTATIC_KJM           1035
+#define IDC_AnimLIST_KJM                1039
+#define IDC_ANIMLIST_KJM                1039
+#define IDC_BUTTON_Add                  1040
+#define IDC_BUTTON_ADD_KJM              1040
+#define IDC_AnimStatic_KJM              1041
+#define IDC_AnimSTATIC_KJM              1041
+#define IDC_AnimStatic_KJM              1041
+#define IDC_ANIMSTATIC_KJM              1041
+#define IDC_PictureLIST_KJM             1042
+#define IDC_PICTURELIST_KJM             1042
+#define IDC_BUTTON_Delete               1043
+#define IDC_BUTTON_PICTUREDELETE_KJM    1043
+#define IDC_BUTTON_Play                 1044
+#define IDC_BUTTON_PLAY_KJM             1044
+#define IDC_BUTTON_STOP_KJM             1045
+#define IDC_IMAGEFRAME_KJM              1046
+#define IDC_BUTTON_INIT_PICTURELIST_KJM 1047
+#define IDC_BUTTON_ANIMDELETE_KJM       1048
 
 // Next default values for new objects
 // 
@@ -53,7 +70,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        324
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1038
+#define _APS_NEXT_CONTROL_VALUE         1049
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
 #endif
