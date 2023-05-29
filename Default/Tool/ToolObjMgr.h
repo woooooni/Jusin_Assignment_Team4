@@ -1,6 +1,7 @@
 #pragma once
 
 class CObj;
+class CMainFrame;
 class CToolObjMgr
 {
 	SINGLETON(CToolObjMgr);
@@ -20,8 +21,12 @@ public:
 
 	vector<CObj*>&		GetObjVec()					{ return m_vecObj; }
 
+public:
+	void SetMainFrm(CMainFrame* _pMainFrm) { m_pMainFrm = _pMainFrm; }
+	void UpdateAllView();
 private:
 	vector<CObj*>		m_vecObj;
 	CObj*				m_pTargetObj;
+	CMainFrame*			m_pMainFrm;
 };
 

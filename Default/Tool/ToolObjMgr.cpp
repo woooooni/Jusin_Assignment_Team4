@@ -2,9 +2,11 @@
 #include "ToolObjMgr.h"
 #include "Functor.h"
 #include "Obj.h"
+#include "MainFrm.h"
 
 CToolObjMgr::CToolObjMgr()
 	: m_pTargetObj(nullptr)
+	, m_pMainFrm(nullptr)
 {
 }
 
@@ -61,4 +63,9 @@ void CToolObjMgr::DeleteObj(int _iIdx)
 			return;
 		}
 	}
+}
+
+void CToolObjMgr::UpdateAllView()
+{
+	m_pMainFrm->Update_AllView();
 }

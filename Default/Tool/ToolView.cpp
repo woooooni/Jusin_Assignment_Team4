@@ -242,3 +242,7 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 
 }
+
+void CToolView::UpdateToolView()
+{
+}

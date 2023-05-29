@@ -6,6 +6,7 @@
 
 // CHierarchyFormView Æû ºäÀÔ´Ï´Ù.
 
+class CInspectorFormView;
 class CHierarchyFormView : public CFormView
 {
 	DECLARE_DYNCREATE(CHierarchyFormView)
@@ -45,9 +46,11 @@ public:
 	afx_msg void OnBnClickedSaveButton();
 
 public:
-	static UINT		m_iObjCount;
-	CListBox		m_HiararchyList;
-	CComboBox		m_ComboObjType;
+	static UINT				m_iObjCount;
+
+	CListBox				m_HiararchyList;
+	CComboBox				m_ComboObjType;
+
 	afx_msg void OnLbnSelchangeHierarchyList();
 };
 

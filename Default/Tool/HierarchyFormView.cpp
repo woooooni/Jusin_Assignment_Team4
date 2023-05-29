@@ -79,9 +79,9 @@ void CHierarchyFormView::UpdateHierarchyView()
 {
 	UpdateData(TRUE);
 
-	for (int i = 0; i < m_HiararchyList.GetSelCount(); ++i)
-		m_HiararchyList.DeleteString(0);
+	int iSelect = m_HiararchyList.GetCurSel();
 
+	m_HiararchyList.ResetContent();
 
 	vector<CObj*> vecObj = CToolObjMgr::GetInst()->GetObjVec();
 	
@@ -90,6 +90,7 @@ void CHierarchyFormView::UpdateHierarchyView()
 	for (; iter != vecObj.end(); ++iter)
 		m_HiararchyList.AddString((*iter)->Get_ObjName().c_str());
 
+	m_HiararchyList.SetCurSel(iSelect);
 	UpdateData(FALSE);
 }
 
@@ -170,6 +171,8 @@ void CHierarchyFormView::OnBnClickedDeleteObjButton()
 	CToolObjMgr::GetInst()->DeleteObj(iSelect);
 	m_HiararchyList.DeleteString(iSelect);
 
+	CToolObjMgr::GetInst()->UpdateAllView();
+
 	UpdateData(FALSE);
 }
 
@@ -217,5 +220,5 @@ void CHierarchyFormView::OnLbnSelchangeHierarchyList()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CToolObjMgr::GetInst()->SetTargetObj(m_HiararchyList.GetCurSel());
-
+	CToolObjMgr::GetInst()->UpdateAllView();
 }
