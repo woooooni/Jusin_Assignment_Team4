@@ -1,5 +1,9 @@
 #pragma once
+#include "afxwin.h"
+#include <atlimage.h>
 
+#include "MiniView.h"
+#include "MapToolMap.h"
 
 // CDlgTab3 대화 상자입니다.
 
@@ -20,4 +24,29 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	afx_msg void OnListBox();
+	afx_msg void OnBnClickedInDexCheckBox();
+	afx_msg void OnDropFiles(HDROP hDropInfo);
+	afx_msg void OnSaveData();
+
+	afx_msg void OnBnClickedRadio2();
+	afx_msg void OnBnClickedRadio1();
+
+	virtual BOOL OnInitDialog();
+	void		 ShowForm(int iIndex);
+
+public:
+	CButton			m_RadioTile;
+	CButton			m_Check;  // Show Index 체크 박스
+
+	CListBox		m_ListBox;
+	CStatic			m_TilePicControl;
+	CStatic			m_MiniPicControl;
+	int				m_iDrawID = 0;
+	map<CString, CImage*>			m_mapPngImg;
+
+	CMiniView*		m_pMini;
+	CMapToolMap*	m_pMapForm;
 };

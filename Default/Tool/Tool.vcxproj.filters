@@ -85,6 +85,21 @@
     <Filter Include="99. Manager\ToolObj">
       <UniqueIdentifier>{eef3f3e3-3c39-48dc-9b68-e360eea6ee0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form">
+      <UniqueIdentifier>{fd464b13-3dc8-480f-b002-0e9e4efe2306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Manager\FileInfo">
+      <UniqueIdentifier>{a51c65f7-3acf-4833-a851-3e13300000b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Manager\TileMgr">
+      <UniqueIdentifier>{da90f00a-e0d1-476e-a927-95e727c53a68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Manager\TileMgr\Tile">
+      <UniqueIdentifier>{7aed67e7-7a8a-4840-95fe-38a7eb392bf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Manager\RenderMgr">
+      <UniqueIdentifier>{f540c3a1-fedd-4340-8a58-66bc52ac85df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -159,6 +174,21 @@
     <ClInclude Include="ToolObjMgr.h">
       <Filter>99. Manager\ToolObj</Filter>
     </ClInclude>
+    <ClInclude Include="MapToolMap.h">
+      <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="FileInfo.h">
+      <Filter>99. Manager\FileInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMgr.h">
+      <Filter>99. Manager\TileMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>99. Manager\TileMgr\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderMgr_JWA.h">
+      <Filter>99. Manager\RenderMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -226,6 +256,21 @@
     </ClCompile>
     <ClCompile Include="ToolObjMgr.cpp">
       <Filter>99. Manager\ToolObj</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolMap.cpp">
+      <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="FileInfo.cpp">
+      <Filter>99. Manager\FileInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMgr.cpp">
+      <Filter>99. Manager\TileMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>99. Manager\TileMgr\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderMgr_JWA.cpp">
+      <Filter>99. Manager\RenderMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

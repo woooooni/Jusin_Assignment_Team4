@@ -47,12 +47,20 @@ public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnDestroy();
 
+public: // 추가
+	int			m_iTileIndex;
+	void		Set_TileIndex(int _iIndex) { m_iTileIndex = _iIndex; }
+
 public:
 	CTerrain*			m_pTerrain;
+	BOOL				m_bTrackMouse = FALSE;
+	map<CString, vector<OBJPOS_JWA*>> m_pMapObjInfo;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnMouseHover(UINT nFlags, CPoint point);
+	afx_msg void OnMouseLeave();
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

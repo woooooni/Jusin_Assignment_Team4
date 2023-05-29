@@ -41,13 +41,11 @@ void CMiniView::OnDraw(CDC* pDC)
 	if (nullptr == pTerrain)
 		return;
 
-
 	CDevice::Get_Instance()->Render_Begin();
 
 	pTerrain->Mini_Render();
 
 	CDevice::Get_Instance()->Render_End(m_hWnd);
-
 }
 
 

@@ -1,8 +1,6 @@
 #pragma once
 #include "afxcmn.h"
 
-
-
 // CInspectorFormView Æû ºäÀÔ´Ï´Ù.
 
 #include "DlgTab1.h"

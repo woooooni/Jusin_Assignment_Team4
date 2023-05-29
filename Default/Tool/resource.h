@@ -16,6 +16,7 @@
 #define IDD_DIALOG_TAB3                 319
 #define IDD_DIALOG_TAB4                 321
 #define IDB_PNG1                        323
+#define IDD_MAPTOOL_MAP                 324
 #define IDC_BUTTON1                     1000
 #define IDC_EDIT1                       1001
 #define IDC_BUTTON7                     1001
@@ -43,14 +44,25 @@
 #define IDC_EDIT_TEXT_ANGLE             1027
 #define IDC_EDIT_TEXT_POSITIONX         1028
 #define IDC_EDIT_TEXT_POSITIONY         1029
+#define IDC_STATIC_JWA                  1033
+#define IDC_PICTURE                     1034
+#define IDC_PICTURE_JWA                 1034
+#define IDC_PICTURE_MINI                1035
+#define IDC_PICTURE_MINI_JWA            1035
+#define IDC_RADIO1_JWA                  1036
+#define IDC_RADIO2_JWA                  1037
+#define IDC_LIST1_JWA                   1038
+#define IDC_CHECK1_JWA                  1039
+#define IDC_BUTTON1_JWA                 1040
+#define IDC_BUTTON2_JWA                 1041
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        324
+#define _APS_NEXT_RESOURCE_VALUE        328
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1032
+#define _APS_NEXT_CONTROL_VALUE         1042
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
 #endif

@@ -14,6 +14,8 @@
 #include "Device.h"
 #include "TextureMgr.h"
 #include "MainFrm.h"
+#include "RenderMgr_JWA.h"
+#include "DlgTab3.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -33,6 +35,8 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
+	ON_WM_MOUSEHOVER()
+	ON_WM_MOUSELEAVE()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -40,11 +44,26 @@ END_MESSAGE_MAP()
 CToolView::CToolView() : m_pTerrain(nullptr)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-
+	CRenderMgr_JWA::Get_Instance()->Set_MapObjInfo(&m_pMapObjInfo);
 }
 
 CToolView::~CToolView()
 {
+	for (auto& iter : m_pMapObjInfo)
+	{
+		for (size_t i = 0; i < iter.second.size(); ++i)
+		{
+			if (iter.second[i])
+			{
+				delete iter.second[i];
+				iter.second[i] = nullptr;
+			}
+		}
+		iter.second.clear();
+	}
+	m_pMapObjInfo.clear();
+
+	CRenderMgr_JWA::Get_Instance()->Destroy_Instance();
 }
 
 void CToolView::OnInitialUpdate()
@@ -203,7 +222,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	// point : 마우스 좌표를 갖고 있음.
 
-	m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 0);
+	m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 1);
 
 	// Invalidate : 호출 시 윈도우에 WM_PAINT와 WM_ERASEBKGND 메세지를 발생 시킴, 이때 OnDraw함수를 다시 한번 호출
 	// 인자가 FALSE : WM_PAINT만 발생
@@ -216,30 +235,61 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
 
 	// AfxGetApp : 메인 쓰레드를 갖고 있는 현재 메인 APP을 반환
-	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-
 	// GetParentFrame : 현재 VIEW를 둘러싸고 있는 상위 FrameWnd를 반환
-	//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(GetParentFrame());
-
-	CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_MainSplitter.GetPane(0, 1));
-	pMiniView->Invalidate(FALSE);
+	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+	//CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
+	//pMiniView->Invalidate(FALSE);
 }
 
 
 void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	CScrollView::OnMouseMove(nFlags, point);
 	
-	if (GetAsyncKeyState(VK_LBUTTON))
-	{
+	//if (GetAsyncKeyState(VK_LBUTTON))
+	//{
 		//m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 0);
 		//Invalidate(FALSE);
 
 		//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
 		//CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
 		//pMiniView->Invalidate(FALSE);
-	}
+	//}
+	/*
+	if (!m_bTrackMouse)
+	{
+		TRACKMOUSEEVENT tme;
+		tme.cbSize = sizeof(tme);
+		tme.hwndTrack = m_hWnd;
+		tme.dwFlags = TME_LEAVE | TME_HOVER;
+		tme.dwHoverTime = -1;
 
+		if (TrackMouseEvent(&tme))
+		{
+			//m_bTrackMouse = TRUE;
+		}
+	}
+	*/
+	CScrollView::OnMouseMove(nFlags, point);
+
+}
+
+void CToolView::OnMouseHover(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	//m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 0);
+	//Invalidate(FALSE);
+
+	//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
+
+	CScrollView::OnMouseHover(nFlags, point);
+}
+
+
+void CToolView::OnMouseLeave()
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CScrollView::OnMouseLeave();
 }

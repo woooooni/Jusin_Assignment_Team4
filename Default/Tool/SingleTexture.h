@@ -18,6 +18,12 @@ public:
 	virtual HRESULT Insert_Texture(const TCHAR * pFilePath, const TCHAR * pStateKey = L"", const int & iCount = 0) override;
 	virtual void Release(void) override;
 
+public: // Ãß°¡
+	virtual HRESULT Load_Texture(
+		const wstring& wstrFilePath,
+		const wstring& wstrStateKey = L"",
+		const int& iCount = 0) override;
+
 private:
 	TEXINFO*			m_pTexInfo;
 };

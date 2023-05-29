@@ -54,6 +54,11 @@ typedef struct tagTexturePath
 
 }IMGPATH;
 
+typedef struct tagObjPos_JWA
+{
+	D3DXVECTOR3 vPos;
+
+}OBJPOS_JWA;
 
 static D3DXVECTOR3		Get_Mouse()
 {
