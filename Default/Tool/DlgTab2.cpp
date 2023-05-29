@@ -31,8 +31,6 @@ void CDlgTab2::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Control(pDX, IDC_ANIMLIST_KJM, m_AnimListBox);
 	DDX_Control(pDX, IDC_ANIMSTATIC_KJM, m_AnimPicture);
-
-
 }
 
 BEGIN_MESSAGE_MAP(CDlgTab2, CDialogEx)
@@ -55,7 +53,7 @@ BEGIN_MESSAGE_MAP(CDlgTab2, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_INIT_PICTURELIST_KJM, &CDlgTab2::OnBnClickedButton_Init_PictureList)
 
 
-	ON_BN_CLICKED(IDC_BUTTON1, &CDlgTab2::OnBnClickedButton_Init_AnimList_KJM)
+	ON_BN_CLICKED(IDC_BUTTON_INIT_ANIMLIST_KJM, &CDlgTab2::OnBnClickedButton_Init_AnimList_KJM)
 END_MESSAGE_MAP()
 
 
