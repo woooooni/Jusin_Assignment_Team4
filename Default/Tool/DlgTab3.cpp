@@ -31,7 +31,7 @@ void CDlgTab3::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CHECK1_JWA, m_Check);
-	DDX_Control(pDX, IDC_LIST1_JWA, m_ListBox);
+	DDX_Control(pDX, IDC_LIST1, m_ListBox);
 	DDX_Control(pDX, IDC_PICTURE_JWA, m_TilePicControl);
 	DDX_Control(pDX, IDC_PICTURE_MINI_JWA, m_MiniPicControl);
 	DDX_Control(pDX, IDC_RADIO1_JWA, m_RadioTile);
@@ -48,7 +48,7 @@ BOOL CDlgTab3::OnInitDialog()
 	ChangeWindowMessageFilterEx(m_hWnd, WM_COPYDATA, MSGFLT_ALLOW, NULL);
 	ChangeWindowMessageFilterEx(m_hWnd, 0x0049/*WM_COPYGLOBALDATA*/, MSGFLT_ALLOW, NULL);
 
-	
+	/*
 	TCHAR szTile[MAX_STR] = L"";
 	TCHAR szIndex[MIN_STR] = L"";
 
@@ -61,7 +61,7 @@ BOOL CDlgTab3::OnInitDialog()
 
 		m_ListBox.AddString(szTile);
 	}
-	
+	*/
 
 	m_RadioTile.SetCheck(TRUE);
 	m_Check.SetCheck(TRUE);
@@ -82,6 +82,7 @@ BOOL CDlgTab3::OnInitDialog()
 	GetDlgItem(IDC_PICTURE_MINI_JWA)->DestroyWindow();
 
 	// ¸Ê
+	/*
 	CCreateContext mapcontext;
 	ZeroMemory(&mapcontext, sizeof(mapcontext));
 
@@ -95,7 +96,7 @@ BOOL CDlgTab3::OnInitDialog()
 	m_pMapForm->OnInitialUpdate();
 	m_pMapForm->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STATIC_JWA)->DestroyWindow();
-
+	*/
 	return TRUE;
 }
 
@@ -116,7 +117,7 @@ void CDlgTab3::ShowForm(int iIndex)
 
 BEGIN_MESSAGE_MAP(CDlgTab3, CDialogEx)
 	ON_WM_DROPFILES()
-	ON_LBN_SELCHANGE(IDC_LIST1_JWA, &CDlgTab3::OnListBox)
+	ON_LBN_SELCHANGE(IDC_LIST1, &CDlgTab3::OnListBox)
 	ON_BN_CLICKED(IDC_RADIO2_JWA, &CDlgTab3::OnBnClickedRadio2)
 	ON_BN_CLICKED(IDC_RADIO1_JWA, &CDlgTab3::OnBnClickedRadio1)
 	ON_BN_CLICKED(IDC_CHECK1_JWA, &CDlgTab3::OnBnClickedInDexCheckBox)
@@ -129,7 +130,7 @@ END_MESSAGE_MAP()
 void CDlgTab3::OnListBox()
 {
 	//UpdateData(TRUE);
-
+	
 	CString strSelect = L"";
 
 	int iSelect = m_ListBox.GetCurSel();
@@ -214,18 +215,18 @@ void CDlgTab3::OnDropFiles(HDROP hDropInfo)
 
 		m_ListBox.AddString(szFileName);
 
-			strFileName = szFileName;
+		strFileName = szFileName;
 
-	auto iter = m_mapPngImg.find(strFileName);
+		auto iter = m_mapPngImg.find(strFileName);
 
-	if (iter == m_mapPngImg.end())
-	{
-		CImage* pPngImg = new CImage;
-		pPngImg->Load(strRelative);
+		if (iter == m_mapPngImg.end())
+		{
+			CImage* pPngImg = new CImage;
+			pPngImg->Load(strRelative);
 
-		m_mapPngImg.insert({ strFileName, pPngImg });
-		m_ListBox.AddString(szFileName);
-	}
+			m_mapPngImg.insert({ strFileName, pPngImg });
+			m_ListBox.AddString(szFileName);
+		}
 	}
 
 	::DragFinish(hDropInfo);
@@ -269,7 +270,7 @@ void CDlgTab3::OnSaveData()
 		CToolView*		pTool = dynamic_cast<CToolView*>(pMainFrm->m_MainSplitter.GetPane(0, 1));
 		if (nullptr == pTool)
 			return;
-
+		 
 		CTerrain*		pTerrain = pTool->m_pTerrain;
 
 		vector<TILE*>& vecTile = pTerrain->Get_VecTile();
@@ -285,11 +286,11 @@ void CDlgTab3::OnSaveData()
 
 void CDlgTab3::OnBnClickedRadio2()
 {
-	ShowForm(1);
+	//ShowForm(1);
 }
 
 void CDlgTab3::OnBnClickedRadio1()
 {
-	ShowForm(0);
+	//ShowForm(0);
 }
 

@@ -54,7 +54,6 @@
 #define IDC_LIST1_JWA                   1038
 #define IDC_CHECK1_JWA                  1039
 #define IDC_BUTTON1_JWA                 1040
-#define IDC_BUTTON2_JWA                 1041
 
 // Next default values for new objects
 // 
