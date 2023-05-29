@@ -69,7 +69,7 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 {
 	
 	UpdateData(TRUE);
-	CDialog::OnDropFiles(hDropInfo);
+	//CDialogEx::OnDropFiles(hDropInfo);
 
 	TCHAR		szFilePath[MAX_PATH] = L"";
 	TCHAR		szFileName[MIN_STR] = L"";
@@ -107,8 +107,6 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 	UpdateData(FALSE);
 
 	CDialogEx::OnDropFiles(hDropInfo);
-
-
 }
 
 
@@ -359,8 +357,8 @@ void CDlgTab2::OnBnClickedButtonAdd()
 
 	CImage* pImage = iter->second;
 
-	CListBox* pSrcListBox = (CListBox*)GetDlgItem(IDC_PictureLIST_KJM);
-	CListBox* pDestListBox = (CListBox*)GetDlgItem(IDC_AnimLIST_KJM);
+	CListBox* pSrcListBox = (CListBox*)GetDlgItem(IDC_PICTURELIST_KJM);
+	CListBox* pDestListBox = (CListBox*)GetDlgItem(IDC_ANIMLIST_KJM);
 
 	// 1. 원본 리스트 박스의 현재 선택된 항목 가져오기
 	int nCurSel = pSrcListBox->GetCurSel();
@@ -494,7 +492,7 @@ void CDlgTab2::OnBnClickedButtonPlay()
 void CDlgTab2::OnTimer(UINT_PTR nIDEvent)
 {
 	
-	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_AnimLIST_KJM);
+	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_ANIMLIST_KJM);
 
 	m_nCurrentIndex++;
 
@@ -589,4 +587,22 @@ void CDlgTab2::OnBnClickedButton_Init_AnimList_KJM()
 	m_AnimPicture.SetBitmap(NULL);
 
 	UpdateData(FALSE);	
+}
+
+
+BOOL CDlgTab2::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+	::DragAcceptFiles(g_hWnd, TRUE);
+	m_PictureListBox.DragAcceptFiles(TRUE);
+	
+	
+	ChangeWindowMessageFilterEx(m_PictureListBox.GetSafeHwnd(), WM_DROPFILES, MSGFLT_ALLOW, NULL);
+	ChangeWindowMessageFilterEx(m_PictureListBox.GetSafeHwnd(), WM_COPYDATA, MSGFLT_ALLOW, NULL);
+	ChangeWindowMessageFilterEx(m_PictureListBox.GetSafeHwnd(), 0x0049, MSGFLT_ALLOW, NULL);
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
