@@ -101,6 +101,7 @@ void CTerrain::Render(void)
 			D3DCOLOR_ARGB(255, 255, 255, 255));
 
 		++iIndex;
+		
 	}
 }
 
@@ -119,7 +120,7 @@ void CTerrain::Mini_Render(void)
 
 		matWorld = matScale * matTrans;
 
-		Set_Ratio(&matWorld, 0.3f, 0.3f);
+		Set_Ratio(&matWorld, 0.3f, 0.5f);
 
 		const TEXINFO*	pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", iter->byDrawID);
 

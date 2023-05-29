@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Tool.h"
 #include "InspectorFormView.h"
+#include "RenderMgr_JWA.h"
 #include "Functor.h"
 
 

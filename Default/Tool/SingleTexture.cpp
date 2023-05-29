@@ -61,3 +61,41 @@ void CSingleTexture::Release(void)
 	Safe_Release(m_pTexInfo->pTexture);
 	Safe_Delete(m_pTexInfo);
 }
+
+HRESULT CSingleTexture::Load_Texture(const wstring & wstrFilePath, const wstring & wstrStateKey, const int & iCount)
+{
+	m_pTexInfo = new TEXINFO;
+	ZeroMemory(m_pTexInfo, sizeof(TEXINFO));
+
+	HRESULT hr = 0;
+	hr = D3DXGetImageInfoFromFile(wstrFilePath.c_str(),
+		&m_pTexInfo->tImgInfo);
+	//if (FAILED(hr))
+	//{
+	//	ERR_MSG(L"Failed");
+	//	return E_FAIL;
+	//}
+
+	hr = D3DXCreateTextureFromFileEx(
+		CDevice::Get_Instance()->Get_Device(), // 장치
+		wstrFilePath.c_str(),
+		m_pTexInfo->tImgInfo.Width,	// 이미지 가로 Size
+		m_pTexInfo->tImgInfo.Height, // 이미지 세로 Size
+		m_pTexInfo->tImgInfo.MipLevels,
+		0,	// D3DUSAGE_RENDERTARGET : 렌더타겟 용 텍스처		
+		m_pTexInfo->tImgInfo.Format, // 이미지 픽셀 포멧
+		D3DPOOL_MANAGED,		// 메모리 사용 방식
+		D3DX_DEFAULT,  // 이미지 필터링 방식, 이미지 확대, 축소 픽셀에 대한 처리를 묻는 옵션
+		D3DX_DEFAULT,  // 밉맵 이미지 필터링 방식
+		0,				// 제거할 색상, 0을 넣으면 컬러키 무효화
+		nullptr,		// 이미지 정보 기록(m_pTexInfo->tImgInfo 값을 위에서 이미 채웠음)
+		nullptr,		// 팔레트 이미지 처리
+		&m_pTexInfo->pTexture);
+	//if (FAILED(hr))
+	//{
+	//	ERR_MSG(L"Failed");
+	//	return E_FAIL;
+	//}
+
+	return S_OK;
+}

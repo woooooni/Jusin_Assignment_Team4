@@ -24,6 +24,12 @@ public:
 
 	 void		Release(void);
 
+public: // Ãß°¡
+	HRESULT		Load_Texture(
+		TEXTYPE eTexType, const wstring& wstrFilePath,
+		const wstring& wstrObjectKey, const wstring& wstrStateKey = L"",
+		const int& iCount = 0);
+
 private:
 	map<wstring, CTexture*>		m_mapTexture;
 };

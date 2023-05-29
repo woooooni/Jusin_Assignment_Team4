@@ -17,5 +17,11 @@ public:
 										const int& iCount = 0) PURE;
 
 	virtual void		Release(void)PURE;
+
+public: // Ãß°¡
+	virtual HRESULT Load_Texture(
+		const wstring& swtrFilePath,
+		const wstring& wstrStateKey = L"",
+		const int& iCount = 0) PURE;
 };
 

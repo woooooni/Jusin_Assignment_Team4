@@ -77,3 +77,46 @@ void CTextureMgr::Release(void)
 	m_mapTexture.clear();
 
 }
+
+
+
+//Ãß°¡
+
+HRESULT CTextureMgr::Load_Texture(TEXTYPE eTexType, const wstring & wstrFilePath, const wstring & wstrObjectKey, const wstring & wstrStateKey, const int & iCount)
+{
+	CTexture* pTexture = nullptr;
+
+	auto iter_find = m_mapTexture.find(wstrObjectKey);
+
+	switch (eTexType)
+	{
+	case TEX_SINGLE:
+		if (m_mapTexture.end() != iter_find)
+			return E_FAIL;
+
+		pTexture = new CSingleTexture;
+		m_mapTexture[wstrObjectKey] = pTexture;
+		break;
+
+	case TEX_MULTI:
+		if (m_mapTexture.end() == iter_find)
+		{
+			pTexture = new CMultiTexture;
+			m_mapTexture[wstrObjectKey] = pTexture;
+		}
+		break;
+	}
+
+	m_mapTexture.insert({ wstrObjectKey, pTexture });
+
+	//HRESULT hr = m_mapTexture[wstrObjectKey]->Insert_Texture(L"../Texture/Stage/Terrain/Tile/Tile%d.png", TEX_MULTI, L"Tile", 36);
+	//(wstrFilePath, wstrStateKey, iCount);
+
+	//if (FAILED(hr))										
+	//{													
+	//	ERR_MSG(L"Load Failed");									
+	//	return E_FAIL;								
+	//}
+
+	return S_OK;
+}
