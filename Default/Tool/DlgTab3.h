@@ -4,6 +4,7 @@
 
 #include "MiniView.h"
 #include "MapToolMap.h"
+#include "Terrain.h"
 
 // CDlgTab3 대화 상자입니다.
 
@@ -49,4 +50,6 @@ public:
 
 	CMiniView*		m_pMini;
 	CMapToolMap*	m_pMapForm;
+
+	CTerrain*		pTerrainIndex;
 };

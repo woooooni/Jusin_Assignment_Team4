@@ -42,6 +42,8 @@ BOOL CDlgTab3::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	pTerrainIndex = new CTerrain;
+
 	DragAcceptFiles(true);
 
 	ChangeWindowMessageFilterEx(m_hWnd, WM_DROPFILES, MSGFLT_ALLOW, NULL);
@@ -64,7 +66,7 @@ BOOL CDlgTab3::OnInitDialog()
 	*/
 
 	m_RadioTile.SetCheck(TRUE);
-	m_Check.SetCheck(TRUE);
+	//m_Check.SetCheck(TRUE);
 
 
 	// 미니맵
@@ -120,6 +122,7 @@ BEGIN_MESSAGE_MAP(CDlgTab3, CDialogEx)
 	ON_LBN_SELCHANGE(IDC_LIST1_JWA, &CDlgTab3::OnListBox)
 	ON_BN_CLICKED(IDC_RADIO2_JWA, &CDlgTab3::OnBnClickedRadio2)
 	ON_BN_CLICKED(IDC_RADIO1_JWA, &CDlgTab3::OnBnClickedRadio1)
+	//ON_BN_CLICKED(IDC_CHECK1_JWA, &CToolView::OnBnClickedIndexCheckBox)
 	ON_BN_CLICKED(IDC_CHECK1_JWA, &CDlgTab3::OnBnClickedInDexCheckBox)
 	ON_BN_CLICKED(IDC_BUTTON1_JWA, &CDlgTab3::OnSaveData)
 END_MESSAGE_MAP()
@@ -158,6 +161,7 @@ void CDlgTab3::OnListBox()
 	// 문자열을 정수로 변환해주는 함수
 	m_iDrawID = _tstoi(strSelect);
 
+	
 	CMainFrame* pFrameWnd = dynamic_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd());
 	if (nullptr == (pFrameWnd))
 		return;
@@ -213,7 +217,7 @@ void CDlgTab3::OnDropFiles(HDROP hDropInfo)
 		lstrcpy(szFileName, strFileName.GetString());
 		PathRemoveExtension(szFileName);
 
-		m_ListBox.AddString(szFileName);
+	//	m_ListBox.AddString(szFileName);
 
 		strFileName = szFileName;
 
@@ -235,6 +239,22 @@ void CDlgTab3::OnDropFiles(HDROP hDropInfo)
 void CDlgTab3::OnBnClickedInDexCheckBox()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
+	if (m_Check.GetCheck() == BST_CHECKED)
+	{
+		pTerrainIndex->Set_IndexTrue();
+		pTerrainIndex->Index_Render();
+		Invalidate(FALSE);
+	}
+
+	// 체크 박스가 선택되어 있지 않은 상태라면
+	else if (m_Check.GetCheck() == BST_UNCHECKED)
+	{
+		pTerrainIndex->Set_IndexFalse();
+		pTerrainIndex->Index_Render();
+		Invalidate(FALSE);
+	}
+	
 }
 
 

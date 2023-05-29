@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Include.h"
+#include "MainFrm.h"
 
 class CToolView;
 class CTerrain
@@ -13,12 +14,15 @@ public:
 	HRESULT		Initialize(void);
 	void		Update(void);
 	void		Render(void);
+	void		Index_Render(void);
 	void		Mini_Render(void);
 	void		Release(void);
 
 
 public:
 	void		Set_MainView(CToolView* pMainView) { m_pMainView = pMainView; }
+	void		Set_IndexTrue() { m_bIndex = true; }
+	void		Set_IndexFalse() { m_bIndex = false; }
 	void		Set_Ratio(D3DXMATRIX* pOut, float fRatioX, float fRatioY);
 
 public:
@@ -40,6 +44,7 @@ public: // Ãß°¡
 private:
 	vector<TILE*>		m_vecTile;
 	CToolView*			m_pMainView = nullptr;
+	BOOL				m_bIndex = false;
 
 };
 

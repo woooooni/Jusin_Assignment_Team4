@@ -90,7 +90,8 @@ void CTerrain::Render(void)
 			nullptr,							// 위치 좌표에 대한 vector3 주소, null인 경우 스크린 상의 0, 0좌표 출력
 			D3DCOLOR_ARGB(255, 255, 255, 255)); // 출력할 이미지와 섞을 색상 값, 0xffffffff를 넘겨주면 원본 색상 유지
 		
-		
+
+
 		swprintf_s(szBuf, L"%d", iIndex);
 
 		CDevice::Get_Instance()->Get_Font()->DrawTextW(CDevice::Get_Instance()->Get_Sprite(),
@@ -101,7 +102,64 @@ void CTerrain::Render(void)
 			D3DCOLOR_ARGB(255, 255, 255, 255));
 
 		++iIndex;
-		
+
+
+	}
+
+	//if (m_bIndex)
+		//Index_Render();
+}
+
+void CTerrain::Index_Render(void)
+{
+	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	CToolView*		pMainView = dynamic_cast<CToolView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
+
+	Set_MainView(pMainView);
+
+	D3DXMATRIX	matWorld, matScale, matTrans;
+
+	TCHAR		szBuf[MIN_STR] = L"";
+	int			iIndex = 0;
+
+	RECT	rc{};
+
+	GetClientRect(m_pMainView->m_hWnd, &rc);
+
+	float	fX = WINCX / float(rc.right - rc.left);
+	float	fY = WINCY / float(rc.bottom - rc.top);
+
+	if (m_bIndex)
+	{
+		for (auto iter : m_vecTile)
+		{
+			D3DXMatrixIdentity(&matWorld);
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+			D3DXMatrixTranslation(&matTrans,
+				iter->vPos.x - m_pMainView->GetScrollPos(0),
+				iter->vPos.y - m_pMainView->GetScrollPos(1),
+				0.f);
+
+			matWorld = matScale * matTrans;
+
+			Set_Ratio(&matWorld, fX, fY);
+
+			//const TEXINFO*	pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", iter->byDrawID);
+
+			//float	fX = pTexInfo->tImgInfo.Width / 2.f;
+			//float	fY = pTexInfo->tImgInfo.Height / 2.f;
+
+			swprintf_s(szBuf, L"%d", iIndex);
+
+			CDevice::Get_Instance()->Get_Font()->DrawTextW(CDevice::Get_Instance()->Get_Sprite(),
+				szBuf,
+				lstrlen(szBuf),
+				nullptr,
+				DT_CENTER,
+				D3DCOLOR_ARGB(255, 255, 255, 255));
+
+			++iIndex;
+		}
 	}
 }
 

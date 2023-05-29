@@ -10,11 +10,13 @@
 #endif
 
 #include "ToolDoc.h"
+#include "MiniView.h"
 #include "ToolView.h"
 #include "Device.h"
 #include "TextureMgr.h"
 #include "MainFrm.h"
 #include "RenderMgr_JWA.h"
+#include "InspectorFormView.h"
 #include "DlgTab3.h"
 
 #ifdef _DEBUG
@@ -37,6 +39,7 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEHOVER()
 	ON_WM_MOUSELEAVE()
+	ON_BN_CLICKED(IDC_CHECK1_JWA, &CToolView::OnBnClickedIndexCheckBox)
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -123,6 +126,7 @@ void CToolView::OnInitialUpdate()
 	}
 
 	m_pTerrain = new CTerrain;
+	//m_pTileTool = new CDlgTab3;
 
 	if (FAILED(m_pTerrain->Initialize()))
 	{
@@ -144,9 +148,10 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	CDevice::Get_Instance()->Render_Begin();
 
 	m_pTerrain->Render();
-
+	//m_pTerrain->Index_Render();
 
 	CDevice::Get_Instance()->Render_End();
+
 }
 void CToolView::OnDestroy()
 {
@@ -220,25 +225,19 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	CScrollView::OnLButtonDown(nFlags, point);
 
-	// point : 마우스 좌표를 갖고 있음.
+	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	CInspectorFormView*		pInspectorForm = dynamic_cast<CInspectorFormView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
+	CDlgTab3*		pMapTool = pInspectorForm->dlg3;
 
-	m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 1);
+	m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
+		float(point.y + GetScrollPos(1)), 0.f }, pMapTool->m_iDrawID);
 
-	// Invalidate : 호출 시 윈도우에 WM_PAINT와 WM_ERASEBKGND 메세지를 발생 시킴, 이때 OnDraw함수를 다시 한번 호출
-	// 인자가 FALSE : WM_PAINT만 발생
-	// 인자가 TRUE : WM_PAINT와 WM_ERASEBKGND 메세지를 발생
-	
 	Invalidate(FALSE);
-
+	pMapTool->Invalidate(FALSE);
 
 	// AfxGetMainWnd : 현재 쓰레드로부터 WND를 반환하는 함수
-	//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
-
-	// AfxGetApp : 메인 쓰레드를 갖고 있는 현재 메인 APP을 반환
 	// GetParentFrame : 현재 VIEW를 둘러싸고 있는 상위 FrameWnd를 반환
-	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-	//CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
-	//pMiniView->Invalidate(FALSE);
+	// AfxGetApp : 메인 쓰레드를 갖고 있는 현재 메인 APP을 반환
 }
 
 
@@ -246,15 +245,18 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	
-	//if (GetAsyncKeyState(VK_LBUTTON))
-	//{
-		//m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 0);
-		//Invalidate(FALSE);
+	if (GetAsyncKeyState(VK_LBUTTON))
+	{
+		CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+		CInspectorFormView*		pInspectorForm = dynamic_cast<CInspectorFormView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
+		CDlgTab3*		pMapTool = pInspectorForm->dlg3;
 
-		//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
-		//CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
-		//pMiniView->Invalidate(FALSE);
-	//}
+		m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
+			float(point.y + GetScrollPos(1)), 0.f }, pMapTool->m_iDrawID);
+
+		Invalidate(FALSE);
+		pMapTool->Invalidate(FALSE);
+	}
 	/*
 	if (!m_bTrackMouse)
 	{
@@ -270,6 +272,7 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 	}
 	*/
+
 	CScrollView::OnMouseMove(nFlags, point);
 
 }
@@ -292,4 +295,32 @@ void CToolView::OnMouseLeave()
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 	CScrollView::OnMouseLeave();
+}
+
+
+void CToolView::OnBnClickedIndexCheckBox()
+{
+	/*
+	if (m_pTileTool->m_Check.GetCheck() == BST_CHECKED)
+	{
+		m_pTerrain->Set_IndexTrue();
+		m_pTerrain->Index_Render();
+		Invalidate(FALSE);
+	}
+
+	// 체크 박스가 선택되어 있지 않은 상태라면
+	else if (m_pTileTool->m_Check.GetCheck() == BST_UNCHECKED)
+	{
+		m_pTerrain->Set_IndexFalse();
+		m_pTerrain->Index_Render();
+		Invalidate(FALSE);
+	}
+	*/
+	//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	//CToolView*		pMainView = dynamic_cast<CToolView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
+
+	//m_pTerrain->Index_Render();
+
+	//pMainView->Invalidate(FALSE);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
