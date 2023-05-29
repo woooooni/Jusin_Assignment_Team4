@@ -43,6 +43,16 @@
 #define IDC_EDIT_TEXT_ANGLE             1027
 #define IDC_EDIT_TEXT_POSITIONX         1028
 #define IDC_EDIT_TEXT_POSITIONY         1029
+#define IDC_HIERARCHY_LIST              1032
+#define IDC_ADDOBJ_BUTTON               1033
+#define IDC_DELETE_OBJ_BUTTON2          1034
+#define IDC_SAVE_BUTTON                 1035
+#define IDC_COMBO_OBJ_TYPE              1041
+#define IDC_OBJNAMECHANGE_BTN           1042
+#define IDC_OBJNAMECHANGE_EDIT          1043
+#define IDC_OBJ_NAMETAG_STATIC          1044
+#define IDC_OBJ_TYPE_TAG_STATIC         1045
+#define IDC_OBJTYPE_TEXT_TAG            1047
 
 // Next default values for new objects
 // 
@@ -50,7 +60,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        324
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1032
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
 #endif

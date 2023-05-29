@@ -58,6 +58,11 @@ void CInspectorFormView::Dump(CDumpContext& dc) const
 
 
 
+void CInspectorFormView::UpdateInspectorView()
+{
+	dlg1->Update_ObjTool();
+}
+
 void CInspectorFormView::OnSelchangeInspectorTab(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -105,16 +110,16 @@ void CInspectorFormView::OnInitialUpdate()
 
 	dlg1 = new CDlgTab1;
 	dlg1->Create(IDD_DIALOG_TAB1, &m_tab);
-	dlg1->MoveWindow(0, 30, rect.Width(), rect.Height());
+	dlg1->MoveWindow(0, 20, rect.Width(), rect.Height());
 	dlg1->ShowWindow(SW_SHOW);
 
 	dlg2 = new CDlgTab2;
 	dlg2->Create(IDD_DIALOG_TAB2, &m_tab);
-	dlg2->MoveWindow(0, 30, rect.Width(), rect.Height());
+	dlg2->MoveWindow(0, 20, rect.Width(), rect.Height());
 	dlg2->ShowWindow(SW_HIDE);
 
 	dlg3 = new CDlgTab3;
 	dlg3->Create(IDD_DIALOG_TAB3, &m_tab);
-	dlg3->MoveWindow(0, 30, rect.Width(), rect.Height());
+	dlg3->MoveWindow(0, 20, rect.Width(), rect.Height());
 	dlg3->ShowWindow(SW_HIDE);
 }

@@ -8,6 +8,11 @@
 #include "MiniView.h"
 #include "Include.h"
 
+
+class CHierarchyFormView;
+class CInspectorFormView;
+class CToolView;
+
 class CMainFrame : public CFrameWnd
 {
 	
@@ -33,13 +38,21 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
+public:
+	void			Update_AllView();
+
 protected:  // 컨트롤 모음이 포함된 멤버입니다.
-	CToolBar          m_wndToolBar;
-	CStatusBar        m_wndStatusBar;
+	CToolBar				m_wndToolBar;
+	CStatusBar				m_wndStatusBar;
 
 public:
-	CSplitterWnd	  m_MainSplitter;
-	CSplitterWnd	  m_SecondSplitter;
+	CSplitterWnd			m_MainSplitter;
+	CSplitterWnd			m_SecondSplitter;
+
+private:
+	CHierarchyFormView*		m_pHierarchy;
+	CInspectorFormView*		m_pInspector;
+	CToolView*				m_pToolView;
 
 // 생성된 메시지 맵 함수
 protected:

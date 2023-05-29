@@ -112,7 +112,6 @@ void CToolView::OnInitialUpdate()
 	}
 
 	m_pTerrain->Set_MainView(this);
-
 }
 
 void CToolView::OnDraw(CDC* /*pDC*/)
@@ -221,8 +220,8 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	// GetParentFrame : 현재 VIEW를 둘러싸고 있는 상위 FrameWnd를 반환
 	//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(GetParentFrame());
 
-	CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_MainSplitter.GetPane(0, 1));
-	pMiniView->Invalidate(FALSE);
+	//CMiniView*		pMiniView = dynamic_cast<CMiniView*>(pMainFrm->m_MainSplitter.GetPane(0, 1));
+	//pMiniView->Invalidate(FALSE);
 }
 
 
@@ -242,4 +241,8 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 		//pMiniView->Invalidate(FALSE);
 	}
 
+}
+
+void CToolView::UpdateToolView()
+{
 }

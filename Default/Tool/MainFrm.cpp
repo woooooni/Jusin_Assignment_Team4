@@ -5,10 +5,12 @@
 #include "stdafx.h"
 #include "Tool.h"
 
+#include "ToolObjMgr.h"
 #include "MainFrm.h"
 #include "ToolView.h"
 #include "HierarchyFormView.h"
 #include "InspectorFormView.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,6 +39,9 @@ static UINT indicators[] =
 // CMainFrame 생성/소멸
 
 CMainFrame::CMainFrame()
+	: m_pHierarchy(nullptr)
+	, m_pInspector(nullptr)
+	, m_pToolView(nullptr)
 {
 	// TODO: 여기에 멤버 초기화 코드를 추가합니다.
 }
@@ -75,6 +80,7 @@ void CMainFrame::Dump(CDumpContext& dc) const
 {
 	CFrameWnd::Dump(dc);
 }
+
 #endif //_DEBUG
 
 
@@ -117,17 +123,34 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	m_SecondSplitter.CreateView(0, 0, RUNTIME_CLASS(CToolView), CSize(0, 500), pContext);
 	m_SecondSplitter.CreateView(1, 0, RUNTIME_CLASS(CMyForm), CSize(0, 200), pContext);
 
+	m_pHierarchy	= dynamic_cast<CHierarchyFormView*>(m_MainSplitter.GetPane(0, 1));
+	m_pInspector	= dynamic_cast<CInspectorFormView*>(m_MainSplitter.GetPane(0, 2));
+	m_pToolView		= dynamic_cast<CToolView*>(m_SecondSplitter.GetPane(0, 0));
 
+	if (m_pHierarchy == nullptr || m_pInspector == nullptr || m_pToolView == nullptr)
+	{
+		AfxMessageBox(L"초기화 실패");
+		return FALSE;
+	}
 	//SetColumnInfo(열 번호, 열의 크기 지정, 허용 가능한 최소 크기)
 
 	// m_MainSplitter를 3칸으로 나눴고, 각 칸마다 크기를 설정.
-	m_MainSplitter.SetColumnInfo(0, 800, 600);
-	m_MainSplitter.SetColumnInfo(1, 200, 100);
-	m_MainSplitter.SetColumnInfo(2, 600, 100);
+	m_MainSplitter.SetColumnInfo(0, 700, 100);
+	m_MainSplitter.SetColumnInfo(1, 300, 100);
+	m_MainSplitter.SetColumnInfo(2, 700, 100);
 
 	// 크기를 다시 계산해 반영.
 	m_MainSplitter.RecalcLayout();
+	m_SecondSplitter.RecalcLayout();
 
+	CToolObjMgr::GetInst()->SetMainFrm(this);
 
 	return TRUE;
+}
+
+void CMainFrame::Update_AllView()
+{
+	m_pHierarchy->UpdateHierarchyView();
+	m_pInspector->UpdateInspectorView();
+	m_pToolView->UpdateToolView();
 }
