@@ -11,6 +11,7 @@ CObj::CObj(OBJID _eID)
 	D3DXMatrixIdentity(&m_tInfo.matWorld);
 
 	m_tInfo.vLook = { 1.f, 0.f, 0.f };
+	m_tInfo.vSize = { 50.f, 50.f, 0.f };
 	ZeroMemory(&m_tFrame, sizeof(FRAME));
 }
 
