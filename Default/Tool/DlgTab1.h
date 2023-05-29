@@ -36,4 +36,9 @@ public:
 	CEdit			m_EditObjAngle;
 	CEdit			m_EditObjScaleX;
 	CEdit			m_EditObjScaleY;
+
+	afx_msg void	OnEnChangeEditTextPositionx();
+	afx_msg void	OnEnChangeEditTextPositionY();
+	afx_msg void	OnEnChangeEditTextScaleY();
+	afx_msg void	OnEnChangeEditTextScaleX();
 };
