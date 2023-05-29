@@ -42,29 +42,41 @@ BOOL CDlgTab3::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	//pTerrainIndex = new CTerrain;
+
 	DragAcceptFiles(true);
 
 	ChangeWindowMessageFilterEx(m_hWnd, WM_DROPFILES, MSGFLT_ALLOW, NULL);
 	ChangeWindowMessageFilterEx(m_hWnd, WM_COPYDATA, MSGFLT_ALLOW, NULL);
 	ChangeWindowMessageFilterEx(m_hWnd, 0x0049/*WM_COPYGLOBALDATA*/, MSGFLT_ALLOW, NULL);
 
-	/*
 	TCHAR szTile[MAX_STR] = L"";
 	TCHAR szIndex[MIN_STR] = L"";
+	CString strRelative = L""; //
+	CString strFileName = L""; //
 
 	for (size_t i = 0; i < TILE_TEX; ++i)
 	{
 		TCHAR szTile[MAX_STR] = L"Tile";
 		TCHAR szIndex[MIN_STR] = L"";
 		swprintf_s(szIndex, L"%d", (int)i);
-		lstrcat(szTile, szIndex);
+		strFileName = lstrcat(szTile, szIndex); ///////
 
-		m_ListBox.AddString(szTile);
+		strRelative = L"../Texture/Stage/Terrain/Tile";
+
+		auto iter = m_mapPngImg.find(strFileName);
+
+		if (iter == m_mapPngImg.end())
+		{
+			CImage* pPngImg = new CImage;
+			pPngImg->Load(strRelative);
+
+			m_mapPngImg.insert({ strFileName, pPngImg });
+			m_ListBox.AddString(szTile);
+		}
 	}
-	*/
-
 	m_RadioTile.SetCheck(TRUE);
-	m_Check.SetCheck(TRUE);
+	//m_Check.SetCheck(TRUE);
 
 
 	// 미니맵
@@ -80,7 +92,7 @@ BOOL CDlgTab3::OnInitDialog()
 	m_pMini->OnInitialUpdate();
 	m_pMini->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_PICTURE_MINI_JWA)->DestroyWindow();
-
+	
 	// 맵
 	/*
 	CCreateContext mapcontext;
@@ -120,6 +132,7 @@ BEGIN_MESSAGE_MAP(CDlgTab3, CDialogEx)
 	ON_LBN_SELCHANGE(IDC_LIST1_JWA, &CDlgTab3::OnListBox)
 	ON_BN_CLICKED(IDC_RADIO2_JWA, &CDlgTab3::OnBnClickedRadio2)
 	ON_BN_CLICKED(IDC_RADIO1_JWA, &CDlgTab3::OnBnClickedRadio1)
+	//ON_BN_CLICKED(IDC_CHECK1_JWA, &CToolView::OnBnClickedIndexCheckBox)
 	ON_BN_CLICKED(IDC_CHECK1_JWA, &CDlgTab3::OnBnClickedInDexCheckBox)
 	ON_BN_CLICKED(IDC_BUTTON1_JWA, &CDlgTab3::OnSaveData)
 END_MESSAGE_MAP()
@@ -147,6 +160,7 @@ void CDlgTab3::OnListBox()
 	m_TilePicControl.SetBitmap(*(iter->second));
 
 	int i = 0;
+
 	for (; i < strSelect.GetLength(); ++i)
 	{
 		if (0 != isdigit(strSelect[i]))
@@ -156,8 +170,10 @@ void CDlgTab3::OnListBox()
 	strSelect.Delete(0, i);
 
 	// 문자열을 정수로 변환해주는 함수
-	m_iDrawID = _tstoi(strSelect);
+	//m_iDrawID = _tstoi(strSelect);
+	m_iDrawID = _wtoi(strSelect.GetString());
 
+	
 	CMainFrame* pFrameWnd = dynamic_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd());
 	if (nullptr == (pFrameWnd))
 		return;
@@ -213,7 +229,7 @@ void CDlgTab3::OnDropFiles(HDROP hDropInfo)
 		lstrcpy(szFileName, strFileName.GetString());
 		PathRemoveExtension(szFileName);
 
-		m_ListBox.AddString(szFileName);
+	//	m_ListBox.AddString(szFileName);
 
 		strFileName = szFileName;
 
@@ -235,6 +251,22 @@ void CDlgTab3::OnDropFiles(HDROP hDropInfo)
 void CDlgTab3::OnBnClickedInDexCheckBox()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
+	if (m_Check.GetCheck() == BST_CHECKED)
+	{
+		pTerrainIndex->Set_IndexTrue();
+		pTerrainIndex->Index_Render();
+		Invalidate(FALSE);
+	}
+
+	// 체크 박스가 선택되어 있지 않은 상태라면
+	else if (m_Check.GetCheck() == BST_UNCHECKED)
+	{
+		pTerrainIndex->Set_IndexFalse();
+		pTerrainIndex->Index_Render();
+		Invalidate(FALSE);
+	}
+	
 }
 
 
