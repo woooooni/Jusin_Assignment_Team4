@@ -44,35 +44,51 @@
 #define IDC_EDIT_TEXT_POSITIONX         1028
 #define IDC_EDIT_TEXT_POSITIONY         1029
 #define IDC_HIERARCHY_LIST              1032
+#define IDC_SPIN_PICTURELIST_KJM        1032
 #define IDC_ADDOBJ_BUTTON               1033
 #define IDC_DELETE_OBJ_BUTTON2          1034
 #define IDC_SAVE_BUTTON                 1035
-#define IDC_COMBO_OBJ_TYPE              1041
-#define IDC_OBJNAMECHANGE_BTN           1042
-#define IDC_OBJNAMECHANGE_EDIT          1043
-#define IDC_OBJ_NAMETAG_STATIC          1044
-#define IDC_OBJ_TYPE_TAG_STATIC         1045
-#define IDC_OBJTYPE_TEXT_TAG            1047
-#define IDC_SPIN_PICTURELIST_KJM        1032
 #define IDC_PICTRUESTATIC_KJM           1035
-#define IDC_AnimLIST_KJM                1039
+
 #define IDC_ANIMLIST_KJM                1039
-#define IDC_BUTTON_Add                  1040
+
+
 #define IDC_BUTTON_ADD_KJM              1040
-#define IDC_AnimStatic_KJM              1041
-#define IDC_AnimSTATIC_KJM              1041
-#define IDC_AnimStatic_KJM              1041
+
+
+#define IDC_COMBO_OBJ_TYPE              1041
+
+
+
 #define IDC_ANIMSTATIC_KJM              1041
-#define IDC_PictureLIST_KJM             1042
+
+#define IDC_OBJNAMECHANGE_BTN           1042
+
+
 #define IDC_PICTURELIST_KJM             1042
-#define IDC_BUTTON_Delete               1043
+#define IDC_OBJNAMECHANGE_EDIT          1043
+
 #define IDC_BUTTON_PICTUREDELETE_KJM    1043
-#define IDC_BUTTON_Play                 1044
+#define IDC_OBJ_NAMETAG_STATIC          1044
+
 #define IDC_BUTTON_PLAY_KJM             1044
+#define IDC_OBJ_TYPE_TAG_STATIC         1045
+
 #define IDC_BUTTON_STOP_KJM             1045
 #define IDC_IMAGEFRAME_KJM              1046
+
+#define IDC_OBJTYPE_TEXT_TAG            1047
+
 #define IDC_BUTTON_INIT_PICTURELIST_KJM 1047
+
 #define IDC_BUTTON_ANIMDELETE_KJM       1048
+
+#define IDC_BUTTON_INIT_ANIMLIST_KJM    1049
+
+#define IDC_STATIC_RESOURCELIST         1050
+
+#define IDC_ANIMATIONREGION             1051
+
 
 // Next default values for new objects
 // 
@@ -80,8 +96,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        324
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1048
-#define _APS_NEXT_CONTROL_VALUE         1049
+#define _APS_NEXT_CONTROL_VALUE         1052
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
 #endif

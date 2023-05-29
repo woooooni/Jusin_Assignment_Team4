@@ -31,8 +31,6 @@ void CDlgTab2::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Control(pDX, IDC_ANIMLIST_KJM, m_AnimListBox);
 	DDX_Control(pDX, IDC_ANIMSTATIC_KJM, m_AnimPicture);
-
-
 }
 
 BEGIN_MESSAGE_MAP(CDlgTab2, CDialogEx)
@@ -55,7 +53,7 @@ BEGIN_MESSAGE_MAP(CDlgTab2, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_INIT_PICTURELIST_KJM, &CDlgTab2::OnBnClickedButton_Init_PictureList)
 
 
-	ON_BN_CLICKED(IDC_BUTTON1, &CDlgTab2::OnBnClickedButton_Init_AnimList_KJM)
+	ON_BN_CLICKED(IDC_BUTTON_INIT_ANIMLIST_KJM, &CDlgTab2::OnBnClickedButton_Init_AnimList_KJM)
 END_MESSAGE_MAP()
 
 
@@ -359,8 +357,8 @@ void CDlgTab2::OnBnClickedButtonAdd()
 
 	CImage* pImage = iter->second;
 
-	CListBox* pSrcListBox = (CListBox*)GetDlgItem(IDC_PictureLIST_KJM);
-	CListBox* pDestListBox = (CListBox*)GetDlgItem(IDC_AnimLIST_KJM);
+	CListBox* pSrcListBox = (CListBox*)GetDlgItem(IDC_PICTURELIST_KJM);
+	CListBox* pDestListBox = (CListBox*)GetDlgItem(IDC_ANIMLIST_KJM);
 
 	// 1. 원본 리스트 박스의 현재 선택된 항목 가져오기
 	int nCurSel = pSrcListBox->GetCurSel();
@@ -494,7 +492,7 @@ void CDlgTab2::OnBnClickedButtonPlay()
 void CDlgTab2::OnTimer(UINT_PTR nIDEvent)
 {
 	
-	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_AnimLIST_KJM);
+	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_ANIMLIST_KJM);
 
 	m_nCurrentIndex++;
 
