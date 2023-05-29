@@ -18,16 +18,6 @@
 #define IDB_PNG1                        323
 #define IDD_MAPTOOL_MAP                 324
 #define IDC_BUTTON1                     10000
-#define IDC_STATIC_JWA                  10057
-#define IDC_PICTURE                     10058
-#define IDC_PICTURE_JWA                 10059
-#define IDC_PICTURE_MINI                10060
-#define IDC_PICTURE_MINI_JWA            10061
-#define IDC_RADIO1_JWA                  10062
-#define IDC_RADIO2_JWA                  10063
-#define IDC_LIST1_JWA                   10064
-#define IDC_CHECK1_JWA                  10065
-#define IDC_BUTTON1_JWA                 10066
 #define IDC_EDIT1                       10001
 #define IDC_BUTTON7                     10002
 #define IDC_EDIT2                       10003
@@ -77,6 +67,17 @@
 #define IDC_IMAGEFRAME_KJM              10046
 #define IDC_BUTTON_INIT_PICTURELIST_KJM 10047
 #define IDC_BUTTON_ANIMDELETE_KJM       10048
+#define IDC_BUTTON_INIT_ANIMLIST_KJM    10049
+#define IDC_STATIC_JWA                  10057
+#define IDC_PICTURE                     10058
+#define IDC_PICTURE_JWA                 10059
+#define IDC_PICTURE_MINI                10060
+#define IDC_PICTURE_MINI_JWA            10061
+#define IDC_RADIO1_JWA                  10062
+#define IDC_RADIO2_JWA                  10063
+#define IDC_LIST1_JWA                   10064
+#define IDC_CHECK1_JWA                  10065
+#define IDC_BUTTON1_JWA                 10066
 
 // Next default values for new objects
 // 
@@ -84,7 +85,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        328
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         10049
+#define _APS_NEXT_CONTROL_VALUE         10050
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
 #endif
