@@ -7,6 +7,7 @@
 #include "Include.h"
 #include "Terrain.h"
 #include "DlgTab3.h"
+#include "MyMap.h"
 
 class CToolDoc;
 class CToolView : public CScrollView
@@ -54,8 +55,9 @@ public: // 추가
 
 public:
 	CTerrain*			m_pTerrain;
+	CMyMap*				m_pMap;
 	CDlgTab3*			m_pTileTool;
-	BOOL				m_bTrackMouse = FALSE;
+	bool				m_bIsSelectTile = false;
 	map<CString, vector<OBJPOS_JWA*>> m_pMapObjInfo;
 
 public:
@@ -66,7 +68,6 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnMouseHover(UINT nFlags, CPoint point);
 	afx_msg void OnMouseLeave();
-	afx_msg void OnBnClickedIndexCheckBox();
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

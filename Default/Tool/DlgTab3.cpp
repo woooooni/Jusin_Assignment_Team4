@@ -30,9 +30,6 @@ CDlgTab3::~CDlgTab3()
 void CDlgTab3::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_CHECK1_JWA, m_Check);
-	DDX_Control(pDX, IDC_LIST1_JWA, m_ListBox);
-	DDX_Control(pDX, IDC_PICTURE_JWA, m_TilePicControl);
 	DDX_Control(pDX, IDC_PICTURE_MINI_JWA, m_MiniPicControl);
 	DDX_Control(pDX, IDC_RADIO1_JWA, m_RadioTile);
 	DDX_Control(pDX, IDC_RADIO2_JWA, m_RadioTile);
@@ -43,29 +40,30 @@ BOOL CDlgTab3::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	//pTerrainIndex = new CTerrain;
-
+	/*
 	DragAcceptFiles(true);
 
 	ChangeWindowMessageFilterEx(m_hWnd, WM_DROPFILES, MSGFLT_ALLOW, NULL);
 	ChangeWindowMessageFilterEx(m_hWnd, WM_COPYDATA, MSGFLT_ALLOW, NULL);
-	ChangeWindowMessageFilterEx(m_hWnd, 0x0049/*WM_COPYGLOBALDATA*/, MSGFLT_ALLOW, NULL);
+	ChangeWindowMessageFilterEx(m_hWnd, 0x0049, MSGFLT_ALLOW, NULL);
 
 	TCHAR szTile[MAX_STR] = L"";
 	TCHAR szIndex[MIN_STR] = L"";
-	CString strRelative = L""; //
-	CString strFileName = L""; //
+	CString strRelative = L"";
+	CString strFileName = L"";
 
+	
 	for (size_t i = 0; i < TILE_TEX; ++i)
 	{
 		TCHAR szTile[MAX_STR] = L"Tile";
 		TCHAR szIndex[MIN_STR] = L"";
 		swprintf_s(szIndex, L"%d", (int)i);
-		strFileName = lstrcat(szTile, szIndex); ///////
+		strFileName = lstrcat(szTile, szIndex);
 
 		strRelative = L"../Texture/Stage/Terrain/Tile";
 
 		auto iter = m_mapPngImg.find(strFileName);
-
+		
 		if (iter == m_mapPngImg.end())
 		{
 			CImage* pPngImg = new CImage;
@@ -74,11 +72,33 @@ BOOL CDlgTab3::OnInitDialog()
 			m_mapPngImg.insert({ strFileName, pPngImg });
 			m_ListBox.AddString(szTile);
 		}
+
 	}
+	*/
 	m_RadioTile.SetCheck(TRUE);
-	//m_Check.SetCheck(TRUE);
+	
+	// 맵
+	CCreateContext mapcontext;
+	ZeroMemory(&mapcontext, sizeof(mapcontext));
 
+	CRect maprect;
 
+	GetDlgItem(IDC_STATIC_JWA)->GetWindowRect(&maprect);
+	ScreenToClient(&maprect);
+
+	m_pMapForm = new CMapToolMap;
+	m_pMapForm->Create(NULL, NULL, WS_CHILD | WS_VSCROLL | WS_HSCROLL, maprect, this, IDD_MAPTOOL_MAP, &mapcontext);
+	m_pMapForm->OnInitialUpdate();
+	m_pMapForm->ShowWindow(SW_HIDE);
+	
+	m_pTileForm = new CMapToolTile;
+	m_pTileForm->Create(NULL, NULL, WS_CHILD | WS_VSCROLL | WS_HSCROLL, maprect, this, IDD_MAPTOOL_TILE, &mapcontext);
+	m_pTileForm->OnInitialUpdate();
+	m_pTileForm->ShowWindow(SW_SHOW);
+
+	GetDlgItem(IDC_STATIC_JWA)->DestroyWindow();
+
+	
 	// 미니맵
 	CCreateContext context;
 	ZeroMemory(&context, sizeof(context));
@@ -93,22 +113,6 @@ BOOL CDlgTab3::OnInitDialog()
 	m_pMini->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_PICTURE_MINI_JWA)->DestroyWindow();
 	
-	// 맵
-	/*
-	CCreateContext mapcontext;
-	ZeroMemory(&mapcontext, sizeof(mapcontext));
-
-	CRect maprect;
-
-	GetDlgItem(IDC_STATIC_JWA)->GetWindowRect(&maprect);
-	ScreenToClient(&maprect);
-
-	m_pMapForm = new CMapToolMap;
-	m_pMapForm->Create(NULL, NULL, WS_CHILD | WS_VSCROLL | WS_HSCROLL, maprect, this, IDD_MAPTOOL_MAP, &mapcontext);
-	m_pMapForm->OnInitialUpdate();
-	m_pMapForm->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_STATIC_JWA)->DestroyWindow();
-	*/
 	return TRUE;
 }
 
@@ -117,23 +121,20 @@ void CDlgTab3::ShowForm(int iIndex)
 	switch (iIndex)
 	{
 	case 0:
+		m_pTileForm->ShowWindow(SW_SHOW);
 		m_pMapForm->ShowWindow(SW_HIDE);
-		//m_pTileForm->ShowWindow(SW_HIDE);
 		break;
 	case 1:
+		m_pTileForm->ShowWindow(SW_HIDE);
 		m_pMapForm->ShowWindow(SW_SHOW);
-		//m_pTileForm->ShowWindow(SW_SHOW);
 		break;
 	}
 }
 
 BEGIN_MESSAGE_MAP(CDlgTab3, CDialogEx)
-	ON_WM_DROPFILES()
-	ON_LBN_SELCHANGE(IDC_LIST1_JWA, &CDlgTab3::OnListBox)
+	//ON_WM_DROPFILES()
 	ON_BN_CLICKED(IDC_RADIO2_JWA, &CDlgTab3::OnBnClickedRadio2)
 	ON_BN_CLICKED(IDC_RADIO1_JWA, &CDlgTab3::OnBnClickedRadio1)
-	//ON_BN_CLICKED(IDC_CHECK1_JWA, &CToolView::OnBnClickedIndexCheckBox)
-	ON_BN_CLICKED(IDC_CHECK1_JWA, &CDlgTab3::OnBnClickedInDexCheckBox)
 	ON_BN_CLICKED(IDC_BUTTON1_JWA, &CDlgTab3::OnSaveData)
 END_MESSAGE_MAP()
 
@@ -144,6 +145,7 @@ void CDlgTab3::OnListBox()
 {
 	//UpdateData(TRUE);
 	
+	/*
 	CString strSelect = L"";
 
 	int iSelect = m_ListBox.GetCurSel();
@@ -154,6 +156,7 @@ void CDlgTab3::OnListBox()
 	m_ListBox.GetText(iSelect, strSelect);
 
 	auto iter = m_mapPngImg.find(strSelect);
+
 	if (iter == m_mapPngImg.end())
 		return;
 
@@ -200,7 +203,7 @@ void CDlgTab3::OnListBox()
 		&D3DXVECTOR3(0.f, 0.f, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 	CDevice::Get_Instance()->Render_End(m_TilePicControl.m_hWnd);
-	
+	*/
 	//UpdateData(FALSE);
 }
 
@@ -208,7 +211,7 @@ void CDlgTab3::OnListBox()
 void CDlgTab3::OnDropFiles(HDROP hDropInfo)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
+	/*
 	CDialogEx::OnDropFiles(hDropInfo);	
 
 	TCHAR szFilePath[MAX_STR] = L"";
@@ -246,26 +249,7 @@ void CDlgTab3::OnDropFiles(HDROP hDropInfo)
 	}
 
 	::DragFinish(hDropInfo);
-}
-
-void CDlgTab3::OnBnClickedInDexCheckBox()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	
-	if (m_Check.GetCheck() == BST_CHECKED)
-	{
-		pTerrainIndex->Set_IndexTrue();
-		pTerrainIndex->Index_Render();
-		Invalidate(FALSE);
-	}
-
-	// 체크 박스가 선택되어 있지 않은 상태라면
-	else if (m_Check.GetCheck() == BST_UNCHECKED)
-	{
-		pTerrainIndex->Set_IndexFalse();
-		pTerrainIndex->Index_Render();
-		Invalidate(FALSE);
-	}
+	*/
 }
 
 
@@ -317,11 +301,11 @@ void CDlgTab3::OnSaveData()
 
 void CDlgTab3::OnBnClickedRadio2()
 {
-	//ShowForm(1);
+	ShowForm(1);
 }
 
 void CDlgTab3::OnBnClickedRadio1()
 {
-	//ShowForm(0);
+	ShowForm(0);
 }
 

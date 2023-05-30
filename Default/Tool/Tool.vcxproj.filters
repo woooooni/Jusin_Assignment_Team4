@@ -97,6 +97,12 @@
     <Filter Include="06. FormView\04. FileDirectoryView">
       <UniqueIdentifier>{d6c9df46-7a62-406b-85a0-f69b38ac5bed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form">
+      <UniqueIdentifier>{f9fdcb38-42e2-44fc-ba3f-b0f11939b7c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Etc\01. Map">
+      <UniqueIdentifier>{22d8c039-a818-4808-aef5-8a057bf8f723}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -198,6 +204,27 @@
     <ClInclude Include="ToolMgr.h">
       <Filter>99. Manager\ToolObj</Filter>
     </ClInclude>
+    <ClInclude Include="FileInfo.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderMgr_JWA.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMgr.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MapToolMap.h">
+      <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="MapToolTile.h">
+      <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="MyMap.h">
+      <Filter>05. Etc\01. Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -292,6 +319,27 @@
     </ClCompile>
     <ClCompile Include="ToolMgr.cpp">
       <Filter>99. Manager\ToolObj</Filter>
+    </ClCompile>
+    <ClCompile Include="FileInfo.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderMgr_JWA.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMgr.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolMap.cpp">
+      <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolTile.cpp">
+      <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="MyMap.cpp">
+      <Filter>05. Etc\01. Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

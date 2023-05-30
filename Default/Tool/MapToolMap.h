@@ -1,4 +1,6 @@
 #pragma once
+#include "afxwin.h"
+#include "afxcmn.h"
 
 
 
@@ -27,11 +29,25 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 public:
+	afx_msg void OnSelectMap();
+	afx_msg void OnListBox();
+
+public:
 	virtual void OnInitialUpdate();
 	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName,
 		DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, 
 	CCreateContext* pContext = NULL);
 	DECLARE_MESSAGE_MAP()
+
+public:
+	int				m_iDrawID = 0;
+	CComboBox		m_MapCombo;
+	CListBox		m_MapListBox;
+	CSliderCtrl		m_MapSacleSlider;
+	CStatic			m_MapPicControl;
+
+	map<CString, CImage*>			m_mapPngImg;
+	map<CImage*, CImage*>			m_mapPreview;
 };
 
 

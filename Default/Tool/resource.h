@@ -18,6 +18,7 @@
 #define IDD_DIALOG_TAB4                 321
 #define IDB_PNG1                        323
 #define IDD_MAPTOOL_MAP                 324
+#define IDD_MAPTOOL_TILE                328
 #define IDC_BUTTON1                     10000
 #define IDC_EDIT1                       10001
 #define IDC_BUTTON7                     10002
@@ -75,16 +76,20 @@
 #define IDC_STATIC_ANIMSPEED_KJM        10053
 #define IDC_STATIC_SPEEDCHECK_KJM       10054
 #define IDC_BUTTON_ALL_KJM              10055
-#define IDC_STATIC_JWA                  10057
-#define IDC_PICTURE                     10058
-#define IDC_PICTURE_JWA                 10059
-#define IDC_PICTURE_MINI                10060
-#define IDC_PICTURE_MINI_JWA            10061
-#define IDC_RADIO1_JWA                  10062
-#define IDC_RADIO2_JWA                  10063
-#define IDC_LIST1_JWA                   10064
-#define IDC_CHECK1_JWA                  10065
-#define IDC_BUTTON1_JWA                 10066
+#define IDC_COMBO1_JWA                  10056
+#define IDC_SLIDER_FORMAP_JWA           10057
+#define IDC_PICTURE_FORMAP_JWA          10058
+#define IDC_MAPLIST_JWA                 10059
+#define IDC_STATIC_JWA                  10060
+#define IDC_PICTURE                     10061
+#define IDC_PICTURE_JWA                 10062
+#define IDC_PICTURE_MINI                10063
+#define IDC_PICTURE_MINI_JWA            10064
+#define IDC_RADIO1_JWA                  10065
+#define IDC_RADIO2_JWA                  10066
+#define IDC_LIST1_JWA                   10067
+#define IDC_CHECK1_JWA                  10068
+#define IDC_BUTTON1_JWA                 10069
 
 // Next default values for new objects
 // 
@@ -93,6 +98,6 @@
 #define _APS_NEXT_RESOURCE_VALUE        329
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_SYMED_VALUE           317
-#define _APS_NEXT_CONTROL_VALUE         10055
+#define _APS_NEXT_CONTROL_VALUE         10070
 #endif
 #endif
