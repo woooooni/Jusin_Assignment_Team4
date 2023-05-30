@@ -85,8 +85,17 @@
     <Filter Include="99. Manager\ToolObj">
       <UniqueIdentifier>{eef3f3e3-3c39-48dc-9b68-e360eea6ee0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FileInfo_KJM">
-      <UniqueIdentifier>{28eb7c34-cba0-4442-b3c0-9b42f39e6e57}</UniqueIdentifier>
+    <Filter Include="05. Etc\01. Obj">
+      <UniqueIdentifier>{b8aa815e-90a7-456d-b055-7858c833f8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Etc\01. Obj\00. Player">
+      <UniqueIdentifier>{2325fe9b-2d6a-41bc-a9b1-53d2aac057f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Etc\01. Obj\01. Monster">
+      <UniqueIdentifier>{7e9438a0-9baf-4e88-add6-41946f353b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. FormView\04. FileDirectoryView">
+      <UniqueIdentifier>{d6c9df46-7a62-406b-85a0-f69b38ac5bed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -159,20 +168,35 @@
     <ClInclude Include="Tool.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ToolObjMgr.h">
-      <Filter>99. Manager\ToolObj</Filter>
+    <ClInclude Include="FileInfo.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="FileInfo_KJM.h">
-      <Filter>FileInfo_KJM</Filter>
+    <ClInclude Include="MapToolMap.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Monster.h">
+    <ClInclude Include="RenderMgr_JWA.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Obj.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>05. Etc\01. Obj</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>05. Etc\01. Obj\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>05. Etc\01. Obj\01. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FileDirectoryView.h">
+      <Filter>06. FormView\04. FileDirectoryView</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolMgr.h">
+      <Filter>99. Manager\ToolObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -239,20 +263,35 @@
     <ClCompile Include="DlgTab4.cpp">
       <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab4</Filter>
     </ClCompile>
-    <ClCompile Include="ToolObjMgr.cpp">
-      <Filter>99. Manager\ToolObj</Filter>
+    <ClCompile Include="FileInfo.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="FileInfo_KJM.cpp">
-      <Filter>FileInfo_KJM</Filter>
+    <ClCompile Include="MapToolMap.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Monster.cpp">
+    <ClCompile Include="RenderMgr_JWA.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMgr.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Obj.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>05. Etc\01. Obj</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>05. Etc\01. Obj\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>05. Etc\01. Obj\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FileDirectoryView.cpp">
+      <Filter>06. FormView\04. FileDirectoryView</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolMgr.cpp">
+      <Filter>99. Manager\ToolObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,9 +9,10 @@
 #include "Include.h"
 
 
+class CToolView;
 class CHierarchyFormView;
 class CInspectorFormView;
-class CToolView;
+class CFileDirectoryView;
 
 class CMainFrame : public CFrameWnd
 {
@@ -41,6 +42,12 @@ public:
 public:
 	void			Update_AllView();
 
+public:
+	CHierarchyFormView* GetHierarchyView()		{ return m_pHierarchy; }
+	CInspectorFormView* GetInspectorView()		{ return m_pInspector; }
+	CToolView*			GetToolView()			{ return m_pToolView; }
+	CFileDirectoryView*	GetFileDirectoryView()	{ return m_pFileDirectoryView; }
+
 protected:  // 컨트롤 모음이 포함된 멤버입니다.
 	CToolBar				m_wndToolBar;
 	CStatusBar				m_wndStatusBar;
@@ -53,6 +60,7 @@ private:
 	CHierarchyFormView*		m_pHierarchy;
 	CInspectorFormView*		m_pInspector;
 	CToolView*				m_pToolView;
+	CFileDirectoryView*		m_pFileDirectoryView;
 
 // 생성된 메시지 맵 함수
 protected:

@@ -1,40 +1,40 @@
 #include "stdafx.h"
-#include "ToolObjMgr.h"
+#include "ToolMgr.h"
 #include "Functor.h"
 #include "Obj.h"
 #include "MainFrm.h"
 
-CToolObjMgr::CToolObjMgr()
+CToolMgr::CToolMgr()
 	: m_pTargetObj(nullptr)
 	, m_pMainFrm(nullptr)
 {
 }
 
 
-CToolObjMgr::~CToolObjMgr()
+CToolMgr::~CToolMgr()
 {
 	for (UINT i = 0; i < m_vecObj.size(); ++i)
 		Safe_Delete<CObj*>(m_vecObj[i]);
 
 }
 
-void CToolObjMgr::SwapObj(CObj * _pSrc, CObj * _pDest)
+void CToolMgr::SwapObj(CObj * _pSrc, CObj * _pDest)
 {
 
 }
 
-void CToolObjMgr::SaveObjData()
+void CToolMgr::SaveObjData()
 {
 	// TODO :: SAVE.
 
 }
 
-void CToolObjMgr::LoadObjData()
+void CToolMgr::LoadObjData()
 {
 
 }
 
-void CToolObjMgr::SetTargetObj(int _iIdx)
+void CToolMgr::SetTargetObj(int _iIdx)
 {
 	if (m_vecObj.size() < _iIdx)
 	{
@@ -44,7 +44,7 @@ void CToolObjMgr::SetTargetObj(int _iIdx)
 	m_pTargetObj = m_vecObj[_iIdx];
 }
 
-void CToolObjMgr::DeleteObj(int _iIdx)
+void CToolMgr::DeleteObj(int _iIdx)
 {
 	if (m_vecObj.size() < _iIdx)
 	{
@@ -65,7 +65,7 @@ void CToolObjMgr::DeleteObj(int _iIdx)
 	}
 }
 
-void CToolObjMgr::UpdateAllView()
+void CToolMgr::UpdateAllView()
 {
 	m_pMainFrm->Update_AllView();
 }

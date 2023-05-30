@@ -200,7 +200,7 @@
     <ClInclude Include="DlgTab2.h" />
     <ClInclude Include="DlgTab3.h" />
     <ClInclude Include="DlgTab4.h" />
-    <ClInclude Include="FileInfo_KJM.h" />
+    <ClInclude Include="FileDirectoryView.h" />
     <ClInclude Include="FileInfo.h" />
     <ClInclude Include="HierarchyFormView.h" />
     <ClInclude Include="InspectorFormView.h" />
@@ -225,7 +225,7 @@
     <ClInclude Include="TileMgr.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="ToolDoc.h" />
-    <ClInclude Include="ToolObjMgr.h" />
+    <ClInclude Include="ToolMgr.h" />
     <ClInclude Include="ToolView.h" />
     <ClInclude Include="UnitTool.h" />
   </ItemGroup>
@@ -235,7 +235,7 @@
     <ClCompile Include="DlgTab2.cpp" />
     <ClCompile Include="DlgTab3.cpp" />
     <ClCompile Include="DlgTab4.cpp" />
-    <ClCompile Include="FileInfo_KJM.cpp" />
+    <ClCompile Include="FileDirectoryView.cpp" />
     <ClCompile Include="FileInfo.cpp" />
     <ClCompile Include="HierarchyFormView.cpp" />
     <ClCompile Include="InspectorFormView.cpp" />
@@ -263,7 +263,7 @@
     <ClCompile Include="TileMgr.cpp" />
     <ClCompile Include="Tool.cpp" />
     <ClCompile Include="ToolDoc.cpp" />
-    <ClCompile Include="ToolObjMgr.cpp" />
+    <ClCompile Include="ToolMgr.cpp" />
     <ClCompile Include="ToolView.cpp" />
     <ClCompile Include="UnitTool.cpp" />
   </ItemGroup>

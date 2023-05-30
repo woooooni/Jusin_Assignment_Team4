@@ -2,9 +2,9 @@
 
 class CObj;
 class CMainFrame;
-class CToolObjMgr
+class CToolMgr
 {
-	SINGLETON(CToolObjMgr);
+	SINGLETON(CToolMgr);
 
 public:
 	
@@ -22,8 +22,10 @@ public:
 	vector<CObj*>&		GetObjVec()					{ return m_vecObj; }
 
 public:
-	void SetMainFrm(CMainFrame* _pMainFrm) { m_pMainFrm = _pMainFrm; }
+	void			SetMainFrm(CMainFrame* _pMainFrm)	{ m_pMainFrm = _pMainFrm; }
+	CMainFrame*		GetMainFrm()						{ return m_pMainFrm; }
 	void UpdateAllView();
+
 private:
 	vector<CObj*>		m_vecObj;
 	CObj*				m_pTargetObj;
