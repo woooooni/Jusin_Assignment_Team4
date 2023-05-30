@@ -90,6 +90,13 @@
 #define IDC_LIST1_JWA                   10067
 #define IDC_CHECK1_JWA                  10068
 #define IDC_BUTTON1_JWA                 10069
+#define IDC_STATIC_ANIM_OBJKEY_KJM      10071
+#define IDC_STATIC_STATEKEY_KJM         10072
+#define IDC_STATIC_ANIMCOUNT_KJM        10073
+#define IDC_STATIC_OBJKEY_VALUE_KJM     10074
+#define IDC_STATIC_STATEKEY_VALUE_KJM   10075
+#define IDC_STATIC_ANIMCOUNT_VALUE_KJM  10076
+#define IDC_BUTTON_SAVE_ANIMINFO_KJM    10077
 
 // Next default values for new objects
 // 
@@ -97,7 +104,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        329
 #define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_CONTROL_VALUE         10078
 #define _APS_NEXT_SYMED_VALUE           317
-#define _APS_NEXT_CONTROL_VALUE         10070
 #endif
 #endif

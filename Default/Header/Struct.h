@@ -10,12 +10,7 @@ typedef struct tagInfo
 	D3DXMATRIX		matWorld;
 }INFO;
 
-typedef	struct tagFrame
-{
-	float		fFrame; // 프레임을 세기 위한 변수
-	float		fMax;	// 최대 이미지의 프레임 수
 
-}FRAME;
 
 typedef struct tagTexture
 {
@@ -59,6 +54,18 @@ typedef struct tagTexturePath
 	int			iCount = 0;
 
 }IMGPATH;
+
+typedef	struct tagFrame
+{
+	float		fFrame; // 프레임을 세기 위한 변수
+	float		fMax;	// 최대 이미지의 프레임 수
+
+	IMGPATH		PathInfo; // 텍스처의 정보 값 ( 오브젝트 키값, 스테이트 키값, 경로 값, 최대 프레임수)
+
+
+}FRAME;
+
+
 
 typedef struct tagObjPos_JWA
 {

@@ -45,6 +45,12 @@ protected:
 	afx_msg void OnBnClickedButton_Init_PictureList();	// 이미지리스트 초기화 버튼
 	afx_msg void OnBnClickedButton_Init_AnimList_KJM();  // 애니메이션 리스트 초기화 버튼
 	
+	afx_msg void OnBnClickedButtonAllKjm();				//모두 추가하기 버튼
+	afx_msg void OnBnClickedButtonAnimspeedOk();		// 애니메이션 스피드 확인 버튼 
+
+
+
+
 
 	DECLARE_MESSAGE_MAP()
 
@@ -58,6 +64,9 @@ public:
 	int							m_nCurrentIndex;	// 현재 인덱스 번호 
 	int							m_AnimSpeed;		// 애니메이션 재생 속도
 
+	int							m_CurrentSpeed;		//  현재 스피드 값 저장
+
+
 
 	CListBox m_PictureListBox;  //  리소스 리스트 박스에 둘 애들
 	CStatic m_Picture_Resource;		// 리소스 이미지 띄울 애들 
@@ -67,12 +76,13 @@ public:
 	CListBox m_AnimListBox;  // 애니메이션 리스트 박스에 둘 애들 
 	CStatic m_AnimPicture;    // 애니메이션 이미지 띄울 애들
 	CRect m_AnimPicture_Rect;		// 애니메이션을 출력할 렉트 크기  
-	
 
 
 
-	
-	afx_msg void OnBnClickedButtonAnimspeedOk();
-	int m_CurrentSpeed;
-	afx_msg void OnBnClickedButtonAllKjm();
+	CString			m_ObjKey;			// 오브젝트 키값 저장
+	CString			m_StateKey;			// 스테이트 키값 저장
+	int				 m_AnimCount;		// 애니메이션 최대 프레임 값
+
+
+
 };
