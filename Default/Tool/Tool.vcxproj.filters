@@ -85,9 +85,6 @@
     <Filter Include="99. Manager\ToolObj">
       <UniqueIdentifier>{eef3f3e3-3c39-48dc-9b68-e360eea6ee0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FileInfo_KJM">
-      <UniqueIdentifier>{28eb7c34-cba0-4442-b3c0-9b42f39e6e57}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Etc\01. Obj">
       <UniqueIdentifier>{b8aa815e-90a7-456d-b055-7858c833f8dd}</UniqueIdentifier>
     </Filter>
@@ -170,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="Tool.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="FileInfo_KJM.h">
-      <Filter>FileInfo_KJM</Filter>
     </ClInclude>
     <ClInclude Include="FileInfo.h">
       <Filter>헤더 파일</Filter>
@@ -268,9 +262,6 @@
     </ClCompile>
     <ClCompile Include="DlgTab4.cpp">
       <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab4</Filter>
-    </ClCompile>
-    <ClCompile Include="FileInfo_KJM.cpp">
-      <Filter>FileInfo_KJM</Filter>
     </ClCompile>
     <ClCompile Include="FileInfo.cpp">
       <Filter>소스 파일</Filter>

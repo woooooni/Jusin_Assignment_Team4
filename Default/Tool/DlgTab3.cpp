@@ -224,7 +224,7 @@ void CDlgTab3::OnDropFiles(HDROP hDropInfo)
 	{
 		DragQueryFile(hDropInfo, i, szFilePath, MAX_STR);
 
-		strRelative = CFileInfo::Convert_RelativePath(szFilePath);
+		strRelative = CFileInfo::ConvertRelativePath(szFilePath);
 		strFileName = PathFindFileName(strRelative);
 		lstrcpy(szFileName, strFileName.GetString());
 		PathRemoveExtension(szFileName);

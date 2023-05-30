@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Include.h"
+
 class CFileInfo
 {
 public:
@@ -7,6 +9,9 @@ public:
 	~CFileInfo();
 
 public:
-	static CString Convert_RelativePath(const CString strPath);
+	static CString		ConvertRelativePath(CString strFullPath);
+
+	static int			DirFileCnt(const wstring& wstrPath);
+	static void			DirInfoExtraction(const wstring& wstrPath, list<IMGPATH*>& rPathList);
 };
 

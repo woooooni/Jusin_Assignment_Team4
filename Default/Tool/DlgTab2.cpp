@@ -5,7 +5,7 @@
 #include "Tool.h"
 #include "DlgTab2.h"
 #include "afxdialogex.h"
-#include "FileInfo_KJM.h"  //  파일 명 다듬는 용 
+#include "FileInfo.h"  //  파일 명 다듬는 용 
 
 // CDlgTab2 대화 상자입니다.
 
@@ -80,7 +80,7 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 	{
 		DragQueryFile(hDropInfo, i, szFilePath, MAX_PATH);
 
-		CString strRelative = CFileInfo_KJM::ConvertRelativePath(szFilePath);
+		CString strRelative = CFileInfo::ConvertRelativePath(szFilePath);
 		CString	strFileName = PathFindFileName(strRelative);
 
 		lstrcpy(szFileName, strFileName.GetString());
