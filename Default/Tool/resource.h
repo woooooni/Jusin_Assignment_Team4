@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++에서 생성한 포함 파일입니다.
-// Tool.rc에서 사용되고 있습니다.
+// Microsoft Visual C++ generated include file.
+// Used by Tool.rc
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
@@ -70,6 +70,11 @@
 #define IDC_BUTTON_ANIMDELETE_KJM       10048
 #define IDC_BUTTON_INIT_ANIMLIST_KJM    10049
 #define IDC_FILE_DIRECTORY_TREE         10050
+#define IDC_BUTTON_ANIMSPEED_OK_KJM     10051
+#define IDC_EDIT_ANIMSPEED_KJM          10052
+#define IDC_STATIC_ANIMSPEED_KJM        10053
+#define IDC_STATIC_SPEEDCHECK_KJM       10054
+#define IDC_BUTTON_ALL_KJM              10055
 #define IDC_STATIC_JWA                  10057
 #define IDC_PICTURE                     10058
 #define IDC_PICTURE_JWA                 10059
@@ -87,7 +92,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        329
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         10052
 #define _APS_NEXT_SYMED_VALUE           317
+#define _APS_NEXT_CONTROL_VALUE         10055
 #endif
 #endif
