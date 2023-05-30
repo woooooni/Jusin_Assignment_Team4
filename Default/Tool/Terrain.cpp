@@ -34,7 +34,7 @@ HRESULT CTerrain::Initialize(void)
 			pTile->vPos = {fX, fY, 0.f};
 			pTile->vSize = { TILECX, TILECY, 0.f };
 			pTile->byOption = 0;
-			pTile->byDrawID = 3;
+			pTile->byDrawID = 1;
 			
 			m_vecTile.push_back(pTile);
 		}
