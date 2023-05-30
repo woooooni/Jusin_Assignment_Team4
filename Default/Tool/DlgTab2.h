@@ -22,6 +22,8 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
+	virtual BOOL OnInitDialog();
+
 
 	afx_msg void OnLbnSelchangePictureList();	//  리스트 박스 바꾸기
 	afx_msg void OnDropFiles(HDROP hDropInfo); // 드롭 하기
@@ -40,16 +42,21 @@ protected:
 
 
 	afx_msg void OnBnClickedButton_Delete_AinmList();	// 애니메이션리스트 지우기
-	afx_msg void OnBnClickedButton_Init_PictureList();	// 이미지리스트 초기화
-
+	afx_msg void OnBnClickedButton_Init_PictureList();	// 이미지리스트 초기화 버튼
+	afx_msg void OnBnClickedButton_Init_AnimList_KJM();  // 애니메이션 리스트 초기화 버튼
+	
 
 	DECLARE_MESSAGE_MAP()
 
 
 public:
 
-	map<CString, CImage*>		m_mapPngImg;  // 키값이랑 이미지
-	int							m_iDrawID = 0;
+	map<CString, CImage*>		m_mapPngImg;		// 키값이랑 이미지
+	int							m_iDrawID = 0;		// 드로우 아이디
+	
+	UINT_PTR					m_nTimerID;			// 타이머 아이디
+	int							m_nCurrentIndex;	// 현재 인덱스 번호 
+	int							m_AnimSpeed;		// 애니메이션 재생 속도
 
 
 	CListBox m_PictureListBox;  //  리소스 리스트 박스에 둘 애들
@@ -57,17 +64,15 @@ public:
 	CRect m_Picture_Rect;		// 이미지를 출력할 렉트 크기  
 
 
-
-
 	CListBox m_AnimListBox;  // 애니메이션 리스트 박스에 둘 애들 
 	CStatic m_AnimPicture;    // 애니메이션 이미지 띄울 애들
 	CRect m_AnimPicture_Rect;		// 애니메이션을 출력할 렉트 크기  
 	
-	int m_nCurrentIndex;
-
-	UINT_PTR m_nTimerID;
 
 
-	afx_msg void OnBnClickedButton_Init_AnimList_KJM();
-	virtual BOOL OnInitDialog();
+
+	
+	afx_msg void OnBnClickedButtonAnimspeedOk();
+	int m_CurrentSpeed;
+	afx_msg void OnBnClickedButtonAllKjm();
 };
