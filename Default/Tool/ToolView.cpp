@@ -18,6 +18,7 @@
 #include "RenderMgr_JWA.h"
 #include "InspectorFormView.h"
 #include "DlgTab3.h"
+#include "MapToolTile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,7 +40,6 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEHOVER()
 	ON_WM_MOUSELEAVE()
-	ON_BN_CLICKED(IDC_CHECK1_JWA, &CToolView::OnBnClickedIndexCheckBox)
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -131,6 +131,12 @@ void CToolView::OnInitialUpdate()
 	if (FAILED(m_pTerrain->Initialize()))
 	{
 		AfxMessageBox(L"Terrain Init Failed");
+		return;
+	}
+
+	if (FAILED(m_pMap->Initialize()))
+	{
+		AfxMessageBox(L"Map Texture Init Failed");
 		return;
 	}
 
@@ -227,11 +233,19 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
 	CInspectorFormView*		pInspectorForm = dynamic_cast<CInspectorFormView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
 	CDlgTab3*		pMapTool = pInspectorForm->dlg3;
+	CMapToolTile*	pTileTool = pMapTool->m_pTileForm;
 
-	m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
-		float(point.y + GetScrollPos(1)), 0.f }, pMapTool->m_iDrawID);
+	//CStatic*		pMiniView;
+	//pMiniView = (CStatic*)GetDlgItem(IDC_PICTURE_MINI_JWA);
+
+	if (m_bIsSelectTile)
+	{
+		m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
+			float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
+	}
 
 	Invalidate(FALSE);
+	//pMiniView->Invalidate(FALSE);
 	pMapTool->Invalidate(FALSE);
 
 	// AfxGetMainWnd : 현재 쓰레드로부터 WND를 반환하는 함수
@@ -244,16 +258,21 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	
-	if (GetAsyncKeyState(VK_LBUTTON))
+	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 	{
 		CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
 		CInspectorFormView*		pInspectorForm = dynamic_cast<CInspectorFormView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
 		CDlgTab3*		pMapTool = pInspectorForm->dlg3;
+		CMapToolTile*	pTileTool = pMapTool->m_pTileForm;
+
+		//CStatic*		pMiniView;
+		//pMiniView = (CStatic*)GetDlgItem(IDC_PICTURE_MINI_JWA);
 
 		m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
-			float(point.y + GetScrollPos(1)), 0.f }, pMapTool->m_iDrawID);
+			float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
 
 		Invalidate(FALSE);
+		//pMiniView->Invalidate(FALSE);
 		pMapTool->Invalidate(FALSE);
 	}
 	/*
@@ -299,32 +318,4 @@ void CToolView::OnMouseLeave()
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CScrollView::OnMouseLeave();
-}
-
-
-void CToolView::OnBnClickedIndexCheckBox()
-{
-	/*
-	if (m_pTileTool->m_Check.GetCheck() == BST_CHECKED)
-	{
-		m_pTerrain->Set_IndexTrue();
-		m_pTerrain->Index_Render();
-		Invalidate(FALSE);
-	}
-
-	// 체크 박스가 선택되어 있지 않은 상태라면
-	else if (m_pTileTool->m_Check.GetCheck() == BST_UNCHECKED)
-	{
-		m_pTerrain->Set_IndexFalse();
-		m_pTerrain->Index_Render();
-		Invalidate(FALSE);
-	}
-	*/
-	//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
-	//CToolView*		pMainView = dynamic_cast<CToolView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
-
-	//m_pTerrain->Index_Render();
-
-	//pMainView->Invalidate(FALSE);
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

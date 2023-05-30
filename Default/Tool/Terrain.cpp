@@ -21,7 +21,7 @@ HRESULT CTerrain::Initialize(void)
 		AfxMessageBox(L"TileTexture Create Failed");
 		return E_FAIL;
 	}
-
+	
 	for (int i = 0; i < TILEY; ++i)
 	{
 		for (int j = 0; j < TILEX; ++j)
@@ -39,7 +39,7 @@ HRESULT CTerrain::Initialize(void)
 			m_vecTile.push_back(pTile);
 		}
 	}
-
+	
 	return S_OK;
 }
 
@@ -91,23 +91,22 @@ void CTerrain::Render(void)
 			D3DCOLOR_ARGB(255, 255, 255, 255)); // 출력할 이미지와 섞을 색상 값, 0xffffffff를 넘겨주면 원본 색상 유지
 		
 
+		if (g_bIndex)
+		{
+			swprintf_s(szBuf, L"%d", iIndex);
 
-		swprintf_s(szBuf, L"%d", iIndex);
+			CDevice::Get_Instance()->Get_Font()->DrawTextW(CDevice::Get_Instance()->Get_Sprite(),
+				szBuf,
+				lstrlen(szBuf),
+				nullptr,
+				DT_CENTER,
+				D3DCOLOR_ARGB(255, 255, 255, 255));
 
-		CDevice::Get_Instance()->Get_Font()->DrawTextW(CDevice::Get_Instance()->Get_Sprite(),
-			szBuf,
-			lstrlen(szBuf),
-			nullptr,
-			DT_CENTER,
-			D3DCOLOR_ARGB(255, 255, 255, 255));
-
-		++iIndex;
-
+			++iIndex;
+		}
 
 	}
 
-	//if (m_bIndex)
-		//Index_Render();
 }
 
 void CTerrain::Index_Render(void)
@@ -129,7 +128,7 @@ void CTerrain::Index_Render(void)
 	float	fX = WINCX / float(rc.right - rc.left);
 	float	fY = WINCY / float(rc.bottom - rc.top);
 
-	if (m_bIndex)
+	if (g_bIndex)
 	{
 		for (auto iter : m_vecTile)
 		{

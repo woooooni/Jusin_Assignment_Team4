@@ -4,6 +4,7 @@
 
 #include "MiniView.h"
 #include "MapToolMap.h"
+#include "MapToolTile.h"
 #include "Terrain.h"
 
 // CDlgTab3 대화 상자입니다.
@@ -28,7 +29,6 @@ protected:
 
 public:
 	afx_msg void OnListBox();
-	afx_msg void OnBnClickedInDexCheckBox();
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 	afx_msg void OnSaveData();
 
@@ -40,16 +40,14 @@ public:
 
 public:
 	CButton			m_RadioTile;
-	CButton			m_Check;  // Show Index 체크 박스
 
-	CListBox		m_ListBox;
-	CStatic			m_TilePicControl;
 	CStatic			m_MiniPicControl;
 	int				m_iDrawID = 0;
 	map<CString, CImage*>			m_mapPngImg;
 
 	CMiniView*		m_pMini;
 	CMapToolMap*	m_pMapForm;
+	CMapToolTile*	m_pTileForm;
 
 	CTerrain*		pTerrainIndex;
 };

@@ -34,6 +34,12 @@ typedef struct tagTile
 	BYTE		byDrawID;
 }TILE;
 
+typedef struct tagMap
+{
+	D3DXVECTOR3 vPos;
+	D3DXVECTOR3 vSize;
+}MAP;
+
 typedef	struct tagUnitData
 {
 	CString	strName;

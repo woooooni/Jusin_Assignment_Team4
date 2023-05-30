@@ -17,6 +17,7 @@
 #define IDD_DIALOG_TAB4                 321
 #define IDB_PNG1                        323
 #define IDD_MAPTOOL_MAP                 324
+#define IDD_MAPTOOL_TILE                328
 #define IDC_BUTTON1                     10000
 #define IDC_EDIT1                       10001
 #define IDC_BUTTON7                     10002
@@ -68,6 +69,10 @@
 #define IDC_BUTTON_INIT_PICTURELIST_KJM 10047
 #define IDC_BUTTON_ANIMDELETE_KJM       10048
 #define IDC_BUTTON_INIT_ANIMLIST_KJM    10049
+#define IDC_COMBO1_JWA                  10050
+#define IDC_SLIDER_FORMAP_JWA           10051
+#define IDC_PICTURE_FORMAP_JWA          10052
+#define IDC_MAPLIST_JWA                 10053
 #define IDC_STATIC_JWA                  10057
 #define IDC_PICTURE                     10058
 #define IDC_PICTURE_JWA                 10059
@@ -83,9 +88,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        328
+#define _APS_NEXT_RESOURCE_VALUE        330
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         10050
+#define _APS_NEXT_CONTROL_VALUE         10054
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
 #endif

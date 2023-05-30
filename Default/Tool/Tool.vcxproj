@@ -207,10 +207,12 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="MapToolMap.h" />
+    <ClInclude Include="MapToolTile.h" />
     <ClInclude Include="MiniView.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MultiTexture.h" />
     <ClInclude Include="MyForm.h" />
+    <ClInclude Include="MyMap.h" />
     <ClInclude Include="Obj.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RenderMgr_JWA.h" />
@@ -242,10 +244,12 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MapToolMap.cpp" />
+    <ClCompile Include="MapToolTile.cpp" />
     <ClCompile Include="MiniView.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MultiTexture.cpp" />
     <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="MyMap.cpp" />
     <ClCompile Include="Obj.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderMgr_JWA.cpp" />
