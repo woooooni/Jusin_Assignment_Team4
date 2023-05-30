@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Tool.h"
 #include "HierarchyFormView.h"
-#include "ToolObjMgr.h"
+#include "ToolMgr.h"
 #include "Obj.h"
 #include "Player.h"
 #include "Monster.h"
@@ -83,7 +83,7 @@ void CHierarchyFormView::UpdateHierarchyView()
 
 	m_HiararchyList.ResetContent();
 
-	vector<CObj*> vecObj = CToolObjMgr::GetInst()->GetObjVec();
+	vector<CObj*> vecObj = CToolMgr::GetInst()->GetObjVec();
 	
 	auto iter = vecObj.begin();
 
@@ -136,7 +136,7 @@ void CHierarchyFormView::OnBnClickedAddObjButton()
 		return;
 	}
 
-	CToolObjMgr::GetInst()->AddObj(pObj);
+	CToolMgr::GetInst()->AddObj(pObj);
 
 	if (m_HiararchyList.GetCurSel() < 0)
 		m_HiararchyList.SetCurSel(0);
@@ -168,10 +168,10 @@ void CHierarchyFormView::OnBnClickedDeleteObjButton()
 
 	m_iObjCount--;
 
-	CToolObjMgr::GetInst()->DeleteObj(iSelect);
+	CToolMgr::GetInst()->DeleteObj(iSelect);
 	m_HiararchyList.DeleteString(iSelect);
 
-	CToolObjMgr::GetInst()->UpdateAllView();
+	CToolMgr::GetInst()->UpdateAllView();
 
 	UpdateData(FALSE);
 }
@@ -219,6 +219,6 @@ void CHierarchyFormView::OnBnClickedSaveButton()
 void CHierarchyFormView::OnLbnSelchangeHierarchyList()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CToolObjMgr::GetInst()->SetTargetObj(m_HiararchyList.GetCurSel());
-	CToolObjMgr::GetInst()->UpdateAllView();
+	CToolMgr::GetInst()->SetTargetObj(m_HiararchyList.GetCurSel());
+	CToolMgr::GetInst()->UpdateAllView();
 }

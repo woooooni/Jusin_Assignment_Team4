@@ -266,7 +266,6 @@ void CDlgTab3::OnBnClickedInDexCheckBox()
 		pTerrainIndex->Index_Render();
 		Invalidate(FALSE);
 	}
-	
 }
 
 
