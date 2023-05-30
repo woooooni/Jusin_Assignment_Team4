@@ -60,6 +60,7 @@
 #include <string>
 #include <map>
 #include <algorithm>
+#include <stdlib.h>
 
 #include "Define.h"
 

@@ -48,6 +48,7 @@ CToolView::CToolView() : m_pTerrain(nullptr)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 	CRenderMgr_JWA::Get_Instance()->Set_MapObjInfo(&m_pMapObjInfo);
+	
 }
 
 CToolView::~CToolView()
@@ -155,12 +156,10 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 void CToolView::OnDestroy()
 {
 	CScrollView::OnDestroy();
-
 	Safe_Delete(m_pTerrain);
 
 	CTextureMgr::Get_Instance()->Destroy_Instance();
 	CDevice::Get_Instance()->Destroy_Instance();
-
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
 #pragma region 안봐

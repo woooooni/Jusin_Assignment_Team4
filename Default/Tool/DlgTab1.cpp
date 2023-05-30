@@ -93,42 +93,80 @@ void CDlgTab1::OnBnClickedObjNamechangeBtn()
 
 void CDlgTab1::OnEnChangeEditTextPositionx()
 {
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
+	if (nullptr == pObj)
+		return;
+
+
+	CString str;
+	m_EditObjPosX.GetWindowTextW(str);
+
+	D3DXVECTOR3 vPos = pObj->Get_Info().vPos;
+	vPos.x = _tstof(str);
+
+	pObj->Set_Pos(vPos);
+
+	UpdateData(FALSE);
 }
 
 
 void CDlgTab1::OnEnChangeEditTextPositionY()
 {
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
+	UpdateData(TRUE);
 
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
+	if (nullptr == pObj)
+		return;
+
+
+	CString str;
+	m_EditObjPosY.GetWindowTextW(str);
+
+	D3DXVECTOR3 vPos = pObj->Get_Info().vPos;
+	vPos.y = _tstof(str);
+
+	pObj->Set_Pos(vPos);
+
+	UpdateData(FALSE);
+}
+
+void CDlgTab1::OnEnChangeEditTextScaleX()
+{
+	UpdateData(TRUE);
+	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
+	if (nullptr == pObj)
+		return;
+
+	CString str;
+	m_EditObjScaleX.GetWindowTextW(str);
+
+	D3DXVECTOR3 vSize = pObj->Get_Info().vSize;
+	vSize.x = _tstof(str);
+
+	pObj->Set_Size(vSize);
+
+	UpdateData(FALSE);
 }
 
 
 void CDlgTab1::OnEnChangeEditTextScaleY()
 {
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
+	UpdateData(TRUE);
+	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
+	if (nullptr == pObj)
+		return;
 
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString str;
+	m_EditObjScaleY.GetWindowTextW(str);
+
+	D3DXVECTOR3 vSize = pObj->Get_Info().vSize;
+	vSize.y = _tstof(str);
+
+	pObj->Set_Size(vSize);
+
+	UpdateData(FALSE);
 }
 
 
-void CDlgTab1::OnEnChangeEditTextScaleX()
-{
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
 
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
