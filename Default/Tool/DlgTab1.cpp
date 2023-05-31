@@ -94,17 +94,16 @@ void CDlgTab1::OnBnClickedObjNamechangeBtn()
 void CDlgTab1::OnEnChangeEditTextPositionx()
 {
 	UpdateData(TRUE);
+
 	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
 	if (nullptr == pObj)
 		return;
-
 
 	CString str;
 	m_EditObjPosX.GetWindowTextW(str);
 
 	D3DXVECTOR3 vPos = pObj->Get_Info().vPos;
-	vPos.x = _tstof(str);
-
+	vPos.x = _tstof(str); 
 	pObj->Set_Pos(vPos);
 
 	UpdateData(FALSE);
@@ -118,7 +117,6 @@ void CDlgTab1::OnEnChangeEditTextPositionY()
 	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
 	if (nullptr == pObj)
 		return;
-
 
 	CString str;
 	m_EditObjPosY.GetWindowTextW(str);

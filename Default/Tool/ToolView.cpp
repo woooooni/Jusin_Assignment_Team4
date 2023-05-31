@@ -57,46 +57,9 @@ CToolView::~CToolView()
 void CToolView::OnInitialUpdate()
 {
 	g_hWnd = m_hWnd;
-
 	CScrollView::OnInitialUpdate();
 
-	// SetScrollSizes : 스크롤 바의 사이즈를 지정하는 함수
-	// MM_TEXT : 픽셀 단위로 조정하겠다는 옵션
-	// 스크롤 가로 사이즈, 스크롤 세로 사이즈
-
 	SetScrollSizes(MM_TEXT, CSize(TILEX * TILECX, TILEY * TILECY / 2));
-
-
-	//// AfxGetMainWnd : 현재의 메인 창의 주소를 반환하는 함수
-	//CMainFrame*		pMainFrm = (CMainFrame*)AfxGetMainWnd();
-
-	//RECT	rcWnd{};
-
-	//// GetWindowRect : 현재 창의 렉트 정보를 얻어오는 함수
-	//pMainFrm->GetWindowRect(&rcWnd);
-
-	//// SetRect : 매개 변수대로 렉트의 정보를 지정하는 함수
-	//SetRect(&rcWnd, 0, 0, rcWnd.right - rcWnd.left, rcWnd.bottom - rcWnd.top);
-
-	//RECT	rcMainView{};
-
-	//// GetClientRect : 현재 view창의 RECT 정보를 얻어오는 함수
-	//GetClientRect(&rcMainView);
-
-	//float		fRowFrm = float(rcWnd.right - rcMainView.right);
-	//float		fColFrm = float(rcWnd.bottom - rcMainView.bottom);
-
-	////SetWindowPos : 매개 변수대로 새롭게 윈도우 위치와 크기를 조정하는 함수
-	// // (배치할 윈도우의 Z순서에 대한 포인터, X좌표, Y좌표, 가로 크기, 세로 크기, 배치할 윈도우의 크기및 위치 지정 옵션)
-	//pMainFrm->SetWindowPos(nullptr,  // 순서 변경을 안하기 때문에 NULL
-	//						0, 
-	//						0, 
-	//						int(WINCX + fRowFrm),
-	//						int(WINCY + fColFrm), 
-	//						SWP_NOZORDER);	// 현재 순서를 유지하겠다는 옵션
-
-
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
 	if (FAILED(CDevice::Get_Instance()->Initialize()))
 	{
@@ -131,6 +94,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	CDevice::Get_Instance()->Render_Begin();
 
 	m_pTerrain->Render();
+	CToolMgr::GetInst()->RenderObj();
 
 	CDevice::Get_Instance()->Render_End();
 
@@ -208,17 +172,10 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	CScrollView::OnLButtonDown(nFlags, point);
 
-	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
-	CInspectorFormView*		pInspectorForm = dynamic_cast<CInspectorFormView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
-	CDlgTab3*		pMapTool = pInspectorForm->dlg3;
-	CMapToolTile*	pTileTool = pMapTool->m_pTileForm;
-
-	CMiniView* pMiniview = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView()->GetDlgTab3()->GetMiniView();
-
-	//CStatic*		pMiniView;
-	//pMiniView = (CStatic*)GetDlgItem(IDC_PICTURE_MINI_JWA);
-
-	//float fScale = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain()->Get_MapScale();
+	CInspectorFormView*	pInspectorForm		= CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
+	CDlgTab3*			pMapTool			= pInspectorForm->dlg3;
+	CMapToolTile*		pTileTool			= pMapTool->m_pTileForm;
+	CMiniView*			pMiniview			= pMapTool->GetMiniView();
 
 	if (m_bIsSelectTile)
 	{
@@ -228,11 +185,6 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	Invalidate(FALSE);
 	pMiniview->Invalidate(FALSE);
-	//pMapTool->Invalidate(FALSE);
-
-	// AfxGetMainWnd : 현재 쓰레드로부터 WND를 반환하는 함수
-	// GetParentFrame : 현재 VIEW를 둘러싸고 있는 상위 FrameWnd를 반환
-	// AfxGetApp : 메인 쓰레드를 갖고 있는 현재 메인 APP을 반환
 }
 
 
@@ -242,23 +194,19 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 	{
-		CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
-		CInspectorFormView*		pInspectorForm = dynamic_cast<CInspectorFormView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
-		CDlgTab3*		pMapTool = pInspectorForm->dlg3;
-		CMapToolTile*	pTileTool = pMapTool->m_pTileForm;
+		CInspectorFormView*	pInspectorForm = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
+		CDlgTab3*			pMapTool = pInspectorForm->dlg3;
+		CMapToolTile*		pTileTool = pMapTool->m_pTileForm;
+		CMiniView*			pMiniview = pMapTool->GetMiniView();
 
-		CMiniView* pMiniview = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView()->GetDlgTab3()->GetMiniView();
-
-		//CStatic*		pMiniView;
-		//pMiniView = (CStatic*)GetDlgItem(IDC_PICTURE_MINI_JWA);
 
 		m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
 			float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
 
 		Invalidate(FALSE);
 		pMiniview->Invalidate(FALSE);
-		//pMapTool->Invalidate(FALSE);
 	}
+
 	/*
 	if (!m_bTrackMouse)
 	{
@@ -282,18 +230,11 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 
 void CToolView::UpdateToolView()
 {
-
+	Invalidate();
 }
 
 void CToolView::OnMouseHover(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	//m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, 0);
-	//Invalidate(FALSE);
-
-	//CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-
 	CScrollView::OnMouseHover(nFlags, point);
 }
 

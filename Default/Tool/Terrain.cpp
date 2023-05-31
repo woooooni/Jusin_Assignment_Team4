@@ -97,10 +97,8 @@ void CTerrain::Update(void)
 
 void CTerrain::Render(void)
 {
-	CDevice::Get_Instance()->Render_Begin();
 	Map_Render();
 	Tile_Render();
-	CDevice::Get_Instance()->Render_End();
 }
 
 void CTerrain::Tile_Render(void)
@@ -264,8 +262,8 @@ void CTerrain::Map_Render(void)
 		
 		CMainFrame*				pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
 		CInspectorFormView*		pInspectorForm = dynamic_cast<CInspectorFormView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
-		CDlgTab3*		pTool = pInspectorForm->dlg3;
-		CMapToolMap*	pMapTool = pTool->m_pMapForm;
+		CDlgTab3*				pTool = pInspectorForm->dlg3;
+		CMapToolMap*			pMapTool = pTool->m_pMapForm;
 		
 		if (pMapTool)
 		{
@@ -573,23 +571,24 @@ bool CTerrain::Picking(const D3DXVECTOR3 & vPos, const int & iIndex)
 
 bool CTerrain::Picking_Dot(const D3DXVECTOR3 & vPos, const int & iIndex)
 {
-	D3DXVECTOR3		vPoint[4]{
-
+	D3DXVECTOR3		vPoint[4]
+	{
 		{ m_vecTile[iIndex]->vPos.x * m_fMapScale,m_vecTile[iIndex]->vPos.y * m_fMapScale + (TILECY * m_fMapScale / 2.f), 0.f },
 		{ m_vecTile[iIndex]->vPos.x * m_fMapScale + (TILECX * m_fMapScale / 2.f),m_vecTile[iIndex]->vPos.y * m_fMapScale, 0.f },
-		{ m_vecTile[iIndex]->vPos.x * m_fMapScale,m_vecTile[iIndex]->vPos.y * m_fMapScale - (TILECY * m_fMapScale / 2.f), 0.f },
+		{ m_vecTile[iIndex]->vPos.x * m_fMapScale, m_vecTile[iIndex]->vPos.y * m_fMapScale - (TILECY * m_fMapScale / 2.f), 0.f },
 		{ m_vecTile[iIndex]->vPos.x * m_fMapScale - (TILECX * m_fMapScale / 2.f),m_vecTile[iIndex]->vPos.y * m_fMapScale , 0.f }
 	};
 
-	D3DXVECTOR3			vDir[4] {
-		
+	D3DXVECTOR3			vDir[4] 
+	{
 		vPoint[1] - vPoint[0],
 		vPoint[2] - vPoint[1], 
 		vPoint[3] - vPoint[2],
 		vPoint[0] - vPoint[3],
 	};
 
-	D3DXVECTOR3			vNormal[4]{
+	D3DXVECTOR3			vNormal[4]
+	{
 		{ -vDir[0].y, vDir[0].x, 0.f},
 		{ -vDir[1].y, vDir[1].x, 0.f },
 		{ -vDir[2].y, vDir[2].x, 0.f },

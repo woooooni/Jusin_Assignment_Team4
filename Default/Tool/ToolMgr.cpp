@@ -3,6 +3,7 @@
 #include "Functor.h"
 #include "Obj.h"
 #include "MainFrm.h"
+#include "Device.h"
 
 CToolMgr::CToolMgr()
 	: m_pTargetObj(nullptr)
@@ -68,4 +69,10 @@ void CToolMgr::DeleteObj(int _iIdx)
 void CToolMgr::UpdateAllView()
 {
 	m_pMainFrm->Update_AllView();
+}
+
+void CToolMgr::RenderObj()
+{
+	for (auto& iter : m_vecObj)
+		iter->Render();
 }
