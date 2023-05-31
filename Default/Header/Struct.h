@@ -14,7 +14,6 @@ typedef	struct tagFrame
 {
 	float		fFrame; // 프레임을 세기 위한 변수
 	float		fMax;	// 최대 이미지의 프레임 수
-
 }FRAME;
 
 typedef struct tagTexture
@@ -34,10 +33,18 @@ typedef struct tagTile
 	BYTE		byDrawID;
 }TILE;
 
-typedef struct tagMap
+typedef struct tagMapData
 {
+	wstring		wstrObjKey = L"";
+	wstring		wstrStateKey = L"";
+
 	D3DXVECTOR3 vPos;
 	D3DXVECTOR3 vSize;
+	D3DXVECTOR3	vCenter;
+
+	int			iCount = 0;
+	float		fScale;
+	float		fRadius;
 }MAP;
 
 typedef	struct tagUnitData
@@ -59,12 +66,6 @@ typedef struct tagTexturePath
 	int			iCount = 0;
 
 }IMGPATH;
-
-typedef struct tagObjPos_JWA
-{
-	D3DXVECTOR3 vPos;
-
-}OBJPOS_JWA;
 
 static D3DXVECTOR3		Get_Mouse()
 {

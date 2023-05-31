@@ -1,8 +1,7 @@
 #pragma once
 #include "afxwin.h"
 #include "afxcmn.h"
-
-
+#include "Terrain.h"
 
 // CMapToolMap 폼 뷰입니다.
 
@@ -30,7 +29,12 @@ protected:
 
 public:
 	afx_msg void OnSelectMap();
-	afx_msg void OnListBox();
+	afx_msg void OnListBox(); // 리스트 박스에서 맵 선택시 -> preview에 이미지 반영
+	afx_msg void OnBnClickedButtonApply();
+
+public:
+	float		Get_MapSacle(void) { return m_fMapScale; }
+	void		Set_Text_MapInfo(UINT _width, UINT _height);
 
 public:
 	virtual void OnInitialUpdate();
@@ -39,15 +43,23 @@ public:
 	CCreateContext* pContext = NULL);
 	DECLARE_MESSAGE_MAP()
 
-public:
+private:
+	MAP				m_tMapData;
+
 	int				m_iDrawID = 0;
 	CComboBox		m_MapCombo;
 	CListBox		m_MapListBox;
-	CSliderCtrl		m_MapSacleSlider;
-	CStatic			m_MapPicControl;
+	CSliderCtrl		m_MapScaleSlider; // 맵 배율 조절 slider
+	CStatic			m_MapPicControl; // 맵 preview pic control
+	CTerrain*		m_pMyMap;
 
 	map<CString, CImage*>			m_mapPngImg;
-	map<CImage*, CImage*>			m_mapPreview;
+	CButton			m_ButtonApply;
+
+private:
+	float		m_fMapScale;
+public:
+	afx_msg void OnMoveMapScaleSlider(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 

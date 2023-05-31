@@ -31,11 +31,15 @@ public:
 	afx_msg void OnListBox();
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 	afx_msg void OnSaveData();
+	afx_msg void OnLoadData();
 
 	afx_msg void OnBnClickedRadio2();
 	afx_msg void OnBnClickedRadio1();
 
 	virtual BOOL OnInitDialog();
+
+public:
+	CMiniView*	GetMiniView()	{ return m_pMini; }
 	void		 ShowForm(int iIndex);
 
 public:
@@ -48,6 +52,4 @@ public:
 	CMiniView*		m_pMini;
 	CMapToolMap*	m_pMapForm;
 	CMapToolTile*	m_pTileForm;
-
-	CTerrain*		pTerrainIndex;
 };

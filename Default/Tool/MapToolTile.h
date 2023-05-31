@@ -1,8 +1,6 @@
 #pragma once
 #include "afxwin.h"
 
-
-
 // CMapToolTile Æû ºäÀÔ´Ï´Ù.
 
 class CMapToolTile : public CFormView
