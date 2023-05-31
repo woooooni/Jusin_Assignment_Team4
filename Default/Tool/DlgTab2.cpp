@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "FileInfo.h"  //  파일 명 다듬는 용 
 
+
 // CDlgTab2 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CDlgTab2, CDialogEx)
@@ -14,7 +15,6 @@ IMPLEMENT_DYNAMIC(CDlgTab2, CDialogEx)
 CDlgTab2::CDlgTab2(CWnd* pParent /*=NULL*/) : CDialogEx(IDD_DIALOG_TAB2, pParent)
 , m_AnimSpeed(0)
 , m_CurrentSpeed(0)
-, m_ObjKey(_T(""))
 , m_StateKey(_T(""))
 , m_AnimCount()
 {
@@ -39,10 +39,11 @@ void CDlgTab2::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_ANIMSPEED_KJM, m_AnimSpeed);
 
 	DDX_Text(pDX, IDC_STATIC_SPEEDCHECK_KJM, m_CurrentSpeed);
-	DDX_Text(pDX, IDC_STATIC_OBJKEY_VALUE_KJM, m_ObjKey);
+
 	DDX_Text(pDX, IDC_STATIC_STATEKEY_VALUE_KJM, m_StateKey);
 	DDX_Text(pDX, IDC_STATIC_ANIMCOUNT_VALUE_KJM, m_AnimCount);
 
+	DDX_Control(pDX, IDC_COMBO_STATEKEY_KJM, StateKeyComboBox);
 }
 
 BEGIN_MESSAGE_MAP(CDlgTab2, CDialogEx)
@@ -70,9 +71,15 @@ BEGIN_MESSAGE_MAP(CDlgTab2, CDialogEx)
 
 	ON_BN_CLICKED(IDC_BUTTON_ANIMSPEED_OK_KJM, &CDlgTab2::OnBnClickedButtonAnimspeedOk)
 	ON_BN_CLICKED(IDC_BUTTON_ALL_KJM, &CDlgTab2::OnBnClickedButtonAllKjm)
-	
 
 
+	ON_CBN_SELCHANGE(IDC_COMBO_STATEKEY_KJM, &CDlgTab2::OnCbnSelchangeComboStatekeyKjm)
+
+
+
+
+
+	ON_BN_CLICKED(IDC_BUTTON_APPLY_ANIMINFO_KJM, &CDlgTab2::OnBnClickedButtonApplyAniminfoKjm)
 END_MESSAGE_MAP()
 
 
@@ -92,6 +99,12 @@ BOOL CDlgTab2::OnInitDialog()
 	ChangeWindowMessageFilterEx(m_PictureListBox.GetSafeHwnd(), WM_COPYDATA, MSGFLT_ALLOW, NULL);
 	ChangeWindowMessageFilterEx(m_PictureListBox.GetSafeHwnd(), 0x0049, MSGFLT_ALLOW, NULL);
 
+
+	StateKeyComboBox.InsertString(0, _T("IDLE"));
+	StateKeyComboBox.InsertString(0, _T("MOVE"));
+	StateKeyComboBox.InsertString(0, _T("ATTACK"));
+	StateKeyComboBox.InsertString(0, _T("DEAD"));
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -102,10 +115,9 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 {
 	
 	UpdateData(TRUE);
-	//CDialogEx::OnDropFiles(hDropInfo);
 
-	TCHAR		szFilePath[MAX_PATH] = L"";
-	TCHAR		szFileName[MIN_STR] = L"";
+	TCHAR		szFilePath[MAX_PATH] = L"";		// 파일 경로 
+	TCHAR		szFileName[MIN_STR] = L"";		// 파일 이름 
 
 	//DragQueryFile : 드롭된 파일을 정보를 얻어오는 함수
 	// 0xffffffff(-1)로 지정하면 드롭된 파일의 개수를 반환
@@ -118,9 +130,11 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 
 		CString strRelative = CFileInfo::ConvertRelativePath(szFilePath); // 파일을 절대 경로로 변경 
 		CString	strFileName = PathFindFileName(strRelative);  //파일 이름을 찾아줌 -> 경로 다 지움 
-
+	
 		lstrcpy(szFileName, strFileName.GetString()); // 문자 복사 
 		PathRemoveExtension(szFileName); //파일 명만 남김 ( 확장자명 삭제) 
+
+
 
 		strFileName = szFileName;
 
@@ -131,10 +145,14 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 			CImage*	pPngImg = new CImage;
 			pPngImg->Load(strRelative);
 
+
+			m_vecPicturePath.push_back(strRelative);  // 드롭 파일 할 때 경로 저장 
 			m_mapPngImg.insert({ strFileName, pPngImg });
 			m_PictureListBox.AddString(szFileName);
 		}
 	}
+
+
 
 	//Horizontal_Scroll();  //  가로 스크롤은 안 쓸거 같음
 
@@ -144,7 +162,7 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 }
 
 
-// Picture 리스트 내용 갱신 및 출력
+// Picture 리스트 내용 갱신 및 picture box 출력
 void CDlgTab2::OnLbnSelchangePictureList()   
 {
 		
@@ -169,73 +187,11 @@ void CDlgTab2::OnLbnSelchangePictureList()
 	CDC* dc; //픽쳐 컨트롤의 DC를 가져올  CDC 포인터
 	dc = m_Picture_Resource.GetDC(); //픽쳐 컨트롤의 DC를 얻는다.
 	(*iter->second).StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);//이미지를 픽쳐 컨트롤 크기로 조정
-	//m_Picture_Resource.SetBitmap(*(iter->second)); // 애니메이션에 쓸 이미지 출력하고 있음
+	
+	m_Picture_Resource.ReleaseDC(dc);
 
 
 
-	// 나의 뻘짓
-	//int i = 0;
-	//for (; i < strSelectName.GetLength(); ++i)
-	//{
-	//	// isdigit : 매개 변수로 전달받은 문자가 숫자형태의 글자인지 아니면 글자형태의 글자인지 판별하는 함수
-	//	// 숫자형태의 글자로 판별하면 0이 아닌 값을 반환
-
-	//	if (0 != isdigit(strSelectName[i]))
-	//		break;
-	//}
-
-	//// Delete(index, count) : 인덱스 위치로부터 카운트만큼 문자를 삭제하는 함수
-	//strSelectName.Delete(0, i);
-
-	////_tstoi : 문자를 정수형으로 변환하는 함수
-	//m_iDrawID = _tstoi(strSelectName);
-
-	//CImage* pImage = iter->second; //  이미지 포인터에 이미지 값을 저장
-
-	//CRect PictureControlRect; // Picture control 렉트 정보를 저장 ->렉트 크기
-	//
-	//m_Picture_Resource.GetWindowRect(&PictureControlRect);
-	//
-	//ScreenToClient(&PictureControlRect);
-
-	//CImage resizedImage; // 크기에 맞게 조정하기 위해 저장할 이미지
-	//
-	//resizedImage.Create(
-	//PictureControlRect.Width(),
-	//PictureControlRect.Height(),
-	//pImage->GetBPP()); // 이미지 정보 출력 
-
-	//CDC* pDC = CDC::FromHandle(resizedImage.GetDC());
-	//CDC* pSrcDC = CDC::FromHandle(pImage->GetDC());
-
-
-	//// 이미지 스트레칭
-	//pDC->SetStretchBltMode(HALFTONE);
-	//pDC->StretchBlt(0, 0,				// 이미지 출력 위치 
-	//	PictureControlRect.Width(),		// 출력할 이미지 너비 
-	//	PictureControlRect.Height(),	// 출력할 이미지 높이
-	//	pSrcDC,							// 이미지 핸들
-	//	0, 0,							// 가져올 이미지의 시작 지점
-	//	pImage->GetWidth(),				// 원본 이미지로 부터 잘라낼 너비
-	//	pImage->GetHeight(),			// 원본 이미지로 부터 잘라낼 높이 
-	//	SRCCOPY);						// 이미지 출력 방법 (복사)
-
-	//resizedImage.ReleaseDC();
-	//pImage->ReleaseDC();  // dc정보는 가져왔으면 다시 가져가야 한다 삭제 해야한다 안그럼 오류 난다 
-	//pImage->Destroy();
-	//pImage->Attach(resizedImage.Detach());
-	//
-	//// Picture Control에 이미지 그리기
-	//
-	//CDC* pPictureDC = m_Picture_Resource.GetDC();
-	//CRect pictureRect;
-
-	//m_Picture_Resource.GetClientRect(&pictureRect);
-	//
-	//pPictureDC->FillSolidRect(&pictureRect, RGB(0, 0, 0)); // Picture Control 배경을 흰색으로 채우기
-	//pImage->Draw(pPictureDC->m_hDC, pictureRect);
-	//m_Picture_Resource.ReleaseDC(pPictureDC);
-	//
 
 	UpdateData(FALSE);
 
@@ -342,60 +298,14 @@ void CDlgTab2::OnDeltaposSpinAnimPicture(NMHDR *pNMHDR, LRESULT *pResult)
 	CDC* dc; //픽쳐 컨트롤의 DC를 가져올  CDC 포인터
 	dc = m_Picture_Resource.GetDC(); //픽쳐 컨트롤의 DC를 얻는다.
 	(*iter->second).StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);//이미지를 픽쳐 컨트롤 크기로 조정
-																					  //m_Picture_Resource.SetBitmap(*(iter->second)); // 애니메이션에 쓸 이미지 출력하고 있음
-
-
-
-	 //CImage* pImage = iter->second; //  이미지 포인터에 이미지 값을 저장
-	//CRect PictureControlRect; // Picture control 렉트 정보를 저장 ->렉트 크기
-	
-	//m_Picture_Resource.GetWindowRect(&PictureControlRect);
-	//ScreenToClient(&PictureControlRect);
-
-	//CImage resizedImage; // 크기에 맞게 조정하기 위해 저장할 이미지
-	//resizedImage.Create(PictureControlRect.Width(),
-	//	PictureControlRect.Height(),
-	//	pImage->GetBPP()); // 이미지 정보 출력 
-
-
-	//CDC* pDC = CDC::FromHandle(resizedImage.GetDC());
-	//CDC* pSrcDC = CDC::FromHandle(pImage->GetDC());
-
-
-	//// 이미지 스트레칭
-	//pDC->SetStretchBltMode(HALFTONE);
-	//pDC->StretchBlt(0, 0,
-	//	PictureControlRect.Width(),
-	//	PictureControlRect.Height(),
-	//	pSrcDC, 0, 0, pImage->GetWidth(),
-	//	pImage->GetHeight(),
-	//	SRCCOPY);
-
-	//resizedImage.ReleaseDC();
-	//pImage->ReleaseDC();
-	//pImage->Destroy();
-	//pImage->Attach(resizedImage.Detach());
-
-
-	//// Picture Control에 이미지 그리기
-
-	//CDC* pPictureDC = m_Picture_Resource.GetDC();
-	//CRect pictureRect;
-
-	//m_Picture_Resource.GetClientRect(&pictureRect);
-
-	//pPictureDC->FillSolidRect(&pictureRect, RGB(0, 0, 0)); // Picture Control 배경을 흰색으로 채우기
-
-	//pImage->Draw(pPictureDC->m_hDC, pictureRect);
-
-	//m_Picture_Resource.ReleaseDC(pPictureDC);
-	
+																					 
 	*pResult = 0;
 }
 
 // 애니메이션 리스트로 추가 하기 버튼 
 void CDlgTab2::OnBnClickedButtonAdd()  
 {
+	UpdateData(TRUE);
 
 	CString		strFindName = L"";
 	int		iSelect = m_PictureListBox.GetCurSel();
@@ -408,13 +318,13 @@ void CDlgTab2::OnBnClickedButtonAdd()
 	if (iter == m_mapPngImg.end())
 		return;
 
-	CImage* pImage = iter->second;
 
 	CListBox* pSrcListBox = (CListBox*)GetDlgItem(IDC_PICTURELIST_KJM);
 	CListBox* pDestListBox = (CListBox*)GetDlgItem(IDC_ANIMLIST_KJM);
 
 	// 1. 원본 리스트 박스의 현재 선택된 항목 가져오기
 	int nCurSel = pSrcListBox->GetCurSel();
+
 	if (nCurSel == LB_ERR)
 		return; // 선택된 항목이 없으면 종료
 
@@ -427,9 +337,14 @@ void CDlgTab2::OnBnClickedButtonAdd()
 	// 3. 원본 리스트 박스에서 선택된 항목 제거
 	//pSrcListBox->DeleteString(nCurSel);
 
+
+	m_vecAnimPath.push_back(m_vecPicturePath[iSelect]);
+
+
+	UpdateData(FALSE);
 }
 
-// anim 리스트 내용 갱신 및 출력
+// anim 리스트 내용 갱신 및 anim box 출력
 void CDlgTab2::OnLbnSelchangeAnimlistKjm()
 {
 	UpdateData(TRUE);
@@ -448,17 +363,7 @@ void CDlgTab2::OnLbnSelchangeAnimlistKjm()
 	if (iter == m_mapPngImg.end())
 		return;
 
-
-	CFileFind Finder;  // 파일 찾기 
-
-
-
-
-
-
-
 	// 출력 
-
 	CRect rect;//픽쳐 컨트롤의 크기를 저장할 CRect 객체
 	m_AnimPicture.GetWindowRect(rect);//GetWindowRect를 사용해서 픽쳐 컨트롤의 크기를 받는다.
 	CDC* dc; //픽쳐 컨트롤의 DC를 가져올  CDC 포인터
@@ -466,10 +371,7 @@ void CDlgTab2::OnLbnSelchangeAnimlistKjm()
 	(*iter->second).StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);//이미지를 픽쳐 컨트롤 크기로 조정
 		
 
-
-
 	m_AnimCount = m_AnimListBox.GetCount();
-
 
 
 	UpdateData(FALSE);
@@ -505,77 +407,14 @@ void CDlgTab2::OnBnClickedButtonPlay()
 
 	m_nTimerID = SetTimer(1, (1000/m_AnimSpeed), nullptr); // 애니메이션 스피드로 조절 됨 // 시간 정보 
 	
-
-
 	CRect rect;//픽쳐 컨트롤의 크기를 저장할 CRect 객체
 	m_AnimPicture.GetWindowRect(rect);//GetWindowRect를 사용해서 픽쳐 컨트롤의 크기를 받는다.
 	CDC* dc; //픽쳐 컨트롤의 DC를 가져올  CDC 포인터
 	dc = m_AnimPicture.GetDC(); //픽쳐 컨트롤의 DC를 얻는다.
 	(*iter->second).StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);//이미지를 픽쳐 컨트롤 크기로 조정
-																					  //m_Picture_Resource.SetBitmap(*(iter->second)); // 애니메이션에 쓸 이미지 출력하고 있음
-
-
-
-	//나의 뻘짓
-	//CImage* pImage = iter->second;
-
-	//CRect AnimPictureRect; //  애니메이션 출력 할  렉트 크기 
-
-	//m_AnimPicture.GetWindowRect(&AnimPictureRect);
-
-	//ScreenToClient(&AnimPictureRect);
-
-	//CImage resizedImage; // 크기에 맞게 조정하기 위해 저장할 이미지
-
-	//resizedImage.Create(
-	//	AnimPictureRect.Width(),
-	//	AnimPictureRect.Height(),
-	//	pImage->GetBPP()); // 이미지 정보 출력 
-
-	//CDC* pDC = CDC::FromHandle(resizedImage.GetDC());
-	//CDC* pSrcDC = CDC::FromHandle(pImage->GetDC());
-
-
-	//// 이미지 스트레칭
-	//pDC->SetStretchBltMode(HALFTONE);
-	//pDC->StretchBlt(0, 0,				// 이미지 출력 위치 
-	//	AnimPictureRect.Width(),		// 출력할 이미지 너비 
-	//	AnimPictureRect.Height(),	// 출력할 이미지 높이
-	//	pSrcDC,							// 이미지 핸들
-	//	0, 0,							// 가져올 이미지의 시작 지점
-	//	pImage->GetWidth(),				// 원본 이미지로 부터 잘라낼 너비
-	//	pImage->GetHeight(),			// 원본 이미지로 부터 잘라낼 높이 
-	//	SRCCOPY);						// 이미지 출력 방법 (복사)
-
-	//resizedImage.ReleaseDC();
-	//pImage->ReleaseDC();  // dc정보는 가져왔으면 다시 가져가야 한다 삭제 해야한다 안그럼 오류 난다 
-	//pImage->Destroy();
-	//pImage->Attach(resizedImage.Detach());
-
-	//// Picture Control에 이미지 그리기
-
-	//CDC* pPictureDC = m_Picture_Resource.GetDC();
-	//CRect pictureRect;
-
-	//m_Picture_Resource.GetClientRect(&pictureRect);
-
-	//pPictureDC->FillSolidRect(&pictureRect, RGB(0, 0, 0)); // Picture Control 배경을 흰색으로 채우기
-	//pImage->Draw(pPictureDC->m_hDC, pictureRect);
-	//m_Picture_Resource.ReleaseDC(pPictureDC);
-
-
-
-	// 원래 하던대로 - 첫 출력 이미지 크기가 다름 수정 필요 
-	//CString strSelectName;
-	//m_AnimListBox.GetText(iSelect, strSelectName);
-
-	//auto iter = m_mapPngImg.find(strSelectName);
-	//
-	//if (iter == m_mapPngImg.end())
-	//	return;
-
-	//m_AnimPicture.SetBitmap(*(iter->second));
 	
+
+
 
 }
 
@@ -605,21 +444,8 @@ void CDlgTab2::OnTimer(UINT_PTR nIDEvent)
 	CDC* dc; //픽쳐 컨트롤의 DC를 가져올  CDC 포인터
 	dc = m_AnimPicture.GetDC(); //픽쳐 컨트롤의 DC를 얻는다.
 	(*iter->second).StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);//이미지를 픽쳐 컨트롤 크기로 조정
-																					  //m_Picture_Resource.SetBitmap(*(iter->second)); // 애니메이션에 쓸 이미지 출력하고 있음
-
-	// 나의 뻘짓 
-	/*CImage* pImage = iter->second;
-	CDC* pPictureDC = m_AnimPicture.GetDC();
 	
-	CRect pictureRect;
-	m_AnimPicture.GetClientRect(&pictureRect);
 
-	pPictureDC->FillSolidRect(&pictureRect, RGB(0, 0, 0));
-	pImage->Draw(pPictureDC->m_hDC, pictureRect);
-
-	m_AnimPicture.ReleaseDC(pPictureDC);
-
-	CDialogEx::OnTimer(nIDEvent);*/
 
 }
 	
@@ -673,6 +499,7 @@ void CDlgTab2::OnBnClickedButton_Init_PictureList()
 	m_PictureListBox.ResetContent();
 	m_Picture_Resource.SetBitmap(NULL);
 
+
 	UpdateData(FALSE);
 }
 
@@ -683,9 +510,12 @@ void CDlgTab2::OnBnClickedButton_Init_AnimList_KJM()
 	UpdateData(TRUE);
 
 	m_AnimListBox.ResetContent();
+	m_AnimPicture.SetBitmap(NULL);
+
+
 	KillTimer(m_nTimerID);
 	m_nTimerID = 0;
-	m_AnimPicture.SetBitmap(NULL);
+	
 
 	UpdateData(FALSE);	
 }
@@ -754,5 +584,35 @@ void CDlgTab2::OnBnClickedButtonAllKjm()
 
 }
 
+// statekey 선택 콤보 박스 
+void CDlgTab2::OnCbnSelchangeComboStatekeyKjm()
+{
+
+	UpdateData(TRUE);
 
 
+	int iSelect = StateKeyComboBox.GetCurSel();
+
+	if (LB_ERR == iSelect)
+		return;
+	
+	CString StateName;
+
+	StateKeyComboBox.GetLBText(iSelect, StateName);
+	StateKeyComboBox.SetWindowTextW(StateName);
+
+	m_StateKey = StateName;
+
+
+	UpdateData(FALSE);
+}
+
+
+// 애니메이션 적용 버튼
+void CDlgTab2::OnBnClickedButtonApplyAniminfoKjm()
+{
+
+
+
+
+}

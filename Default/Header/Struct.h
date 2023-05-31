@@ -60,12 +60,22 @@ typedef	struct tagFrame
 	float		fFrame; // 프레임을 세기 위한 변수
 	float		fMax;	// 최대 이미지의 프레임 수
 
-	IMGPATH		PathInfo; // 텍스처의 정보 값 ( 오브젝트 키값, 스테이트 키값, 경로 값, 최대 프레임수)
-
-
 }FRAME;
 
+typedef struct tagAnimInfo_KJM
+{
 
+	wstring		wstrStateKey = L"";  // statekey 값 
+	wstring		wstrPath = L""; // 경로 정보 
+
+	float		fFrame; // 시작 프레임
+	float		fMax;	// 최대 이미지의 프레임 수
+
+	int			iAnimSpeed;  //애니메이션 속도 
+
+
+}ANIMINFO_KJM;
+ 
 
 typedef struct tagObjPos_JWA
 {

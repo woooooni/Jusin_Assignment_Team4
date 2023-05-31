@@ -1,6 +1,7 @@
 #pragma once
 #include "afxwin.h"
 #include "afxcmn.h"
+#include "Struct.h"
 
 
 // CDlgTab2 대화 상자입니다.
@@ -48,6 +49,7 @@ protected:
 	afx_msg void OnBnClickedButtonAllKjm();				//모두 추가하기 버튼
 	afx_msg void OnBnClickedButtonAnimspeedOk();		// 애니메이션 스피드 확인 버튼 
 
+	afx_msg void OnCbnSelchangeComboStatekeyKjm(); // 콤보 박스 
 
 
 
@@ -57,7 +59,14 @@ protected:
 
 public:
 
-	map<CString, CImage*>		m_mapPngImg;		// 키값이랑 이미지
+
+	vector<CString>				m_vecPicturePath;	// picture listbox의 원소 별 경로 정보 저장
+	vector<CString>				m_vecAnimPath;		// Animation listbox의 원소 별 경로 정보  저장
+
+	vector<ANIMINFO_KJM>		m_vecAnimInfo;		// 애니메이션 제작에 쓸 정보 저장
+
+
+	map<CString, CImage*>		m_mapPngImg;		// 키값이랑 이미지 || 이미지 출력시 사용 
 	int							m_iDrawID = 0;		// 드로우 아이디
 	
 	UINT_PTR					m_nTimerID;			// 타이머 아이디
@@ -68,21 +77,23 @@ public:
 
 
 
-	CListBox m_PictureListBox;  //  리소스 리스트 박스에 둘 애들
-	CStatic m_Picture_Resource;		// 리소스 이미지 띄울 애들 
-	CRect m_Picture_Rect;		// 이미지를 출력할 렉트 크기  
+	CListBox					m_PictureListBox;  //  리소스 리스트 박스에 둘 애들
+	CStatic						m_Picture_Resource;		// 리소스 이미지 띄울 애들 
+	CRect						m_Picture_Rect;		// 이미지를 출력할 렉트 크기  
 
 
-	CListBox m_AnimListBox;  // 애니메이션 리스트 박스에 둘 애들 
-	CStatic m_AnimPicture;    // 애니메이션 이미지 띄울 애들
-	CRect m_AnimPicture_Rect;		// 애니메이션을 출력할 렉트 크기  
+	CListBox					m_AnimListBox;  // 애니메이션 리스트 박스에 둘 애들 
+	CStatic						m_AnimPicture;    // 애니메이션 이미지 띄울 애들
+	CRect						m_AnimPicture_Rect;		// 애니메이션을 출력할 렉트 크기  
+
+	CComboBox					StateKeyComboBox;  // statekey 리스트 보여줄 콤보 박스 
+
+	
+	CString						m_StateKey;			// 스테이트 키값 저장
+	int							m_AnimCount;		// 애니메이션 최대 프레임 값
 
 
 
-	CString			m_ObjKey;			// 오브젝트 키값 저장
-	CString			m_StateKey;			// 스테이트 키값 저장
-	int				 m_AnimCount;		// 애니메이션 최대 프레임 값
-
-
-
+	
+	afx_msg void OnBnClickedButtonApplyAniminfoKjm();
 };
