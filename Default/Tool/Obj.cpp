@@ -6,12 +6,13 @@ D3DXVECTOR3 CObj::m_vScroll{};
 
 CObj::CObj(OBJID _eID)
 	: m_eID(_eID)
+	, m_fAngle(0.f)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	D3DXMatrixIdentity(&m_tInfo.matWorld);
 
 	m_tInfo.vLook = { 1.f, 0.f, 0.f };
-	m_tInfo.vSize = { 50.f, 50.f, 0.f };
+	m_tInfo.vScale = { 1.f, 1.f, 0.f };
 	ZeroMemory(&m_tFrame, sizeof(FRAME));
 }
 

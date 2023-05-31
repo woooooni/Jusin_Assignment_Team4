@@ -54,6 +54,7 @@ public:
 	afx_msg void	OnMouseHover(UINT nFlags, CPoint point);
 	afx_msg void	OnMouseLeave();
 
+
 public:
 	void			UpdateToolView();
 	void			SetToolMode(EDIT_MODE _eState)
@@ -79,6 +80,8 @@ public:
 private:
 	EDIT_MODE		m_eEditMode;
 
+public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

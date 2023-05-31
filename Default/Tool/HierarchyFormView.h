@@ -42,7 +42,6 @@ public:
 
 	afx_msg void OnBnClickedAddObjButton();
 	afx_msg void OnBnClickedDeleteObjButton();
-
 	afx_msg void OnBnClickedSaveButton();
 
 public:

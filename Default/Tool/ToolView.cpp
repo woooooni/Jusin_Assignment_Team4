@@ -19,6 +19,7 @@
 #include "DlgTab3.h"
 #include "MapToolTile.h"
 #include "ToolMgr.h"
+#include "Obj.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -88,11 +89,13 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	
+
+	CObj::SetScroll({ float(GetScrollPos(0)), float(GetScrollPos(1)), 0 });
 	CDevice::Get_Instance()->Render_Begin();
 
 	m_pTerrain->Render();
 	CToolMgr::GetInst()->RenderObj();
+
 	CDevice::Get_Instance()->Render_End();
 }
 
@@ -186,7 +189,7 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 	else
 	{
-		// TODO :: OBJ Picking
+		CToolMgr::GetInst()->PickObj({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f });
 	}
 }
 
@@ -203,8 +206,7 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 			CMiniView*			pMiniview = pMapTool->GetMiniView();
 
 
-			m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
-				float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
+			m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
 
 			Invalidate(FALSE);
 			pMiniview->Invalidate(FALSE);
@@ -212,17 +214,24 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 		else
 		{
 			// TODO :: MOVE PICKING OBJ
+			bool bPicked = CToolMgr::GetInst()->PickObj({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f });
+
+			if (bPicked)
+			{
+				const D3DXVECTOR3& vMousePos = { float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f };
+				CToolMgr::GetInst()->GetTargetedObj()->Set_Pos(vMousePos);
+				CToolMgr::GetInst()->UpdateAllView();
+			}
 		}
 	}
 
 	CScrollView::OnMouseMove(nFlags, point);
-
 }
 
 
 void CToolView::UpdateToolView()
 {
-	Invalidate();
+	OnDraw(nullptr);
 }
 
 void CToolView::OnMouseHover(UINT nFlags, CPoint point)
@@ -235,4 +244,32 @@ void CToolView::OnMouseLeave()
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CScrollView::OnMouseLeave();
+}
+
+
+
+BOOL CToolView::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == 'R')
+		{
+			CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
+
+			if (pObj == nullptr)
+				return TRUE;
+
+			float fAngle = pObj->Get_Angle();
+			fAngle += 45.f;
+
+			if (fAngle >= 360.f)
+				fAngle = 0.f;
+			pObj->Set_Angle(fAngle);
+
+			CToolMgr::GetInst()->UpdateAllView();
+			return TRUE;
+		}
+	}
+	return CScrollView::PreTranslateMessage(pMsg);
 }

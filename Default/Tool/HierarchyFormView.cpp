@@ -8,6 +8,7 @@
 #include "Obj.h"
 #include "Player.h"
 #include "Monster.h"
+#include "ToolMgr.h"
 
 // CHierarchyFormView
 
@@ -78,19 +79,25 @@ void CHierarchyFormView::OnInitialUpdate()
 void CHierarchyFormView::UpdateHierarchyView()
 {
 	UpdateData(TRUE);
-
-	int iSelect = m_HiararchyList.GetCurSel();
-
+	m_HiararchyList.SetCurSel(-1);
 	m_HiararchyList.ResetContent();
 
-	vector<CObj*> vecObj = CToolMgr::GetInst()->GetObjVec();
+	const vector<CObj*>& vecObj = CToolMgr::GetInst()->GetObjVec();
 	
-	auto iter = vecObj.begin();
+	auto& iter = vecObj.begin();
 
+	int iIdx = 0;
 	for (; iter != vecObj.end(); ++iter)
+	{
 		m_HiararchyList.AddString((*iter)->Get_ObjName().c_str());
 
-	m_HiararchyList.SetCurSel(iSelect);
+		if (CToolMgr::GetInst()->GetTargetedObj() != nullptr && (*iter) == CToolMgr::GetInst()->GetTargetedObj())
+			m_HiararchyList.SetCurSel(iIdx);
+
+		++iIdx;
+	}
+		
+
 	UpdateData(FALSE);
 }
 
@@ -101,9 +108,6 @@ void CHierarchyFormView::OnBnClickedAddObjButton()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	UpdateData(TRUE);
-
-
-	
 	if (m_ComboObjType.GetCurSel() < 0)
 	{
 		AfxMessageBox(L"타입을 선택하세요.");
@@ -136,6 +140,7 @@ void CHierarchyFormView::OnBnClickedAddObjButton()
 		return;
 	}
 
+	pObj->Initialize();
 	CToolMgr::GetInst()->AddObj(pObj);
 
 	if (m_HiararchyList.GetCurSel() < 0)
@@ -144,6 +149,7 @@ void CHierarchyFormView::OnBnClickedAddObjButton()
 		m_HiararchyList.SetCurSel(m_HiararchyList.GetCurSel() + 1);
 
 	UpdateData(FALSE);
+	CToolMgr::GetInst()->UpdateAllView();
 }
 
 
@@ -174,6 +180,7 @@ void CHierarchyFormView::OnBnClickedDeleteObjButton()
 	CToolMgr::GetInst()->UpdateAllView();
 
 	UpdateData(FALSE);
+	CToolMgr::GetInst()->UpdateAllView();
 }
 
 
@@ -219,6 +226,12 @@ void CHierarchyFormView::OnBnClickedSaveButton()
 void CHierarchyFormView::OnLbnSelchangeHierarchyList()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CToolMgr::GetInst()->SetTargetObj(m_HiararchyList.GetCurSel());
-	CToolMgr::GetInst()->UpdateAllView();
+	/*int iSelect = m_HiararchyList.GetCurSel();
+
+	if (LB_ERR == iSelect)
+		return;
+
+	CToolMgr::GetInst()->SetTargetObj(iSelect);
+	CToolMgr::GetInst()->UpdateAllView();*/
 }
+

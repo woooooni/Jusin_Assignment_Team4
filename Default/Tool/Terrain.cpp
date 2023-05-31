@@ -167,7 +167,6 @@ void CTerrain::Map_Render(void)
 		Set_Ratio(&matWorld, fX, fY);
 
 		CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
-
 		CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture,
 			nullptr,                            // 출력할 이미지 영역에 대한 Rect 주소, null인 경우 이미지의 0, 0 기준으로 출력
 			&D3DXVECTOR3(fX, fY, 0.f),            // 출력할 이미지의 중심축에 대한 vector3 주소, null인 경우 이미지의 0, 0이 중심 좌표
