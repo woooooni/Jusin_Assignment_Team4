@@ -27,7 +27,12 @@ public:
 	void				UpdateAllView();
 
 public:
-	void RenderObj();
+	void	RenderObj();
+	bool	PickObj(const D3DXVECTOR3 & vPos);
+
+private:
+	
+	bool	ObjPicking_Dot(const D3DXVECTOR3 & vPos, const int & iIndex);
 
 private:
 	vector<CObj*>		m_vecObj;
