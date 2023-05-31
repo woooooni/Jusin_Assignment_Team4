@@ -5,7 +5,8 @@
 #include "Tool.h"
 #include "InspectorFormView.h"
 #include "Functor.h"
-
+#include "ToolMgr.h"
+#include "ToolView.h"
 
 // CInspectorFormView
 
@@ -69,19 +70,24 @@ void CInspectorFormView::OnSelchangeInspectorTab(NMHDR *pNMHDR, LRESULT *pResult
 	{
 		int iSelect = m_tab.GetCurSel();
 
+		CToolView* pToolView = CToolMgr::GetInst()->GetMainFrm()->GetToolView();
+
 		switch (iSelect)
 		{
 		case 0:
+			pToolView->SetToolMode(EDIT_MODE::EDIT_OBJ);
 			dlg1->ShowWindow(SW_SHOW);
 			dlg2->ShowWindow(SW_HIDE);
 			dlg3->ShowWindow(SW_HIDE);
 			break;
 		case 1:
+			pToolView->SetToolMode(EDIT_MODE::EDIT_OBJ);
 			dlg1->ShowWindow(SW_HIDE);
 			dlg2->ShowWindow(SW_SHOW);
 			dlg3->ShowWindow(SW_HIDE);
 			break;
 		case 2:
+			pToolView->SetToolMode(EDIT_MODE::EDIT_MAP);
 			dlg1->ShowWindow(SW_HIDE);
 			dlg2->ShowWindow(SW_HIDE);
 			dlg3->ShowWindow(SW_SHOW);

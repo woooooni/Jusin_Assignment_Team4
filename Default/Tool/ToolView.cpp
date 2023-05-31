@@ -44,10 +44,11 @@ END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
 
-CToolView::CToolView() : m_pTerrain(nullptr)
+CToolView::CToolView() 
+	: m_pTerrain(nullptr)
+	, m_eEditMode(EDIT_MODE::EDIT_OBJ)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-	
 }
 
 CToolView::~CToolView()
@@ -74,14 +75,11 @@ void CToolView::OnInitialUpdate()
 	}
 
 	m_pTerrain = new CTerrain;
-
 	if (FAILED(m_pTerrain->Initialize()))
 	{
 		AfxMessageBox(L"Terrain Init Failed");
 		return;
 	}
-
-	m_pTerrain->Set_MainView(this);
 }
 
 void CToolView::OnDraw(CDC* /*pDC*/)
@@ -95,9 +93,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 
 	m_pTerrain->Render();
 	CToolMgr::GetInst()->RenderObj();
-
 	CDevice::Get_Instance()->Render_End();
-
 }
 
 void CToolView::OnDestroy()
@@ -172,56 +168,52 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	CScrollView::OnLButtonDown(nFlags, point);
 
-	CInspectorFormView*	pInspectorForm		= CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
-	CDlgTab3*			pMapTool			= pInspectorForm->dlg3;
-	CMapToolTile*		pTileTool			= pMapTool->m_pTileForm;
-	CMiniView*			pMiniview			= pMapTool->GetMiniView();
 
-	if (m_bIsSelectTile)
-	{
-		m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
-			float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
-	}
-
-	Invalidate(FALSE);
-	pMiniview->Invalidate(FALSE);
-}
-
-
-void CToolView::OnMouseMove(UINT nFlags, CPoint point)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	
-	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	if (m_eEditMode == EDIT_MODE::EDIT_TILE)
 	{
 		CInspectorFormView*	pInspectorForm = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
 		CDlgTab3*			pMapTool = pInspectorForm->dlg3;
 		CMapToolTile*		pTileTool = pMapTool->m_pTileForm;
 		CMiniView*			pMiniview = pMapTool->GetMiniView();
 
-
-		m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
-			float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
+		if (m_bIsSelectTile)
+		{
+			m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
+		}
 
 		Invalidate(FALSE);
 		pMiniview->Invalidate(FALSE);
 	}
-
-	/*
-	if (!m_bTrackMouse)
+	else
 	{
-		TRACKMOUSEEVENT tme;
-		tme.cbSize = sizeof(tme);
-		tme.hwndTrack = m_hWnd;
-		tme.dwFlags = TME_LEAVE | TME_HOVER;
-		tme.dwHoverTime = -1;
+		// TODO :: OBJ Picking
+	}
+}
 
-		if (TrackMouseEvent(&tme))
+
+void CToolView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	{
+		if (m_eEditMode == EDIT_MODE::EDIT_TILE)
 		{
-			//m_bTrackMouse = TRUE;
+			CInspectorFormView*	pInspectorForm = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
+			CDlgTab3*			pMapTool = pInspectorForm->dlg3;
+			CMapToolTile*		pTileTool = pMapTool->m_pTileForm;
+			CMiniView*			pMiniview = pMapTool->GetMiniView();
+
+
+			m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)),
+				float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
+
+			Invalidate(FALSE);
+			pMiniview->Invalidate(FALSE);
+		}
+		else
+		{
+			// TODO :: MOVE PICKING OBJ
 		}
 	}
-	*/
 
 	CScrollView::OnMouseMove(nFlags, point);
 
