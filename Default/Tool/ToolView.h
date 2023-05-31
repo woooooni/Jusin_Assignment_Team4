@@ -7,7 +7,6 @@
 #include "Include.h"
 #include "Terrain.h"
 #include "DlgTab3.h"
-#include "MyMap.h"
 
 class CToolDoc;
 class CToolView : public CScrollView
@@ -51,14 +50,13 @@ public:
 
 public: // Ãß°¡
 	int			m_iTileIndex;
+	CTerrain*	GetTerrain() { return m_pTerrain; }
 	void		Set_TileIndex(int _iIndex) { m_iTileIndex = _iIndex; }
 
 public:
 	CTerrain*			m_pTerrain;
-	CMyMap*				m_pMap;
 	CDlgTab3*			m_pTileTool;
 	bool				m_bIsSelectTile = false;
-	map<CString, vector<OBJPOS_JWA*>> m_pMapObjInfo;
 
 public:
 	void UpdateToolView();

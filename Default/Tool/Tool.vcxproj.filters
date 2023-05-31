@@ -100,21 +100,6 @@
     <Filter Include="06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form">
       <UniqueIdentifier>{f9fdcb38-42e2-44fc-ba3f-b0f11939b7c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Etc\01. Map">
-      <UniqueIdentifier>{22d8c039-a818-4808-aef5-8a057bf8f723}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FileInfo">
-      <UniqueIdentifier>{05c820cc-183f-4e61-b23b-b76b9b94a068}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tile">
-      <UniqueIdentifier>{a0a1741b-4390-4df7-af6b-a0598598126f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="99. Manager\TileMgr">
-      <UniqueIdentifier>{5cc9cfe1-5d56-48b0-b009-265362287f6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MapTool_Map">
-      <UniqueIdentifier>{0c5d62c0-1456-4b73-bedd-1cd03d78c68d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -186,7 +171,7 @@
     <ClInclude Include="Tool.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="RenderMgr_JWA.h">
+    <ClInclude Include="FileInfo.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Obj.h">
@@ -207,13 +192,7 @@
     <ClInclude Include="FileInfo.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="RenderMgr_JWA.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="TileMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MapToolMap.h">
@@ -222,20 +201,8 @@
     <ClInclude Include="MapToolTile.h">
       <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
     </ClInclude>
-    <ClInclude Include="MyMap.h">
-      <Filter>05. Etc\01. Map</Filter>
-    </ClInclude>
-    <ClInclude Include="FileInfo.h">
-      <Filter>FileInfo</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>Tile</Filter>
-    </ClInclude>
-    <ClInclude Include="TileMgr.h">
-      <Filter>99. Manager\TileMgr</Filter>
-    </ClInclude>
     <ClInclude Include="MapToolMap.h">
-      <Filter>MapTool_Map</Filter>
+      <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -302,7 +269,7 @@
     <ClCompile Include="DlgTab4.cpp">
       <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab4</Filter>
     </ClCompile>
-    <ClCompile Include="RenderMgr_JWA.cpp">
+    <ClCompile Include="FileInfo.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Obj.cpp">
@@ -323,13 +290,7 @@
     <ClCompile Include="FileInfo.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="RenderMgr_JWA.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="TileMgr.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="MapToolMap.cpp">
@@ -338,20 +299,8 @@
     <ClCompile Include="MapToolTile.cpp">
       <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
     </ClCompile>
-    <ClCompile Include="MyMap.cpp">
-      <Filter>05. Etc\01. Map</Filter>
-    </ClCompile>
-    <ClCompile Include="FileInfo.cpp">
-      <Filter>FileInfo</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>Tile</Filter>
-    </ClCompile>
-    <ClCompile Include="TileMgr.cpp">
-      <Filter>99. Manager\TileMgr</Filter>
-    </ClCompile>
     <ClCompile Include="MapToolMap.cpp">
-      <Filter>MapTool_Map</Filter>
+      <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

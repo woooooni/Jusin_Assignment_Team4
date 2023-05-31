@@ -3,10 +3,12 @@
 #include "TextureMgr.h"
 #include "Device.h"
 #include "ToolView.h"
+#include "InspectorFormView.h"
 
 CTerrain::CTerrain()
+	: m_fMapScale(1.f), m_strMyMap(L"Map0.png")
 {
-	m_vecTile.reserve(TILEX * TILEY);
+	//m_vecTile.reserve(TILEX * TILEY);
 }
 
 CTerrain::~CTerrain()
@@ -16,30 +18,76 @@ CTerrain::~CTerrain()
 
 HRESULT CTerrain::Initialize(void)
 {
+	// 타일 Texture
 	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(L"../Texture/Stage/Terrain/Tile/Tile%d.png", TEX_MULTI, L"Terrain", L"Tile", 36)))
 	{
 		AfxMessageBox(L"TileTexture Create Failed");
 		return E_FAIL;
 	}
+
+	m_iTileX = m_iMapWidth / TILECX + 1;
+	m_iTileY = m_iMapHeight / (TILECY / 2.f) + 1;
 	
-	for (int i = 0; i < TILEY; ++i)
+	for (int i = 0; i < m_iTileY; ++i)
 	{
-		for (int j = 0; j < TILEX; ++j)
+		for (int j = 0; j < m_iTileX; ++j)
 		{
 			TILE* pTile = new TILE;
 
 			float	fX = (TILECX * j) + ((TILECX / 2.f) * (i % 2));
 			float	fY = (TILECY / 2.f) * i;
 
-			pTile->vPos = {fX, fY, 0.f};
+			pTile->vPos = { fX, fY, 0.f };
 			pTile->vSize = { TILECX, TILECY, 0.f };
 			pTile->byOption = 0;
-			pTile->byDrawID = 3;
-			
+			pTile->byDrawID = 1;
+
 			m_vecTile.push_back(pTile);
 		}
 	}
 	
+	// 맵 Texture
+	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(L"../Texture/Stage/Terrain/Map/Map%d.png", TEX_MULTI, L"Map", L"Map", 5)))
+	{
+		AfxMessageBox(L"Map Texture Create Failed");
+		return E_FAIL;
+	}
+
+	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(L"../Texture/Stage/Terrain/PreMap/Map%d.png", TEX_MULTI, L"PreMap", L"Map", 5)))
+	{
+		AfxMessageBox(L"PreMap Texture Create Failed");
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CTerrain::Init_Tile(void)
+{
+	Release();
+
+
+	m_iTileX = m_iMapWidth / TILECX + 1;
+	m_iTileY = m_iMapHeight / (TILECY / 2.f) + 1;
+
+	for (int i = 0; i < m_iTileY; ++i)
+	{
+		for (int j = 0; j < m_iTileX; ++j)
+		{
+			TILE*		pTile = new TILE;
+
+			float	fX = (j * TILECX) + ((i % 2) * (TILECX / 2.f));
+			float	fY = i * (TILECY / 2.f);
+
+			pTile->vPos = { fX, fY, 0.f };
+			pTile->vSize = { TILECX, TILECY, 0.f };
+			pTile->byOption = 0;
+			pTile->byDrawID = 1;
+
+			m_vecTile.push_back(pTile);
+		}
+	}
+
 	return S_OK;
 }
 
@@ -49,11 +97,23 @@ void CTerrain::Update(void)
 
 void CTerrain::Render(void)
 {
+	CDevice::Get_Instance()->Render_Begin();
+	Map_Render();
+	Tile_Render();
+	CDevice::Get_Instance()->Render_End();
+}
+
+void CTerrain::Tile_Render(void)
+{
+	// 맵 사이즈에 맞춰서 타일 깔리게끔 수정할 것
+
 	D3DXMATRIX	matWorld, matScale, matTrans;
 
 	TCHAR		szBuf[MIN_STR] = L"";
 	int			iIndex = 0;
 
+	/*
+	// 개수 지정시 사용하던 코드
 	RECT	rc{};
 
 	// GetClientRect : 현재 클라이언트 영역의 rect 정보를 얻어옴
@@ -61,8 +121,71 @@ void CTerrain::Render(void)
 
 	float	fX = WINCX / float(rc.right - rc.left);
 	float	fY = WINCY / float(rc.bottom - rc.top);
+	*/
 
-	
+	CString strMapName = L"";
+
+	int i = 0;
+	for (; i < m_strMyMap.GetLength(); ++i)
+	{
+		if (0 != isdigit(m_strMyMap[i]))
+			break;
+	}
+
+	//m_iTileX = m_iMapWidth / TILECX + 1;
+	//m_iTileY = m_iMapHeight / (TILECY / 2.f) + 1;
+
+	if (!m_vecTile.empty()) // 맵 변경시 Tile vec clear하기 때문
+	{
+		for (int i = 0; i < m_iTileY; ++i)
+		{
+			for (int j = 0; j < m_iTileX; ++j)
+			{
+				int iIndex = (i * m_iTileX) + j;
+
+				const TEXINFO* pTexInfo
+					= CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", m_vecTile[iIndex]->byDrawID);
+
+				D3DXMatrixIdentity(&matWorld);
+
+				D3DXMatrixScaling(&matScale, m_fMapScale, m_fMapScale, 0.f);
+
+				D3DXMatrixTranslation(&matTrans,
+					m_vecTile[iIndex]->vPos.x * m_fMapScale - m_pMainView->GetScrollPos(0), // 0일 경우 x 스크롤 값 얻어옴
+					m_vecTile[iIndex]->vPos.y * m_fMapScale - m_pMainView->GetScrollPos(1), // 1일 경우 y 스크롤 값 얻어옴
+					0.f);
+
+				matWorld = matScale * matTrans;
+
+				int iCX = pTexInfo->tImgInfo.Width;
+				int iCY = pTexInfo->tImgInfo.Height;
+
+				CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
+
+				CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture,
+					nullptr,							
+					&D3DXVECTOR3(iCX / 2.f, iCY / 2.f, 0.f),
+					nullptr,
+					D3DCOLOR_ARGB(255, 255, 255, 255));
+
+				if (g_bIndex)
+				{
+					swprintf_s(szBuf, L"%d", iIndex);
+
+					CDevice::Get_Instance()->Get_Font()->DrawTextW(CDevice::Get_Instance()->Get_Sprite(),
+						szBuf,
+						lstrlen(szBuf),
+						nullptr,
+						DT_CENTER,
+						D3DCOLOR_ARGB(255, 255, 255, 255));
+
+					++iIndex;
+				}
+					
+			}
+		}
+	}
+	/*
 	for (auto iter : m_vecTile)
 	{
 		D3DXMatrixIdentity(&matWorld);
@@ -106,73 +229,88 @@ void CTerrain::Render(void)
 		}
 
 	}
-
+	*/
 }
 
-void CTerrain::Index_Render(void)
+// 통맵 Rendering
+void CTerrain::Map_Render(void)
 {
-	CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
-	CToolView*		pMainView = dynamic_cast<CToolView*>(pMainFrm->m_SecondSplitter.GetPane(0, 0));
+	D3DXMATRIX	matTrans, matScale, matWorld;
 
-	Set_MainView(pMainView);
-
-	D3DXMATRIX	matWorld, matScale, matTrans;
-
-	TCHAR		szBuf[MIN_STR] = L"";
-	int			iIndex = 0;
-
-	RECT	rc{};
-
-	GetClientRect(m_pMainView->m_hWnd, &rc);
-
-	float	fX = WINCX / float(rc.right - rc.left);
-	float	fY = WINCY / float(rc.bottom - rc.top);
-
-	if (g_bIndex)
+	if (L"" != m_strMyMap)
 	{
-		for (auto iter : m_vecTile)
+		CString cstrObjKey = L"";
+		CString cstrStateKey = L"";
+		CString cstrTemp = L"";
+
+		int		i = 0;
+
+		for (i = 0; i < m_strMyMap.GetLength(); ++i)
 		{
-			D3DXMatrixIdentity(&matWorld);
-			D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
-			D3DXMatrixTranslation(&matTrans,
-				iter->vPos.x - m_pMainView->GetScrollPos(0),
-				iter->vPos.y - m_pMainView->GetScrollPos(1),
-				0.f);
+			if (0 != isdigit(m_strMyMap[i]))
+				break;
 
-			matWorld = matScale * matTrans;
-
-			Set_Ratio(&matWorld, fX, fY);
-
-			//const TEXINFO*	pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", iter->byDrawID);
-
-			//float	fX = pTexInfo->tImgInfo.Width / 2.f;
-			//float	fY = pTexInfo->tImgInfo.Height / 2.f;
-
-			swprintf_s(szBuf, L"%d", iIndex);
-
-			CDevice::Get_Instance()->Get_Font()->DrawTextW(CDevice::Get_Instance()->Get_Sprite(),
-				szBuf,
-				lstrlen(szBuf),
-				nullptr,
-				DT_CENTER,
-				D3DCOLOR_ARGB(255, 255, 255, 255));
-
-			++iIndex;
+			else
+				cstrStateKey += m_strMyMap[i];
 		}
+
+		cstrObjKey = cstrStateKey;
+		cstrTemp = m_strMyMap;
+		cstrTemp.Delete(0, i);
+		int iCount = _tstoi(cstrTemp);
+
+		const TEXINFO*		pTexture = CTextureMgr::Get_Instance()->Get_Texture(
+			cstrObjKey, cstrStateKey, iCount);
+		
+		CMainFrame*				pMainFrm = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+		CInspectorFormView*		pInspectorForm = dynamic_cast<CInspectorFormView*>(pMainFrm->m_MainSplitter.GetPane(0, 2));
+		CDlgTab3*		pTool = pInspectorForm->dlg3;
+		CMapToolMap*	pMapTool = pTool->m_pMapForm;
+		
+		if (pMapTool)
+		{
+			pMapTool->Set_Text_MapInfo(pTexture->tImgInfo.Width, pTexture->tImgInfo.Height);
+			m_iMapHeight = pTexture->tImgInfo.Height;
+			m_iMapWidth = pTexture->tImgInfo.Width;
+			m_pMainView->SetScrollSizes(MM_TEXT,
+				CSize(m_iMapWidth * m_fMapScale, m_iMapHeight * m_fMapScale));
+		}
+		
+		D3DXMatrixScaling(&matScale, m_fMapScale, m_fMapScale, 0.f);
+
+		D3DXMatrixTranslation(&matTrans,
+			-m_pMainView->GetScrollPos(0),
+			-m_pMainView->GetScrollPos(1),
+			0.f);
+
+		matWorld = matScale * matTrans;
+
+		CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
+		CDevice::Get_Instance()->Get_Sprite()->Draw(pTexture->pTexture,
+			NULL,
+			NULL,
+			NULL,
+			D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
 }
 
 void CTerrain::Mini_Render(void)
 {
-	D3DXMATRIX	matWorld, matScale, matTrans;
+	Mini_MapRender();
+	Mini_TileRender();
+}
 
+void CTerrain::Mini_TileRender(void)
+{
+	D3DXMATRIX	matWorld, matScale, matTrans;
+	/*
 	for (auto iter : m_vecTile)
 	{
 		D3DXMatrixIdentity(&matWorld);
 		D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
 		D3DXMatrixTranslation(&matTrans,
-			iter->vPos.x, 
-			iter->vPos.y, 
+			iter->vPos.x,
+			iter->vPos.y,
 			0.f);
 
 		matWorld = matScale * matTrans;
@@ -188,18 +326,158 @@ void CTerrain::Mini_Render(void)
 		CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
 
 		CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture,
-			nullptr,							
-			&D3DXVECTOR3(fX, fY, 0.f),			
-			nullptr,							
-			D3DCOLOR_ARGB(255, 255, 255, 255)); 
+			nullptr,
+			&D3DXVECTOR3(fX, fY, 0.f),
+			nullptr,
+			D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+	*/
+
+	if (!m_vecTile.empty()) // 맵 변경시 Tile vec clear하기 때문
+	{
+		for (int i = 0; i < m_iTileY; ++i)
+		{
+			for (int j = 0; j < m_iTileX; ++j)
+			{
+				int iIndex = (i * m_iTileX) + j;
+
+				const TEXINFO* pTexInfo
+					= CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", m_vecTile[iIndex]->byDrawID);
+
+				D3DXMatrixIdentity(&matWorld);
+
+				D3DXMatrixScaling(&matScale, m_fMapScale, m_fMapScale, 0.f);
+
+				D3DXMatrixTranslation(&matTrans,
+					m_vecTile[iIndex]->vPos.x * m_fMapScale,
+					m_vecTile[iIndex]->vPos.y * m_fMapScale,
+					0.f);
+
+				matWorld = matScale * matTrans;
+
+				Set_Ratio(&matWorld, 0.3f, 0.5f);
+
+				int iCX = pTexInfo->tImgInfo.Width;
+				int iCY = pTexInfo->tImgInfo.Height;
+
+				CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
+
+				CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture,
+					nullptr,
+					&D3DXVECTOR3(iCX / 2.f, iCY / 2.f, 0.f),
+					nullptr,
+					D3DCOLOR_ARGB(255, 255, 255, 255));
+			}
+		}
+	}
+}
+
+void CTerrain::Mini_MapRender(void)
+{
+	D3DXMATRIX	matWorld, matScale, matTrans;
+	/*
+	if (L"" != m_strMyMap)
+	{
+		CString cstrObjKey = L"";
+		CString cstrStateKey = L"";
+		CString cstrTemp = L"";
+
+		int		i = 0;
+
+		for (i = 0; i < m_strMyMap.GetLength(); ++i)
+		{
+			if (0 != isdigit(m_strMyMap[i]))
+				break;
+
+			else
+				cstrStateKey += m_strMyMap[i];
+		}
+
+		cstrObjKey = cstrStateKey;
+		cstrTemp = m_strMyMap;
+
+		cstrTemp.Delete(0, i);
+		int iCount = _tstoi(cstrTemp);
+
+		const TEXINFO*		pTexture = CTextureMgr::Get_Instance()->Get_Texture(
+			cstrObjKey, cstrStateKey, iCount);
+
+		D3DXMatrixScaling(&matScale, m_fMapScale, m_fMapScale, 1.f);
+
+		D3DXMatrixTranslation(&matTrans,
+			-m_pMainView->GetScrollPos(0),
+			-m_pMainView->GetScrollPos(1),
+			0.f);
+
+		matWorld = matScale * matTrans;
+
+		Set_Ratio(&matWorld, 0.5f, 0.8f);
+
+		CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
+		CDevice::Get_Instance()->Get_Sprite()->Draw(pTexture->pTexture,
+			nullptr,
+			nullptr,
+			nullptr,
+			D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+	*/
+
+	if (L"" != m_strMyMap)
+	{
+		CString cstrObjKey = L"";
+		CString cstrStateKey = L"";
+		CString cstrTemp = L"";
+
+		int		i = 0;
+
+		for (i = 0; i < m_strMyMap.GetLength(); ++i)
+		{
+			if (0 != isdigit(m_strMyMap[i]))
+				break;
+
+			else
+				cstrStateKey += m_strMyMap[i];
+		}
+
+		cstrObjKey = cstrStateKey;
+		cstrTemp = m_strMyMap;
+		cstrTemp.Delete(0, i);
+		int iCount = _tstoi(cstrTemp);
+
+		const TEXINFO*		pTexture = CTextureMgr::Get_Instance()->Get_Texture(
+			cstrObjKey, cstrStateKey, iCount);
+
+		m_iMapHeight = pTexture->tImgInfo.Height;
+		m_iMapWidth = pTexture->tImgInfo.Width;
+
+		D3DXMatrixScaling(&matScale, m_fMapScale, m_fMapScale, 0.f);
+
+		D3DXMatrixTranslation(&matTrans,
+			-m_pMainView->GetScrollPos(0),
+			-m_pMainView->GetScrollPos(1),
+			0.f);
+
+		matWorld = matScale * matTrans;
+
+		Set_Ratio(&matWorld, 0.3f, 0.5f);
+
+		CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
+		CDevice::Get_Instance()->Get_Sprite()->Draw(pTexture->pTexture,
+			NULL,
+			NULL,
+			NULL,
+			D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
 }
 
 void CTerrain::Release(void)
 {
+	// 새로 맵을 불러올 때에도 사용할 수 있다.
 	for_each(m_vecTile.begin(), m_vecTile.end(), CDeleteObj());
 	m_vecTile.clear();
 	m_vecTile.shrink_to_fit();
+
+	//m_vecTile.clear();
 }
 
 void CTerrain::Tile_Change(const D3DXVECTOR3 & vPos, const int & iDrawID)
@@ -255,9 +533,9 @@ bool CTerrain::Picking(const D3DXVECTOR3 & vPos, const int & iIndex)
 
 	D3DXVECTOR3		vPoint[4] {
 
-		{ m_vecTile[iIndex]->vPos.x,m_vecTile[iIndex]->vPos.y + (TILECY / 2.f), 0.f },
+		{ m_vecTile[iIndex]->vPos.x, m_vecTile[iIndex]->vPos.y + (TILECY / 2.f), 0.f },
 		{ m_vecTile[iIndex]->vPos.x + (TILECX / 2.f),m_vecTile[iIndex]->vPos.y, 0.f },
-		{ m_vecTile[iIndex]->vPos.x,m_vecTile[iIndex]->vPos.y - (TILECY / 2.f), 0.f },
+		{ m_vecTile[iIndex]->vPos.x, m_vecTile[iIndex]->vPos.y - (TILECY / 2.f), 0.f },
 		{ m_vecTile[iIndex]->vPos.x - (TILECX / 2.f),m_vecTile[iIndex]->vPos.y , 0.f }
 	};
 	
@@ -297,10 +575,10 @@ bool CTerrain::Picking_Dot(const D3DXVECTOR3 & vPos, const int & iIndex)
 {
 	D3DXVECTOR3		vPoint[4]{
 
-		{ m_vecTile[iIndex]->vPos.x,m_vecTile[iIndex]->vPos.y + (TILECY / 2.f), 0.f },
-		{ m_vecTile[iIndex]->vPos.x + (TILECX / 2.f),m_vecTile[iIndex]->vPos.y, 0.f },
-		{ m_vecTile[iIndex]->vPos.x,m_vecTile[iIndex]->vPos.y - (TILECY / 2.f), 0.f },
-		{ m_vecTile[iIndex]->vPos.x - (TILECX / 2.f),m_vecTile[iIndex]->vPos.y , 0.f }
+		{ m_vecTile[iIndex]->vPos.x * m_fMapScale,m_vecTile[iIndex]->vPos.y * m_fMapScale + (TILECY * m_fMapScale / 2.f), 0.f },
+		{ m_vecTile[iIndex]->vPos.x * m_fMapScale + (TILECX * m_fMapScale / 2.f),m_vecTile[iIndex]->vPos.y * m_fMapScale, 0.f },
+		{ m_vecTile[iIndex]->vPos.x * m_fMapScale,m_vecTile[iIndex]->vPos.y * m_fMapScale - (TILECY * m_fMapScale / 2.f), 0.f },
+		{ m_vecTile[iIndex]->vPos.x * m_fMapScale - (TILECX * m_fMapScale / 2.f),m_vecTile[iIndex]->vPos.y * m_fMapScale , 0.f }
 	};
 
 	D3DXVECTOR3			vDir[4] {

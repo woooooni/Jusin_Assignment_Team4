@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by Tool.rc
+// Microsoft Visual C++에서 생성한 포함 파일입니다.
+// Tool.rc에서 사용되고 있습니다.
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
@@ -90,14 +90,17 @@
 #define IDC_LIST1_JWA                   10067
 #define IDC_CHECK1_JWA                  10068
 #define IDC_BUTTON1_JWA                 10069
-#define IDC_STATIC_ANIM_OBJKEY_KJM      10071
-#define IDC_STATIC_STATEKEY_KJM         10072
-#define IDC_STATIC_ANIMCOUNT_KJM        10073
-#define IDC_STATIC_OBJKEY_VALUE_KJM     10074
-#define IDC_STATIC_STATEKEY_VALUE_KJM   10075
-#define IDC_STATIC_ANIMCOUNT_VALUE_KJM  10076
-#define IDC_BUTTON_APPLY_ANIMINFO_KJM   10077
-#define IDC_COMBO_STATEKEY_KJM          10078
+#define IDC_STATIC_ANIM_OBJKEY_KJM      10070
+#define IDC_STATIC_STATEKEY_KJM         10071
+#define IDC_STATIC_ANIMCOUNT_KJM        10072
+#define IDC_STATIC_OBJKEY_VALUE_KJM     10073
+#define IDC_STATIC_STATEKEY_VALUE_KJM   10074
+#define IDC_STATIC_ANIMCOUNT_VALUE_KJM  10075
+#define IDC_BUTTON_APPLY_ANIMINFO_KJM   10076
+#define IDC_COMBO_STATEKEY_KJM          10077
+#define IDC_STATE_SIZE_JWA              10078
+#define IDC_BUTTON1_JWA2                10079
+#define IDC_BUTTON_APPLY_JWA            10080
 
 // Next default values for new objects
 // 
@@ -105,7 +108,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        329
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         10079
+#define _APS_NEXT_CONTROL_VALUE         10081
 #define _APS_NEXT_SYMED_VALUE           317
 #endif
 #endif

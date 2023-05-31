@@ -4,14 +4,13 @@
 #include "stdafx.h"
 #include "Tool.h"
 #include "ToolView.h"
-#include "RenderMgr_JWA.h"
 #include "MainFrm.h"
 #include "Device.h"
 #include "DlgTab3.h"
 #include "TextureMgr.h"
-#include "TileMgr.h"
 #include "afxdialogex.h"
 #include "FileInfo.h"
+#include "ToolMgr.h"
 
 
 // CDlgTab3 대화 상자입니다.
@@ -136,6 +135,7 @@ BEGIN_MESSAGE_MAP(CDlgTab3, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO2_JWA, &CDlgTab3::OnBnClickedRadio2)
 	ON_BN_CLICKED(IDC_RADIO1_JWA, &CDlgTab3::OnBnClickedRadio1)
 	ON_BN_CLICKED(IDC_BUTTON1_JWA, &CDlgTab3::OnSaveData)
+	ON_BN_CLICKED(IDC_BUTTON1_JWA2, &CDlgTab3::OnLoadData)
 END_MESSAGE_MAP()
 
 
@@ -255,6 +255,7 @@ void CDlgTab3::OnDropFiles(HDROP hDropInfo)
 
 void CDlgTab3::OnSaveData()
 {
+	// 타일(맵) 저장
 	CFileDialog		Dlg(FALSE, L"dat", L"*.dat", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"Data Files(*.dat) | *.dat||", this);
 
 	TCHAR	szPath[MAX_PATH] = L"";
@@ -278,6 +279,31 @@ void CDlgTab3::OnSaveData()
 			return;
 		}
 
+		DWORD	dwByte;
+		int		iTileX = 0;
+		int		iTileY = 0;
+
+		CTerrain*		pTerrain = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain();
+		CString			strMapFile = pTerrain->m_strMyMap;
+
+		vector<TILE*>& vecTile = pTerrain->Get_VecTile();
+
+		// 타일을 몇개 깔 것인지에 대한 정보도 저장해야 한다.
+		pTerrain->Get_StageInfo(iTileX, iTileY);
+
+		WriteFile(hFile, &iTileX, sizeof(int), &dwByte, NULL);
+		WriteFile(hFile, &iTileY, sizeof(int), &dwByte, NULL);
+
+		for (auto pTile : vecTile)
+		{
+			WriteFile(hFile, pTile, sizeof(TILE), &dwByte, NULL);
+		}
+
+		WriteFile(hFile, &strMapFile, sizeof(CString), &dwByte, NULL);
+
+		CloseHandle(hFile);
+
+		/*
 		CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
 		if (nullptr == pMainFrm)
 			return;
@@ -296,7 +322,78 @@ void CDlgTab3::OnSaveData()
 			WriteFile(hFile, iter, sizeof(TILE), &dwByte, nullptr);
 
 		CloseHandle(hFile);
+		*/
 	}
+}
+
+void CDlgTab3::OnLoadData()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	// 목록초기화는 진행하지 않고 맵과 타일만 불러올 수 있도록 한다.
+	CFileDialog Dlg(TRUE, L"dat", L"*.dat", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"Data Files(*.dat) | *.dat||", this);
+
+	TCHAR szPath[MAX_PATH] = L"";
+	GetCurrentDirectory(MAX_PATH, szPath);
+	PathRemoveFileSpec(szPath);
+	lstrcat(szPath, L"\\SaveData");
+	Dlg.m_ofn.lpstrInitialDir = szPath;
+
+	CTerrain*		pTerrain = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain();
+
+	if (IDOK == Dlg.DoModal())
+	{
+		CString		strTemp = Dlg.GetPathName().GetString();
+		const TCHAR* pGetPath = strTemp.GetString();
+
+		HANDLE hFile = CreateFile(pGetPath, GENERIC_READ,
+			0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+		if (INVALID_HANDLE_VALUE == hFile)
+			return;
+
+		DWORD	dwByte;
+		int iTileX = 0;
+		int iTileY = 0;
+		CString strMapName = L"";
+
+		// 새로 생성할 필요 X 이미 만들어져 있는 것에 세팅을 다시 하면 된다.
+		// 저장한 순서대로 불러와야한다.
+		// iTileX, iTileY, vecTile, strMapFile(맵이름)
+		
+		//vector<TILE*>& vecTile = pTerrain->m_vecTile;
+		vector<TILE*>& vecTile = pTerrain->Get_VecTile();
+
+		ReadFile(hFile, &iTileX, sizeof(int), &dwByte, NULL);
+		ReadFile(hFile, &iTileY, sizeof(int), &dwByte, NULL);
+
+		pTerrain->Get_StageInfo(iTileX, iTileY); // 불러온 iTileX, Y값 세팅 완료
+
+		while (true)
+		{
+			TILE*	pTile = new TILE;
+			ReadFile(hFile, pTile, sizeof(TILE), &dwByte, NULL);
+
+			if (0 == dwByte)
+			{
+				Safe_Delete(pTile);
+				break;
+			}
+
+			vecTile.push_back(pTile); // vecTile 세팅 완료
+		}
+		
+		ReadFile(hFile, &strMapName, sizeof(CString), &dwByte, NULL);
+
+		pTerrain->Set_MyMap(strMapName);
+
+		CloseHandle(hFile);
+	}
+
+	CDevice::Get_Instance()->Render_Begin();
+	pTerrain->Render();
+	CDevice::Get_Instance()->Render_End();
+	
 }
 
 void CDlgTab3::OnBnClickedRadio2()
@@ -308,4 +405,3 @@ void CDlgTab3::OnBnClickedRadio1()
 {
 	ShowForm(0);
 }
-

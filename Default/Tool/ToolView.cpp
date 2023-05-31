@@ -15,10 +15,10 @@
 #include "Device.h"
 #include "TextureMgr.h"
 #include "MainFrm.h"
-#include "RenderMgr_JWA.h"
 #include "InspectorFormView.h"
 #include "DlgTab3.h"
 #include "MapToolTile.h"
+#include "ToolMgr.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -47,27 +47,11 @@ END_MESSAGE_MAP()
 CToolView::CToolView() : m_pTerrain(nullptr)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-	CRenderMgr_JWA::Get_Instance()->Set_MapObjInfo(&m_pMapObjInfo);
 	
 }
 
 CToolView::~CToolView()
 {
-	for (auto& iter : m_pMapObjInfo)
-	{
-		for (size_t i = 0; i < iter.second.size(); ++i)
-		{
-			if (iter.second[i])
-			{
-				delete iter.second[i];
-				iter.second[i] = nullptr;
-			}
-		}
-		iter.second.clear();
-	}
-	m_pMapObjInfo.clear();
-
-	CRenderMgr_JWA::Get_Instance()->Destroy_Instance();
 }
 
 void CToolView::OnInitialUpdate()
@@ -127,17 +111,10 @@ void CToolView::OnInitialUpdate()
 	}
 
 	m_pTerrain = new CTerrain;
-	//m_pTileTool = new CDlgTab3;
 
 	if (FAILED(m_pTerrain->Initialize()))
 	{
 		AfxMessageBox(L"Terrain Init Failed");
-		return;
-	}
-
-	if (FAILED(m_pMap->Initialize()))
-	{
-		AfxMessageBox(L"Map Texture Init Failed");
 		return;
 	}
 
@@ -154,20 +131,22 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	CDevice::Get_Instance()->Render_Begin();
 
 	m_pTerrain->Render();
-	//m_pTerrain->Index_Render();
 
 	CDevice::Get_Instance()->Render_End();
 
 }
+
 void CToolView::OnDestroy()
 {
 	CScrollView::OnDestroy();
+
 	Safe_Delete(m_pTerrain);
 
 	CTextureMgr::Get_Instance()->Destroy_Instance();
 	CDevice::Get_Instance()->Destroy_Instance();
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
+
 #pragma region 안봐
 BOOL CToolView::PreCreateWindow(CREATESTRUCT& cs)
 {
@@ -234,8 +213,12 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	CDlgTab3*		pMapTool = pInspectorForm->dlg3;
 	CMapToolTile*	pTileTool = pMapTool->m_pTileForm;
 
+	CMiniView* pMiniview = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView()->GetDlgTab3()->GetMiniView();
+
 	//CStatic*		pMiniView;
 	//pMiniView = (CStatic*)GetDlgItem(IDC_PICTURE_MINI_JWA);
+
+	//float fScale = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain()->Get_MapScale();
 
 	if (m_bIsSelectTile)
 	{
@@ -244,8 +227,8 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 
 	Invalidate(FALSE);
-	//pMiniView->Invalidate(FALSE);
-	pMapTool->Invalidate(FALSE);
+	pMiniview->Invalidate(FALSE);
+	//pMapTool->Invalidate(FALSE);
 
 	// AfxGetMainWnd : 현재 쓰레드로부터 WND를 반환하는 함수
 	// GetParentFrame : 현재 VIEW를 둘러싸고 있는 상위 FrameWnd를 반환
@@ -264,6 +247,8 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 		CDlgTab3*		pMapTool = pInspectorForm->dlg3;
 		CMapToolTile*	pTileTool = pMapTool->m_pTileForm;
 
+		CMiniView* pMiniview = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView()->GetDlgTab3()->GetMiniView();
+
 		//CStatic*		pMiniView;
 		//pMiniView = (CStatic*)GetDlgItem(IDC_PICTURE_MINI_JWA);
 
@@ -271,8 +256,8 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 			float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
 
 		Invalidate(FALSE);
-		//pMiniView->Invalidate(FALSE);
-		pMapTool->Invalidate(FALSE);
+		pMiniview->Invalidate(FALSE);
+		//pMapTool->Invalidate(FALSE);
 	}
 	/*
 	if (!m_bTrackMouse)

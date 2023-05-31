@@ -10,7 +10,6 @@
 
 #include "ToolDoc.h"
 #include "ToolView.h"
-#include "RenderMgr_JWA.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,8 +69,6 @@ BOOL CToolApp::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinAppEx::InitInstance();
-
-	CRenderMgr_JWA::Get_Instance()->Initialize();
 
 
 	// OLE 라이브러리를 초기화합니다.

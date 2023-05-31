@@ -33,6 +33,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
+	CDlgTab3* GetDlgTab3() { return dlg3; }
 	void UpdateInspectorView();
 
 public:
