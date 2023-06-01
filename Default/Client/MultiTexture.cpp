@@ -44,7 +44,7 @@ HRESULT CMultiTexture::Insert_Texture(const TCHAR * pFilePath, const TCHAR * pSt
 		if (FAILED(D3DXGetImageInfoFromFile(szFullPath, &(pTexInfo->tImgInfo))))
 		{
 			Safe_Delete(pTexInfo);
-			ERR_MSG(szFullPath);
+			AfxMessageBox(szFullPath);
 			return E_FAIL;
 		}
 
@@ -64,7 +64,7 @@ HRESULT CMultiTexture::Insert_Texture(const TCHAR * pFilePath, const TCHAR * pSt
 			&(pTexInfo->pTexture))))
 		{
 			Safe_Delete(pTexInfo);
-			ERR_MSG(L"Multi Texture Failed");
+			AfxMessageBox(L"Multi Texture Failed");
 			return E_FAIL;
 		}
 

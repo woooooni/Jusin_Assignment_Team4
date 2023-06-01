@@ -2,6 +2,9 @@
 
 #include "Include.h"
 
+// Client
+// Tool°ú µ¿ÀÏ
+
 class CTexture
 {
 public:

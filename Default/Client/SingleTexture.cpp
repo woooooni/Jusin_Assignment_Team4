@@ -24,7 +24,7 @@ HRESULT CSingleTexture::Insert_Texture(const TCHAR * pFilePath, const TCHAR * pS
 	if (FAILED(D3DXGetImageInfoFromFile(pFilePath, &(m_pTexInfo->tImgInfo))))
 	{
 		Safe_Delete(m_pTexInfo);
-		ERR_MSG(L"D3DXGetImageInfoFromFile Failed");
+		AfxMessageBox(L"D3DXGetImageInfoFromFile Failed");
 		return E_FAIL;
 	}
 
@@ -49,7 +49,7 @@ HRESULT CSingleTexture::Insert_Texture(const TCHAR * pFilePath, const TCHAR * pS
 		&(m_pTexInfo->pTexture))))
 	{
 		Safe_Delete(m_pTexInfo);
-		ERR_MSG(L"Single Texture Failed");
+		AfxMessageBox(L"Single Texture Failed");
 		return E_FAIL;
 	}
 

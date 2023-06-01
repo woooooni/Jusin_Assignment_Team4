@@ -2,6 +2,7 @@
 
 #include "Include.h"
 
+// Client
 // Tool°ú µ¿ÀÏ
 
 class CDevice
