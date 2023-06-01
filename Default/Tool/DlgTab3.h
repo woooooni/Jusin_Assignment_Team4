@@ -28,8 +28,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	afx_msg void OnListBox();
-	afx_msg void OnDropFiles(HDROP hDropInfo);
 	afx_msg void OnSaveData();
 	afx_msg void OnLoadData();
 
@@ -39,7 +37,7 @@ public:
 	virtual BOOL OnInitDialog();
 
 public:
-	CMiniView*	GetMiniView()	{ return m_pMini; }
+	CMiniView*	 GetMiniView()	{ return m_pMini; }
 	void		 ShowForm(int iIndex);
 
 public:
