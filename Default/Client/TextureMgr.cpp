@@ -56,7 +56,7 @@ HRESULT CTextureMgr::Insert_Texture(const TCHAR * pFilePath, TEXTYPE eType, cons
 
 		if (FAILED(pTexture->Insert_Texture(pFilePath, pStateKey, iCount)))
 		{
-			ERR_MSG(pFilePath);
+			AfxMessageBox(pFilePath);
 			return E_FAIL;
 		}
 

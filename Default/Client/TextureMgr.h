@@ -12,7 +12,7 @@ private:
 	~CTextureMgr();
 
 public:
-	const wstring&		Get_String() { return m_wstrFullPath; } // client
+	const wstring&	Get_String() { return m_wstrFullPath; }
 	TEXINFO*		Get_Texture(const TCHAR* pObjKey,
 									const TCHAR* pStateKey = L"",
 									const int& iCount = 0);

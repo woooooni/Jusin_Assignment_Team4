@@ -33,6 +33,10 @@ typedef struct tagTile
 
 	BYTE		byOption;
 	BYTE		byDrawID;
+
+	// AstarMgr때문에 추가되는 부분
+	int iIndex = 0;
+	int iParentIdx = 0;
 }TILE;
 
 typedef struct tagMapData

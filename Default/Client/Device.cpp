@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Device.h"
 
-// Client
 // Tool과 동일
 
 IMPLEMENT_SINGLETON(CDevice)
@@ -32,7 +31,7 @@ HRESULT CDevice::Initialize(void)
 	
 	if (FAILED(m_pSDK->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &DeviceCaps)))
 	{
-		ERR_MSG(L"GetDeviceCaps Failed");
+		AfxMessageBox(L"GetDeviceCaps Failed");
 		return E_FAIL;
 	}
 
@@ -54,13 +53,13 @@ HRESULT CDevice::Initialize(void)
 	// CreateDevice(어떤 그래픽 카드를 제어할 것인가, 어떤 정보로 장치에 접근할 것인가, 장치를 사용할 윈도우, 동작 방식, 사용 환경, 장치 제어 객체 생성)
 	if (FAILED(m_pSDK->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, g_hWnd, vp, &d3dpp, &m_pDevice)))
 	{
-		ERR_MSG(L"CreateDevice Failed");
+		AfxMessageBox(L"CreateDevice Failed");
 		return E_FAIL;
 	}
 
 	if (FAILED(D3DXCreateSprite(m_pDevice, &m_pSprite)))
 	{
-		ERR_MSG(L"Create Sprite Failed");
+		AfxMessageBox(L"Create Sprite Failed");
 		return E_FAIL;
 	}
 
@@ -77,7 +76,7 @@ HRESULT CDevice::Initialize(void)
 	
 	if (FAILED(D3DXCreateFontIndirect(m_pDevice, &tFontInfo, &m_pFont)))
 	{
-		ERR_MSG(L"Create Font Failed");
+		AfxMessageBox(L"Create Font Failed");
 		return E_FAIL;
 	}
 
