@@ -11,6 +11,7 @@
 #include "InspectorFormView.h"
 #include "Obj.h"
 #include "ToolView.h"
+#include "TextureMgr.h"
 
 // CDlgTab2 대화 상자입니다.
 
@@ -138,8 +139,6 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 		lstrcpy(szFileName, strFileName.GetString()); // 문자 복사 
 		PathRemoveExtension(szFileName); //파일 명만 남김 ( 확장자명 삭제) 
 
-
-
 		PathRemoveFileSpec(szFilePath);
 		PathRemoveFileSpec(szFilePath);
 		CString strObjkey = PathFindFileName(szFilePath);
@@ -158,8 +157,6 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 
 			m_vecPicturePath.push_back(strRelative);  // 드롭 파일 할 때 경로 저장 
 			m_vecPictureObjkey.push_back(strObjkey);
-
-
 
 			m_mapPngImg.insert({ strFileName, pPngImg });
 			m_PictureListBox.AddString(szFileName);
@@ -455,8 +452,8 @@ void CDlgTab2::OnTimer(UINT_PTR nIDEvent)
 	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
 	if (pObj != nullptr)
 	{
-		//pObj->Set_AnimIndex(m_nCurrentIndex);
-		CToolMgr::GetInst()->RenderObj();
+		pObj->Set_AnimIdx(m_nCurrentIndex);
+		CToolMgr::GetInst()->UpdateAllView();
 	}
 
 	
@@ -519,6 +516,7 @@ void CDlgTab2::OnBnClickedButton_Init_PictureList()
 	m_PictureListBox.ResetContent();
 	m_Picture_Resource.SetBitmap(NULL);
 
+	m_vecPicturePath.clear();
 
 	UpdateData(FALSE);
 }
@@ -531,7 +529,7 @@ void CDlgTab2::OnBnClickedButton_Init_AnimList_KJM()
 
 	m_AnimListBox.ResetContent();
 	m_AnimPicture.SetBitmap(NULL);
-
+	m_vecAnimPath.clear();
 
 	KillTimer(m_nTimerID);
 	m_nTimerID = 0;
@@ -558,8 +556,9 @@ void CDlgTab2::OnBnClickedButtonAnimspeedOk()
 // 한번에 추가 all 버튼
 void CDlgTab2::OnBnClickedButtonAllKjm()
 {
-	
 	CString		strFindName = L"";
+
+	m_vecAnimPath.clear();
 
 	int		iSelect  = m_PictureListBox.GetCurSel();
 	if (iSelect == -1 || iSelect >= 0 )
@@ -600,20 +599,15 @@ void CDlgTab2::OnBnClickedButtonAllKjm()
 		// 3. 원본 리스트 박스에서 선택된 항목 제거
 		//pSrcListBox->DeleteString(nCurSel);
 		iSelect++;
-
-
-
 	}
-
+	
 
 }
 
 // statekey 선택 콤보 박스 
 void CDlgTab2::OnCbnSelchangeComboStatekeyKjm()
 {
-
 	UpdateData(TRUE);
-
 
 	int iSelect = StateKeyComboBox.GetCurSel();
 
@@ -626,6 +620,11 @@ void CDlgTab2::OnCbnSelchangeComboStatekeyKjm()
 	StateKeyComboBox.SetWindowTextW(StateName);
 
 	m_StateKey = StateName;
+	
+	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
+	if (pObj != nullptr)
+		pObj->Set_ObjState(wstring(StateName));
+
 
 
 	UpdateData(FALSE);
@@ -638,29 +637,35 @@ void CDlgTab2::OnBnClickedButtonApplyAniminfoKjm()
 	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
 	if (pObj == nullptr)
 		return;
+
+
 	CString str;
 	GetDlgItemText(IDC_COMBO_STATEKEY_KJM, str);
 
-	vector<ANIMINFO_KJM> vecAnim;
+	vector<ANIMINFO_KJM>	vecAnim;
+	vector<CTexture*>		vecTex;
 
 	int iCount = m_vecAnimPath.size();
 	for (UINT i = 0; i < iCount; ++i)
 	{
 		ANIMINFO_KJM tInfo;
 
-		// TODO :: Obj키 세팅.
-		//tInfo.wstrObjKey;
-		tInfo.wstrObjKey = m_vecAnimObjkey.back();
-		tInfo.wstrStateKey = m_StateKey;
-		tInfo.wstrPath = m_vecAnimPath.back();
-		tInfo.fFrame = 0.f;
-		tInfo.fMax = (float)m_AnimCount;
+		tInfo.wstrObjKey	= m_vecAnimObjkey.back();
+		tInfo.wstrStateKey	= wstring(m_StateKey);
+		tInfo.wstrPath = m_vecAnimPath[i];
 		tInfo.iAnimSpeed = m_CurrentSpeed;
 
 		vecAnim.push_back(tInfo);
+
+		CTexture* pTex = new CSingleTexture;
+		pTex->Insert_Texture(tInfo.wstrPath.c_str());
+
+		vecTex.push_back(pTex);
 	}
 
-	pObj->SetAnimationInfo(wstring(str), vecAnim);
+	pObj->InsertAnimationInfo(wstring(str), vecAnim);
+	pObj->InsertAnimTexture(wstring(str), vecTex);
+
 	pObj->Set_ObjState(wstring(m_StateKey));
 
 	CToolMgr::GetInst()->UpdateAllView();

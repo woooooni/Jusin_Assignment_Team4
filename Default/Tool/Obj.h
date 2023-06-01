@@ -2,6 +2,7 @@
 
 #include "Include.h"
 
+class CTexture;
 class CObj
 {
 public:
@@ -12,8 +13,8 @@ public:
 	const wstring&	Get_ObjName() { return m_strName; }
 	void			Set_ObjName(wstring _strName) { m_strName = _strName; }
 
-	const wstring&	Get_ObjState() { return m_wstrObjKey; }
-	void			Set_ObjState(const wstring& _strKey) { m_wstrObjKey = _strKey; }
+	const wstring&	Get_ObjState() { return m_wstrStateKey; }
+	void			Set_ObjState(const wstring& _strKey) { m_wstrStateKey = _strKey; }
 
 	const OBJID		Get_ObjID()					{ return m_eID; }
 	void			Set_ObjID(OBJID _eID)		{ m_eID = _eID; }
@@ -48,9 +49,17 @@ public:
 
 public:
 	static	void				SetScroll(const D3DXVECTOR3& _vScroll)		{ m_vScroll = _vScroll; }
-	void						SetAnimationInfo(const wstring& _strObjKey, const vector<ANIMINFO_KJM> _vecAnim);
-	const vector<ANIMINFO_KJM>& GetCurAnimVec() { return m_mapAnim.find(m_wstrObjKey)->second; }
-	const int					GetAnimMapSize() { return m_mapAnim.size(); }
+	
+
+	
+	const int					GetAnimInfoMapSize()	{ return m_mapAnimInfo.size(); }
+	const int					GetAnimTexMapSize()		{ return m_mapAnimTex.size(); }
+
+	void						InsertAnimationInfo(const wstring& _strObjKey, const vector<ANIMINFO_KJM> _vecAnim);
+	void						InsertAnimTexture(const wstring& _strObjKey, const vector<CTexture*>& _vecAnim);
+
+	const vector<ANIMINFO_KJM>& GetCurAnimInfoVec() { return m_mapAnimInfo.find(m_wstrStateKey)->second; }
+	const vector<CTexture*>&	GetCurAnimTexVec()	{ return m_mapAnimTex.find(m_wstrStateKey)->second; }
 
 protected:
 	static D3DXVECTOR3					m_vScroll;
@@ -66,7 +75,9 @@ protected:
 	OBJID								m_eID;
 
 	int									m_iAnimIdx;
-	map<wstring, vector<ANIMINFO_KJM>>	m_mapAnim;
+
+	map<wstring, vector<ANIMINFO_KJM>>	m_mapAnimInfo;
+	map<wstring, vector<CTexture*>>		m_mapAnimTex;
 
 };
 

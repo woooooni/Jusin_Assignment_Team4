@@ -13,22 +13,22 @@ private:
 
 public:
 	const wstring&		Get_String() { return m_wstrFullPath; } // client
-	TEXINFO*		Get_Texture(const TCHAR* pObjKey,
+	TEXINFO*			Get_Texture(const TCHAR* pObjKey,
 									const TCHAR* pStateKey = L"",
 									const int& iCount = 0);
-	void	Set_String(wstring wstrFullPath) { m_wstrFullPath = wstrFullPath; }
+	void				Set_String(wstring wstrFullPath) { m_wstrFullPath = wstrFullPath; }
 
-	HRESULT		Insert_Texture(const TCHAR* pFilePath,
+	HRESULT				Insert_Texture(const TCHAR* pFilePath,
 								TEXTYPE eType,
 								const TCHAR* pObjKey,
 								const TCHAR* pStateKey = L"",
 								const int& iCount = 0);
-	HRESULT		Read_ImgPath(const wstring& wstrPath);
 
-	 void		Release(void);
+	HRESULT				Read_ImgPath(const wstring& wstrPath);
+	void				Release(void);
 
 public:
-	HRESULT		Load_Texture(
+	HRESULT				Load_Texture(
 		TEXTYPE eTexType, const wstring& wstrFilePath,
 		const wstring& wstrObjectKey, const wstring& wstrStateKey = L"",
 		const int& iCount = 0);

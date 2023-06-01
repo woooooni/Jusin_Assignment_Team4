@@ -58,6 +58,7 @@ void CPlayer::Render(void)
 	const TEXINFO*		pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(m_wstrObjKey.c_str(),
 		m_wstrStateKey.c_str(),
 		(int)m_tFrame.fFrame);
+
 	if (nullptr == pTexInfo)
 		return;
 

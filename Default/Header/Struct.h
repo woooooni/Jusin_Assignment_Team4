@@ -76,7 +76,6 @@ typedef struct tagTexturePath
 
 typedef struct tagAnimInfo_KJM
 {
-
 	wstring		wstrObjKey = L"";
 	wstring		wstrStateKey = L"";  // statekey 값 
 	wstring		wstrPath = L""; // 경로 정보 
@@ -85,8 +84,6 @@ typedef struct tagAnimInfo_KJM
 	float		fMax;	// 최대 이미지의 프레임 수
 
 	int			iAnimSpeed;  //애니메이션 속도 
-
-
 }ANIMINFO_KJM;
  
 

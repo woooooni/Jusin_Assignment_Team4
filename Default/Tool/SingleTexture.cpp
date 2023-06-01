@@ -91,11 +91,11 @@ HRESULT CSingleTexture::Load_Texture(const wstring & wstrFilePath, const wstring
 		nullptr,		// 이미지 정보 기록(m_pTexInfo->tImgInfo 값을 위에서 이미 채웠음)
 		nullptr,		// 팔레트 이미지 처리
 		&m_pTexInfo->pTexture);
-	//if (FAILED(hr))
-	//{
-	//	ERR_MSG(L"Failed");
-	//	return E_FAIL;
-	//}
+	if (FAILED(hr))
+	{
+		ERR_MSG(L"Failed");
+		return E_FAIL;
+	}
 
 	return S_OK;
 }

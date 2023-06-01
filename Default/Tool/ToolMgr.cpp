@@ -6,6 +6,8 @@
 #include "Device.h"
 #include "ToolView.h"
 #include "TextureMgr.h"
+#include "Texture.h"
+
 CToolMgr::CToolMgr()
 	: m_pTargetObj(nullptr)
 	, m_pMainFrm(nullptr)
@@ -28,6 +30,17 @@ void CToolMgr::SwapObj(CObj * _pSrc, CObj * _pDest)
 void CToolMgr::SaveObjData()
 {
 	// TODO :: SAVE.
+	for (auto& obj : m_vecObj)
+	{
+		if (obj->GetAnimInfoMapSize() != 4)
+		{
+			wstring strErr = obj->Get_ObjName() + L"애니메이션을 모두 세팅해야 합니다.";
+			AfxMessageBox(strErr.c_str());
+			return;
+		}
+	}
+
+
 
 }
 
@@ -95,12 +108,12 @@ void CToolMgr::RenderObj()
 	{
 		TEXINFO* pTexInfo = nullptr;
 
-		if (obj->GetAnimMapSize() > 0)
+		if (obj->GetAnimTexMapSize() > 0)
 		{
-			const vector<ANIMINFO_KJM>& vecAnim = obj->GetCurAnimVec();
-			const ANIMINFO_KJM& tAnimInfo = vecAnim[obj->Get_AnimIdx()];
+			const	vector<ANIMINFO_KJM>& vecAnimInfo = obj->GetCurAnimInfoVec();
+			const	vector<CTexture*>& vecAnimTex = obj->GetCurAnimTexVec();
 
-			pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(tAnimInfo.wstrObjKey.c_str(), tAnimInfo.wstrStateKey.c_str(), obj->Get_AnimIdx());
+			pTexInfo = vecAnimTex[obj->Get_AnimIdx()]->Get_Texture(obj->Get_ObjState().c_str());
 		}
 		else
 		{
@@ -111,9 +124,6 @@ void CToolMgr::RenderObj()
 		int iCX = pTexInfo->tImgInfo.Width;
 		int iCY = pTexInfo->tImgInfo.Height;
 		
-
-		
-
 		obj->Set_Size({ float(iCX), float(iCY), 0.f });
 
 		D3DXMatrixIdentity(&matWorld);
@@ -175,7 +185,6 @@ bool CToolMgr::ObjPicking_Dot(const D3DXVECTOR3 & vPos, const int & iIndex)
 	};
 
 	D3DXVECTOR3			vMouseDir[4]{
-
 		vPos - vPoint[0],
 		vPos - vPoint[1],
 		vPos - vPoint[2],

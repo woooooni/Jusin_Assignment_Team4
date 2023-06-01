@@ -39,31 +39,32 @@ HRESULT CTextureMgr::Insert_Texture(const TCHAR * pFilePath, TEXTYPE eType, cons
 		return false;
 	});
 
-	if (iter == m_mapTexture.end())
+	if (iter != m_mapTexture.end())
 	{
-		CTexture*		pTexture = nullptr;
+		Safe_Delete<CTexture*>(iter->second);
+		m_mapTexture.erase(iter);
+	}
+	
+	CTexture*		pTexture = nullptr;
 
-		switch (eType)
-		{
-		case TEX_SINGLE:
-			pTexture = new CSingleTexture;
-			break;
+	switch (eType)
+	{
+	case TEX_SINGLE:
+		pTexture = new CSingleTexture;
+		break;
 
-		case TEX_MULTI:
-			pTexture = new CMultiTexture;
-			break;
-		}
-
-		if (FAILED(pTexture->Insert_Texture(pFilePath, pStateKey, iCount)))
-		{
-			ERR_MSG(pFilePath);
-			return E_FAIL;
-		}
-
-		m_mapTexture.insert({ pObjKey, pTexture });
-
+	case TEX_MULTI:
+		pTexture = new CMultiTexture;
+		break;
 	}
 
+	if (FAILED(pTexture->Insert_Texture(pFilePath, pStateKey, iCount)))
+	{
+		ERR_MSG(pFilePath);
+		return E_FAIL;
+	}
+
+	m_mapTexture.insert({ pObjKey, pTexture });
 
 	return S_OK;
 }

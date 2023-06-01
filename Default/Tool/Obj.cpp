@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Obj.h"
+#include "Texture.h"
 //#include "TimeMgr.h"
 
 D3DXVECTOR3 CObj::m_vScroll{};
@@ -21,12 +22,31 @@ CObj::~CObj()
 {
 }
 
-void CObj::SetAnimationInfo(const wstring& _strObjKey, const vector<ANIMINFO_KJM> _vecAnim)
+void CObj::InsertAnimationInfo(const wstring& _strStateKey, const vector<ANIMINFO_KJM> _vecAnim)
 {
-	auto iter = m_mapAnim.find(_strObjKey);
+	auto iter = m_mapAnimInfo.find(_strStateKey);
 
-	if (iter != m_mapAnim.end())
-		m_mapAnim.erase(_strObjKey);
+	if (iter != m_mapAnimInfo.end())
+		m_mapAnimInfo.erase(_strStateKey);
 
-	m_mapAnim.insert({ _strObjKey, _vecAnim });
+	m_mapAnimInfo.insert({ _strStateKey, _vecAnim });
+}
+
+void CObj::InsertAnimTexture(const wstring & _strStateKey, const vector<CTexture*>& _vecTex)
+{
+	auto iter = m_mapAnimTex.find(_strStateKey);
+
+	if (iter != m_mapAnimTex.end())
+	{
+		auto& iterMap = m_mapAnimTex.begin();
+		while(iterMap != m_mapAnimTex.end())
+		{
+			for (UINT i = 0; i < iterMap->second.size(); ++i)
+				Safe_Delete<CTexture*>(iterMap->second[i]);
+
+			iterMap = m_mapAnimTex.erase(iterMap);
+		}
+	}
+
+	m_mapAnimTex.insert({ _strStateKey, _vecTex });
 }
