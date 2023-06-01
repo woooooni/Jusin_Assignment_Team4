@@ -28,8 +28,6 @@ public:
 public:
 	CEdit			m_EditObjName;
 	CButton			m_BtnObjNameChange;
-
-	afx_msg void	OnBnClickedObjNamechangeBtn();
 	CStatic			m_TextObjType;
 	CEdit			m_EditObjPosX;
 	CEdit			m_EditObjPosY;
@@ -37,8 +35,6 @@ public:
 	CEdit			m_EditObjScaleX;
 	CEdit			m_EditObjScaleY;
 
-	afx_msg void	OnEnChangeEditTextPositionx();
-	afx_msg void	OnEnChangeEditTextPositionY();
-	afx_msg void	OnEnChangeEditTextScaleY();
-	afx_msg void	OnEnChangeEditTextScaleX();
+	afx_msg void	OnBnClickedObjNamechangeBtn();
+	virtual BOOL	PreTranslateMessage(MSG* pMsg);
 };

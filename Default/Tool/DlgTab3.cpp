@@ -117,13 +117,21 @@ BOOL CDlgTab3::OnInitDialog()
 
 void CDlgTab3::ShowForm(int iIndex)
 {
+	CToolView* pToolView = CToolMgr::GetInst()->GetMainFrm()->GetToolView();
+
+	if (pToolView == nullptr)
+	{
+		AfxMessageBox(L"GetToolView Failed.");
+	}
 	switch (iIndex)
 	{
 	case 0:
+		pToolView->SetToolMode(EDIT_MODE::EDIT_TILE);
 		m_pTileForm->ShowWindow(SW_SHOW);
 		m_pMapForm->ShowWindow(SW_HIDE);
 		break;
 	case 1:
+		pToolView->SetToolMode(EDIT_MODE::EDIT_MAP);
 		m_pTileForm->ShowWindow(SW_HIDE);
 		m_pMapForm->ShowWindow(SW_SHOW);
 		break;

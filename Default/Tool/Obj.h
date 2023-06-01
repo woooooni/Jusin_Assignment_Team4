@@ -26,7 +26,11 @@ public:
 		D3DXVec3Normalize(&m_tInfo.vDir, &m_tInfo.vDir);
 	}
 
-	void			Set_Size(const D3DXVECTOR3 _vSize) { m_tInfo.vSize = _vSize; }
+	void			Set_Size(const D3DXVECTOR3& _vSize) { m_tInfo.vSize = _vSize; }
+	void			Set_Scale(const D3DXVECTOR3& _vScale) { m_tInfo.vScale = _vScale; }
+
+	void			Set_Angle(float _f) { m_fAngle = _f; }
+	float			Get_Angle() { return m_fAngle; }
 public:
 	virtual HRESULT		Initialize(void)	PURE;
 	virtual int			Update(void)		PURE;
@@ -34,6 +38,8 @@ public:
 	virtual void		Render(void)		PURE;
 	virtual void		Release(void)		PURE;
 
+public:
+	static	void		SetScroll(const D3DXVECTOR3& _vScroll) { m_vScroll = _vScroll; }
 protected:
 	void				Move_Frame(void);
 
@@ -41,6 +47,7 @@ protected:
 	static D3DXVECTOR3			m_vScroll;
 
 	INFO						m_tInfo;
+	float						m_fAngle;
 	FRAME						m_tFrame;
 	wstring						m_wstrObjKey = L"";
 	wstring						m_wstrStateKey = L"";

@@ -3,9 +3,11 @@
 typedef struct tagInfo
 {
 	D3DXVECTOR3		vPos;
+	D3DXVECTOR3		vSize;		// 실제 오브젝트 크기.
 	D3DXVECTOR3		vDir;
 	D3DXVECTOR3		vLook;
-	D3DXVECTOR3		vSize;
+	
+	D3DXVECTOR3		vScale;		// 오브젝트 크기 배율.
 
 	D3DXMATRIX		matWorld;
 }INFO;

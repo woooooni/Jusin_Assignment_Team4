@@ -22,9 +22,17 @@ public:
 	vector<CObj*>&		GetObjVec()					{ return m_vecObj; }
 
 public:
-	void			SetMainFrm(CMainFrame* _pMainFrm)	{ m_pMainFrm = _pMainFrm; }
-	CMainFrame*		GetMainFrm()						{ return m_pMainFrm; }
-	void UpdateAllView();
+	void				SetMainFrm(CMainFrame* _pMainFrm)	{ m_pMainFrm = _pMainFrm; }
+	CMainFrame*			GetMainFrm()						{ return m_pMainFrm; }
+	void				UpdateAllView();
+
+public:
+	void	RenderObj();
+	bool	PickObj(const D3DXVECTOR3 & vPos);
+
+private:
+	
+	bool	ObjPicking_Dot(const D3DXVECTOR3 & vPos, const int & iIndex);
 
 private:
 	vector<CObj*>		m_vecObj;

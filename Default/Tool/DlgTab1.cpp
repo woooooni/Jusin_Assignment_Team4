@@ -36,40 +36,39 @@ void CDlgTab1::DoDataExchange(CDataExchange* pDX)
 
 void CDlgTab1::Update_ObjTool()
 {
+	UpdateData(TRUE);
 	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
 	if (pObj == nullptr)
 	{
-		m_EditObjName.SetWindowTextW(L"");
-		m_TextObjType.SetWindowTextW(L"");
+		SetDlgItemText(m_EditObjName.GetDlgCtrlID(), L"");
+		SetDlgItemText(m_TextObjType.GetDlgCtrlID(), L"");
 
-		m_EditObjPosX.SetWindowTextW(L"");
-		m_EditObjPosY.SetWindowTextW(L"");
-		m_EditObjAngle.SetWindowTextW(L"");
-		m_EditObjScaleX.SetWindowTextW(L"");
-		m_EditObjScaleY.SetWindowTextW(L"");
+		SetDlgItemText(m_EditObjPosX.GetDlgCtrlID(), L"");
+		SetDlgItemText(m_EditObjPosY.GetDlgCtrlID(), L"");
+		SetDlgItemText(m_EditObjAngle.GetDlgCtrlID(), L"");
+		SetDlgItemText(m_EditObjScaleX.GetDlgCtrlID(), L"");
+		SetDlgItemText(m_EditObjScaleY.GetDlgCtrlID(), L"");
 	}
 	else
 	{
-		m_EditObjName.SetWindowTextW(pObj->Get_ObjName().c_str());
-		m_TextObjType.SetWindowTextW(STR_OBJID[(UINT)pObj->Get_ObjID()].c_str());
-
 		D3DXVECTOR3 vObjPos = pObj->Get_Info().vPos;
-		D3DXVECTOR3 vObjScale = pObj->Get_Info().vSize;
+		D3DXVECTOR3 vObjScale = pObj->Get_Info().vScale;
 
-		m_EditObjPosX.SetWindowTextW(to_wstring(vObjPos.x).c_str());
-		m_EditObjPosY.SetWindowTextW(to_wstring(vObjPos.y).c_str());
-		m_EditObjScaleX.SetWindowTextW(to_wstring(vObjScale.x).c_str());
-		m_EditObjScaleY.SetWindowTextW(to_wstring(vObjScale.y).c_str());
+		SetDlgItemText(m_EditObjName.GetDlgCtrlID(), pObj->Get_ObjName().c_str());
+		SetDlgItemText(m_TextObjType.GetDlgCtrlID(), STR_OBJID[(UINT)pObj->Get_ObjID()].c_str());
+
+		SetDlgItemText(m_EditObjPosX.GetDlgCtrlID(), to_wstring(vObjPos.x).c_str());
+		SetDlgItemText(m_EditObjPosY.GetDlgCtrlID(), to_wstring(vObjPos.y).c_str());
+		SetDlgItemText(m_EditObjAngle.GetDlgCtrlID(), to_wstring(pObj->Get_Angle()).c_str());
+		SetDlgItemText(m_EditObjScaleX.GetDlgCtrlID(), to_wstring(vObjScale.x).c_str());
+		SetDlgItemText(m_EditObjScaleY.GetDlgCtrlID(), to_wstring(vObjScale.y).c_str());
 	}
+	UpdateData(FALSE);
 }
 
 
 BEGIN_MESSAGE_MAP(CDlgTab1, CDialogEx)
 	ON_BN_CLICKED(IDC_OBJNAMECHANGE_BTN, &CDlgTab1::OnBnClickedObjNamechangeBtn)
-	ON_EN_CHANGE(IDC_EDIT_TEXT_POSITIONX, &CDlgTab1::OnEnChangeEditTextPositionx)
-	ON_EN_CHANGE(IDC_EDIT_TEXT_POSITIONY, &CDlgTab1::OnEnChangeEditTextPositionY)
-	ON_EN_CHANGE(IDC_EDIT_TEXT_SCALEY, &CDlgTab1::OnEnChangeEditTextScaleY)
-	ON_EN_CHANGE(IDC__TEXT_SCALEX, &CDlgTab1::OnEnChangeEditTextScaleX)
 END_MESSAGE_MAP()
 
 
@@ -91,82 +90,48 @@ void CDlgTab1::OnBnClickedObjNamechangeBtn()
 }
 
 
-void CDlgTab1::OnEnChangeEditTextPositionx()
+BOOL CDlgTab1::PreTranslateMessage(MSG* pMsg)
 {
-	UpdateData(TRUE);
-	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
-	if (nullptr == pObj)
-		return;
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_ESCAPE)
+		{
+			// ESC 키 이벤트에 대한 처리 추가
+			return TRUE;
+		}
+		else if (pMsg->wParam == VK_RETURN)
+		{
+			CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
+			if (nullptr == pObj)
+				return FALSE;
 
+			CString str;
 
-	CString str;
-	m_EditObjPosX.GetWindowTextW(str);
+			D3DXVECTOR3 vPos = pObj->Get_Info().vPos;
+			D3DXVECTOR3 vScale = pObj->Get_Info().vScale;
 
-	D3DXVECTOR3 vPos = pObj->Get_Info().vPos;
-	vPos.x = _tstof(str);
+			m_EditObjPosX.GetWindowTextW(str);
+			vPos.x = _tstof(str);
 
-	pObj->Set_Pos(vPos);
+			m_EditObjPosY.GetWindowTextW(str);
+			vPos.y = _tstof(str);
 
-	UpdateData(FALSE);
+			m_EditObjAngle.GetWindowTextW(str);
+			pObj->Set_Angle(_tstof(str));
+
+			m_EditObjScaleX.GetWindowTextW(str);
+			vScale.x = _tstof(str);
+
+			m_EditObjScaleY.GetWindowTextW(str);
+			vScale.y = _tstof(str);
+
+			pObj->Set_Pos(vPos);
+			pObj->Set_Scale(vScale);
+
+			CToolMgr::GetInst()->UpdateAllView();
+			return TRUE;
+		}
+	}
+	return CDialogEx::PreTranslateMessage(pMsg);
 }
-
-
-void CDlgTab1::OnEnChangeEditTextPositionY()
-{
-	UpdateData(TRUE);
-
-	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
-	if (nullptr == pObj)
-		return;
-
-
-	CString str;
-	m_EditObjPosY.GetWindowTextW(str);
-
-	D3DXVECTOR3 vPos = pObj->Get_Info().vPos;
-	vPos.y = _tstof(str);
-
-	pObj->Set_Pos(vPos);
-
-	UpdateData(FALSE);
-}
-
-void CDlgTab1::OnEnChangeEditTextScaleX()
-{
-	UpdateData(TRUE);
-	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
-	if (nullptr == pObj)
-		return;
-
-	CString str;
-	m_EditObjScaleX.GetWindowTextW(str);
-
-	D3DXVECTOR3 vSize = pObj->Get_Info().vSize;
-	vSize.x = _tstof(str);
-
-	pObj->Set_Size(vSize);
-
-	UpdateData(FALSE);
-}
-
-
-void CDlgTab1::OnEnChangeEditTextScaleY()
-{
-	UpdateData(TRUE);
-	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
-	if (nullptr == pObj)
-		return;
-
-	CString str;
-	m_EditObjScaleY.GetWindowTextW(str);
-
-	D3DXVECTOR3 vSize = pObj->Get_Info().vSize;
-	vSize.y = _tstof(str);
-
-	pObj->Set_Size(vSize);
-
-	UpdateData(FALSE);
-}
-
-
-
