@@ -80,6 +80,11 @@ void CMapToolMap::OnInitialUpdate()
 	m_MapScaleSlider.SetTicFreq(1);
 	m_MapScaleSlider.SetPageSize(1);
 
+	m_MapCombo.AddString(L"Map");
+
+	if (m_MapCombo.GetCount() > 0)
+		m_MapCombo.SetCurSel(0);
+
 }
 
 BOOL CMapToolMap::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT & rect, CWnd * pParentWnd, UINT nID, CCreateContext * pContext)
@@ -282,6 +287,9 @@ void CMapToolMap::OnMoveMapScaleSlider(NMHDR *pNMHDR, LRESULT *pResult)
 	m_pMyMap->Set_MapScale(m_fMapScale);
 	m_pMyMap->Render();
 	CDevice::Get_Instance()->Render_End();
+
+	CMiniView* pMiniview = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView()->GetDlgTab3()->GetMiniView();
+	pMiniview->Invalidate(FALSE);
 
 	*pResult = 0;
 }

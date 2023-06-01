@@ -192,9 +192,6 @@
     <ClInclude Include="FileInfo.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MapToolMap.h">
       <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
     </ClInclude>
@@ -290,9 +287,6 @@
     <ClCompile Include="FileInfo.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="MapToolMap.cpp">
       <Filter>06. FormView\03. InspectorView\Dialog_Tab\Tab3\Form</Filter>
     </ClCompile>
@@ -311,6 +305,9 @@
   <ItemGroup>
     <None Include="res\Tool.rc2">
       <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="resource.hm">
+      <Filter>헤더 파일</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

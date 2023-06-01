@@ -64,11 +64,14 @@ HRESULT CTerrain::Initialize(void)
 
 HRESULT CTerrain::Init_Tile(void)
 {
-	Release();
-
+	//Release();
+	m_vecTile.clear();
+	m_vecTile.shrink_to_fit();
 
 	m_iTileX = m_iMapWidth / TILECX + 1;
 	m_iTileY = m_iMapHeight / (TILECY / 2.f) + 1;
+
+	//m_vecTile.resize(m_iTileX * m_iTileY);
 
 	for (int i = 0; i < m_iTileY; ++i)
 	{
@@ -470,6 +473,70 @@ void CTerrain::Mini_MapRender(void)
 	}
 }
 
+void CTerrain::Load_TileRender(void)
+{
+	D3DXMATRIX	matWorld, matScale, matTrans;
+
+	TCHAR		szBuf[MIN_STR] = L"";
+	int			iIndex = 0;
+
+	CString strMapName = L"";
+
+	for (int i = 0; i < m_strMyMap.GetLength(); ++i)
+	{
+		if (0 != isdigit(m_strMyMap[i]))
+			break;
+	}
+
+	m_iTileX = m_iMapWidth / TILECX + 1;
+	m_iTileY = m_iMapHeight / (TILECY / 2.f) + 1;
+
+	//vector subscript out of range
+	//_SCL_SECURE_OUT_OF_RANGE
+	for (int i = 0; i < m_iTileY; ++i)
+	{
+		for (int j = 0; j < m_iTileX; ++j)
+		{
+			int iIndex = (i * m_iTileX) + j;
+
+			if (0 > iIndex || (size_t)iIndex >= m_vecTile.size())
+				continue;
+
+			D3DXMatrixIdentity(&matWorld);
+
+			D3DXMatrixScaling(&matScale, m_fMapScale, m_fMapScale, 0.f);
+
+			D3DXMatrixTranslation(&matTrans,
+				m_vecTile[iIndex]->vPos.x * m_fMapScale - m_pMainView->GetScrollPos(0), // 0일 경우 x 스크롤 값 얻어옴
+				m_vecTile[iIndex]->vPos.y * m_fMapScale - m_pMainView->GetScrollPos(1), // 1일 경우 y 스크롤 값 얻어옴
+				0.f);
+
+			matWorld = matScale * matTrans;
+
+
+
+			const TEXINFO*
+				pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", m_vecTile[iIndex]->byDrawID);
+
+			if (nullptr == pTexInfo)
+				return;
+
+			int iCX = pTexInfo->tImgInfo.Width;
+			int iCY = pTexInfo->tImgInfo.Height;
+
+			CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
+
+			CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture,
+					nullptr,
+					&D3DXVECTOR3(iCX / 2.f, iCY / 2.f, 0.f),
+					nullptr,
+					D3DCOLOR_ARGB(255, 255, 255, 255));
+
+		}
+	}
+}
+
+
 void CTerrain::Release(void)
 {
 	// 새로 맵을 불러올 때에도 사용할 수 있다.
@@ -478,6 +545,109 @@ void CTerrain::Release(void)
 	m_vecTile.shrink_to_fit();
 
 	//m_vecTile.clear();
+}
+
+HRESULT CTerrain::Save_TileData(const TCHAR * _pGetPath)
+{
+	HANDLE hFile = CreateFile(_pGetPath, GENERIC_WRITE, 0, 0,
+		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		ERR_MSG(L"SAVE FAILED");
+		return E_FAIL;
+	}
+
+	DWORD	dwByte = 0;
+	DWORD	dwStrByte = 0;
+
+	dwStrByte = sizeof(TCHAR) * (m_strMyMap.GetLength() + 1);
+
+	WriteFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, NULL);
+	WriteFile(hFile, m_strMyMap.GetString(), dwStrByte, &dwByte, NULL);
+
+	WriteFile(hFile, &m_iTileX, sizeof(int), &dwByte, NULL);
+	WriteFile(hFile, &m_iTileY, sizeof(int), &dwByte, NULL);
+	WriteFile(hFile, &m_fMapScale, sizeof(float), &dwByte, NULL);
+
+	DWORD	dwTileByte = 0;
+
+	for (auto iter : m_vecTile)
+	{
+		WriteFile(hFile, &iter, sizeof(TILE), &dwTileByte, NULL);
+	}
+	
+	CloseHandle(hFile);
+
+	return S_OK;
+}
+
+HRESULT CTerrain::Load_TileData(const TCHAR * _pGetPath)
+{
+
+	HANDLE hFile = CreateFile(_pGetPath, GENERIC_READ,
+		0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		ERR_MSG(L"LOAD FAILED");
+		return E_FAIL;
+	}
+
+	DWORD	dwByte = 0;
+	DWORD	dwStrByte = 0;
+
+	ReadFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, NULL);
+
+	TCHAR* pMapName = new TCHAR[dwStrByte];
+	ReadFile(hFile, pMapName, dwStrByte, &dwByte, NULL);
+
+	m_strMyMap = pMapName;
+
+	ReadFile(hFile, &m_iTileX, sizeof(int), &dwByte, NULL);
+	ReadFile(hFile, &m_iTileY, sizeof(int), &dwByte, NULL);
+	ReadFile(hFile, &m_fMapScale, sizeof(float), &dwByte, NULL);
+
+	// LoadData에서 그대로 옮겨온 부분
+	// 안되면 그대로 복붙할 것 (수정ㄴ)
+	if (!m_vecTile.empty())
+	{
+		for (auto& iter : m_vecTile)
+		{
+			Safe_Delete(iter);
+			break;
+		}
+
+		m_vecTile.clear();
+	}
+
+	DWORD	dwTlieByte = 0;
+	TILE*   pTile = nullptr;
+
+	m_vecTile.resize(m_iTileX * m_iTileY);
+
+	while (true)
+	{
+		pTile = new TILE;
+
+		ReadFile(hFile, pTile, sizeof(TILE), &dwTlieByte, nullptr);
+
+		if (0 == dwTlieByte)
+		{
+			Safe_Delete(pTile);
+			break;
+		}
+
+		m_vecTile.push_back(pTile);
+	}
+
+	CloseHandle(hFile);
+
+	// E_FAIL : 지정되지 않은 오류
+	// E_ABORT : 작업이 중단됨
+	// E_HANDLE : 유효하지 않은 핸들
+
+	return S_OK; // 작업이 성공했습니다
 }
 
 void CTerrain::Tile_Change(const D3DXVECTOR3 & vPos, const int & iDrawID)

@@ -2,6 +2,11 @@
 //
 #include "resource.h"
 
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -335,7 +340,7 @@ IDD_MAPTOOL_MAP DIALOGEX 0, 0, 189, 149
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_COMBO1_JWA,13,22,76,22,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO1_JWA,13,22,76,22,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_COMBO1_JWA
     LTEXT           "List",IDC_STATIC,14,11,12,8
     CONTROL         "",IDC_SLIDER_FORMAP_JWA,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,98,117,75,8
     CONTROL         "",IDC_PICTURE_FORMAP_JWA,"Static",SS_ETCHEDFRAME | SS_CENTERIMAGE,94,21,82,54

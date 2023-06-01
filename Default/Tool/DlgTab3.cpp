@@ -11,6 +11,7 @@
 #include "afxdialogex.h"
 #include "FileInfo.h"
 #include "ToolMgr.h"
+#include "MiniView.h"
 
 
 // CDlgTab3 대화 상자입니다.
@@ -38,42 +39,6 @@ BOOL CDlgTab3::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	//pTerrainIndex = new CTerrain;
-	/*
-	DragAcceptFiles(true);
-
-	ChangeWindowMessageFilterEx(m_hWnd, WM_DROPFILES, MSGFLT_ALLOW, NULL);
-	ChangeWindowMessageFilterEx(m_hWnd, WM_COPYDATA, MSGFLT_ALLOW, NULL);
-	ChangeWindowMessageFilterEx(m_hWnd, 0x0049, MSGFLT_ALLOW, NULL);
-
-	TCHAR szTile[MAX_STR] = L"";
-	TCHAR szIndex[MIN_STR] = L"";
-	CString strRelative = L"";
-	CString strFileName = L"";
-
-	
-	for (size_t i = 0; i < TILE_TEX; ++i)
-	{
-		TCHAR szTile[MAX_STR] = L"Tile";
-		TCHAR szIndex[MIN_STR] = L"";
-		swprintf_s(szIndex, L"%d", (int)i);
-		strFileName = lstrcat(szTile, szIndex);
-
-		strRelative = L"../Texture/Stage/Terrain/Tile";
-
-		auto iter = m_mapPngImg.find(strFileName);
-		
-		if (iter == m_mapPngImg.end())
-		{
-			CImage* pPngImg = new CImage;
-			pPngImg->Load(strRelative);
-
-			m_mapPngImg.insert({ strFileName, pPngImg });
-			m_ListBox.AddString(szTile);
-		}
-
-	}
-	*/
 	m_RadioTile.SetCheck(TRUE);
 	
 	// 맵
@@ -131,7 +96,6 @@ void CDlgTab3::ShowForm(int iIndex)
 }
 
 BEGIN_MESSAGE_MAP(CDlgTab3, CDialogEx)
-	//ON_WM_DROPFILES()
 	ON_BN_CLICKED(IDC_RADIO2_JWA, &CDlgTab3::OnBnClickedRadio2)
 	ON_BN_CLICKED(IDC_RADIO1_JWA, &CDlgTab3::OnBnClickedRadio1)
 	ON_BN_CLICKED(IDC_BUTTON1_JWA, &CDlgTab3::OnSaveData)
@@ -141,199 +105,18 @@ END_MESSAGE_MAP()
 
 // CDlgTab3 메시지 처리기입니다.
 
-void CDlgTab3::OnListBox()
-{
-	//UpdateData(TRUE);
-	
-	/*
-	CString strSelect = L"";
-
-	int iSelect = m_ListBox.GetCurSel();
-
-	if (LB_ERR == iSelect)
-		return;
-
-	m_ListBox.GetText(iSelect, strSelect);
-
-	auto iter = m_mapPngImg.find(strSelect);
-
-	if (iter == m_mapPngImg.end())
-		return;
-
-	m_TilePicControl.SetBitmap(*(iter->second));
-
-	int i = 0;
-
-	for (; i < strSelect.GetLength(); ++i)
-	{
-		if (0 != isdigit(strSelect[i]))
-			break;
-	}
-	// 현재 문자열의 index부터 count만큼 삭제한다.
-	strSelect.Delete(0, i);
-
-	// 문자열을 정수로 변환해주는 함수
-	//m_iDrawID = _tstoi(strSelect);
-	m_iDrawID = _wtoi(strSelect.GetString());
-
-	
-	CMainFrame* pFrameWnd = dynamic_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd());
-	if (nullptr == (pFrameWnd))
-		return;
-
-	CToolView* pToolView = dynamic_cast<CToolView*>(pFrameWnd->m_MainSplitter.GetPane(0, 0));
-	if (nullptr == (pToolView))
-		return;
-	
-	CDevice::Get_Instance()->Render_Begin();
-
-	const TEXINFO* pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", m_iDrawID);
-	if (nullptr == (pTexInfo))
-		return;
-
-	D3DXMATRIX mScale, mWorld, mTrans;
-	D3DXMatrixScaling(&mScale, WINCX / pTexInfo->tImgInfo.Width, WINCY / pTexInfo->tImgInfo.Height, 0.f);
-	D3DXMatrixTranslation(&mTrans, 55.f, 20.f, 0.f);
-
-	mWorld = mScale*mTrans;
-
-	CDevice::Get_Instance()->Get_Sprite()->SetTransform(&mWorld);
-
-	CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture, nullptr,
-		&D3DXVECTOR3(0.f, 0.f, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-
-	CDevice::Get_Instance()->Render_End(m_TilePicControl.m_hWnd);
-	*/
-	//UpdateData(FALSE);
-}
-
-// 파일을 끌어다 놓을 때 호출( : WM_DROPFILES)
-void CDlgTab3::OnDropFiles(HDROP hDropInfo)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	/*
-	CDialogEx::OnDropFiles(hDropInfo);	
-
-	TCHAR szFilePath[MAX_STR] = L"";
-	TCHAR szFileName[MIN_STR] = L"";
-	CString strRelative = L"";
-	CString strFileName = L"";
-
-	// DragQueryFile(hDropInfo, index, outstring, buffersize)
-	// 두 번째 인자에 -1을 전달하면 드래그 앤 드롭된 전체 파일 개수를 리턴.
-	int iCount = DragQueryFile(hDropInfo, 0xffffffff, nullptr, 0);
-
-	for (int i = 0; i < iCount; ++i)
-	{
-		DragQueryFile(hDropInfo, i, szFilePath, MAX_STR);
-
-		strRelative = CFileInfo::ConvertRelativePath(szFilePath);
-		strFileName = PathFindFileName(strRelative);
-		lstrcpy(szFileName, strFileName.GetString());
-		PathRemoveExtension(szFileName);
-
-	//	m_ListBox.AddString(szFileName);
-
-		strFileName = szFileName;
-
-		auto iter = m_mapPngImg.find(strFileName);
-
-		if (iter == m_mapPngImg.end())
-		{
-			CImage* pPngImg = new CImage;
-			pPngImg->Load(strRelative);
-
-			m_mapPngImg.insert({ strFileName, pPngImg });
-			m_ListBox.AddString(szFileName);
-		}
-	}
-
-	::DragFinish(hDropInfo);
-	*/
-}
-
 
 void CDlgTab3::OnSaveData()
 {
-	// 타일(맵) 저장
+	/*
+	CString의 버퍼는 TCHAR타입, CStringA의 버터는 char타입이다.
+	서로의 생성자에서 자동으로 변환된다.
+	*/
+	// 타일 저장
 	CFileDialog		Dlg(FALSE, L"dat", L"*.dat", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"Data Files(*.dat) | *.dat||", this);
 
 	TCHAR	szPath[MAX_PATH] = L"";
 
-	GetCurrentDirectory(MAX_PATH, szPath);
-	PathRemoveFileSpec(szPath);
-	lstrcat(szPath, L"\\SaveData");
-	Dlg.m_ofn.lpstrInitialDir = szPath;
-
-	if (IDOK == Dlg.DoModal())
-	{
-		CString		strTemp = Dlg.GetPathName().GetString();
-		const TCHAR* pGetPath = strTemp.GetString();
-
-		HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0,
-			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-
-		if (INVALID_HANDLE_VALUE == hFile)
-		{
-			ERR_MSG(L"SAVE FAILED");
-			return;
-		}
-
-		DWORD	dwByte;
-		int		iTileX = 0;
-		int		iTileY = 0;
-
-		CTerrain*		pTerrain = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain();
-		CString			strMapFile = pTerrain->m_strMyMap;
-
-		vector<TILE*>& vecTile = pTerrain->Get_VecTile();
-
-		// 타일을 몇개 깔 것인지에 대한 정보도 저장해야 한다.
-		pTerrain->Get_StageInfo(iTileX, iTileY);
-
-		WriteFile(hFile, &iTileX, sizeof(int), &dwByte, NULL);
-		WriteFile(hFile, &iTileY, sizeof(int), &dwByte, NULL);
-
-		for (auto pTile : vecTile)
-		{
-			WriteFile(hFile, pTile, sizeof(TILE), &dwByte, NULL);
-		}
-
-		WriteFile(hFile, &strMapFile, sizeof(CString), &dwByte, NULL);
-
-		CloseHandle(hFile);
-
-		/*
-		CMainFrame*		pMainFrm = dynamic_cast<CMainFrame*>(AfxGetApp()->GetMainWnd());
-		if (nullptr == pMainFrm)
-			return;
-
-		CToolView*		pTool = dynamic_cast<CToolView*>(pMainFrm->m_MainSplitter.GetPane(0, 1));
-		if (nullptr == pTool)
-			return;
-		 
-		CTerrain*		pTerrain = pTool->m_pTerrain;
-
-		vector<TILE*>& vecTile = pTerrain->Get_VecTile();
-
-		DWORD	dwByte = 0;
-
-		for (auto& iter : vecTile)
-			WriteFile(hFile, iter, sizeof(TILE), &dwByte, nullptr);
-
-		CloseHandle(hFile);
-		*/
-	}
-}
-
-void CDlgTab3::OnLoadData()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	// 목록초기화는 진행하지 않고 맵과 타일만 불러올 수 있도록 한다.
-	CFileDialog Dlg(TRUE, L"dat", L"*.dat", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"Data Files(*.dat) | *.dat||", this);
-
-	TCHAR szPath[MAX_PATH] = L"";
 	GetCurrentDirectory(MAX_PATH, szPath);
 	PathRemoveFileSpec(szPath);
 	lstrcat(szPath, L"\\SaveData");
@@ -346,54 +129,158 @@ void CDlgTab3::OnLoadData()
 		CString		strTemp = Dlg.GetPathName().GetString();
 		const TCHAR* pGetPath = strTemp.GetString();
 
-		HANDLE hFile = CreateFile(pGetPath, GENERIC_READ,
-			0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+		pTerrain->Save_TileData(pGetPath);
+/*
+		HANDLE hFile = CreateFile(pGetPath, GENERIC_WRITE, 0, 0,
+			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
 		if (INVALID_HANDLE_VALUE == hFile)
+		{
+			ERR_MSG(L"SAVE FAILED");
 			return;
+		}
 
-		DWORD	dwByte;
-		int iTileX = 0;
-		int iTileY = 0;
+		DWORD	dwByte = 0;
+		DWORD	dwStrByte = 0;
+		int		iTileX = 0;
+		int		iTileY = 0;
+		float	fScale = 0.f;
 		CString strMapName = L"";
 
-		// 새로 생성할 필요 X 이미 만들어져 있는 것에 세팅을 다시 하면 된다.
-		// 저장한 순서대로 불러와야한다.
-		// iTileX, iTileY, vecTile, strMapFile(맵이름)
+
+		//vector<TILE*>&		vecTile	   = pTerrain->Get_VecTile();
+		vector<TILE*>		vecTile = pTerrain->Get_VecTileForSave();
+
+		// 타일을 몇개 깔 것인지에 대한 정보도 저장해야 한다.
+		// 선언한 iTileX, iTileY에 값을 받아옴
 		
-		//vector<TILE*>& vecTile = pTerrain->m_vecTile;
-		vector<TILE*>& vecTile = pTerrain->Get_VecTile();
+		
+		//WriteFile(hFile, &strMapFile, sizeof(CString), &dwByte, NULL); // m_strMyMap ( Map 이름 저장 )
+		
+ 		pTerrain->Get_StageInfo(strMapName, iTileX, iTileY);
+		pTerrain->Get_MapScale(fScale);
 
-		ReadFile(hFile, &iTileX, sizeof(int), &dwByte, NULL);
-		ReadFile(hFile, &iTileY, sizeof(int), &dwByte, NULL);
+		dwStrByte = sizeof(TCHAR) * (strMapName.GetLength() + 1);
 
-		pTerrain->Get_StageInfo(iTileX, iTileY); // 불러온 iTileX, Y값 세팅 완료
+		WriteFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, NULL);
+		WriteFile(hFile, strMapName.GetString(), dwStrByte, &dwByte, NULL);
 
-		while (true)
+		WriteFile(hFile, &iTileX, sizeof(int), &dwByte, NULL); // m_iTileX 저장
+		WriteFile(hFile, &iTileY, sizeof(int), &dwByte, NULL); // m_iTileY 저장
+		WriteFile(hFile, &fScale, sizeof(float), &dwByte, NULL); // m_fMapSacle 저장
+
+		for (auto pTile : vecTile) // 타일 저장
 		{
-			TILE*	pTile = new TILE;
-			ReadFile(hFile, pTile, sizeof(TILE), &dwByte, NULL);
-
-			if (0 == dwByte)
-			{
-				Safe_Delete(pTile);
-				break;
-			}
-
-			vecTile.push_back(pTile); // vecTile 세팅 완료
+			
+			//WriteFile(hFile, &(pTile->vPos), sizeof(D3DXVECTOR3), &dwByte, NULL);
+			//WriteFile(hFile, &(pTile->vSize), sizeof(D3DXVECTOR3), &dwByte, NULL);
+			//WriteFile(hFile, &(pTile->byOption), sizeof(BYTE), &dwByte, NULL);
+			//WriteFile(hFile, &(pTile->byDrawID), sizeof(BYTE), &dwByte, NULL);
+			
+			WriteFile(hFile, pTile, sizeof(TILE), &dwByte, nullptr);
 		}
-		
-		ReadFile(hFile, &strMapName, sizeof(CString), &dwByte, NULL);
-
-		pTerrain->Set_MyMap(strMapName);
 
 		CloseHandle(hFile);
+*/
 	}
 
+}
+
+void CDlgTab3::OnLoadData()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	// List초기화는 진행하지 않고 맵과 타일만 불러올 수 있도록 한다.
+	CFileDialog Dlg(TRUE, L"dat", L"*.dat", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"Data Files(*.dat) | *.dat||", this);
+
+	TCHAR szPath[MAX_PATH] = L"";
+	GetCurrentDirectory(MAX_PATH, szPath);
+	PathRemoveFileSpec(szPath);
+	lstrcat(szPath, L"\\SaveData");
+	Dlg.m_ofn.lpstrInitialDir = szPath;
+
+	CToolView*		pToolView = CToolMgr::GetInst()->GetMainFrm()->GetToolView();
+	CTerrain*		pTerrain = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain();
+
+	// 새로 생성할 필요 X 이미 만들어져 있는 것에 세팅을 다시 하면 된다.
+	// 저장한 순서대로 불러와야한다.
+	// iTileX, iTileY, strMapFile(맵이름), vecTile
+
+	if (IDOK == Dlg.DoModal())
+	{
+		CString		strTemp = Dlg.GetPathName().GetString();
+		const TCHAR* pGetPath = strTemp.GetString();
+
+	//	HANDLE hFile = CreateFile(pGetPath, GENERIC_READ,
+	//		0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	//	ReadFile(hFile, &iTileX, sizeof(int), &dwByte, NULL);
+	//	ReadFile(hFile, &iTileY, sizeof(int), &dwByte, NULL);
+
+	//	pTerrain->Set_StageInfo(iTileX, iTileY);
+		pTerrain->Load_TileData(pGetPath);
+
+		/* 이 내용 잠시 Terrain으로 옮겨감 (Load_TileData내로)
+
+		HANDLE hFile = CreateFile(pGetPath, GENERIC_READ,
+		0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+		if (INVALID_HANDLE_VALUE == hFile)
+		return;
+
+		//DWORD	dwStrByte = 0;
+		TILE* pTile = nullptr;
+
+		// 타일 불러오기전 vecTile 이 비어있지 않은 상태라면 Clear -------------------------> vecTile가지고 오는부분이 문제인 것 같음. 체크할 것
+		vector<TILE*>& vecTile = pTerrain->Get_VecTile();
+		for_each(vecTile.begin(), vecTile.end(), CDeleteObj());
+		vecTile.clear();
+
+		// vecTile이 비워진 상황이라면
+		while (true)
+		{
+		pTile = new TILE;
+
+		//ReadFile(hFile, pTile->vPos, sizeof(D3DXVECTOR3), &dwByte, NULL);
+		//ReadFile(hFile, pTile->vSize, sizeof(D3DXVECTOR3), &dwByte, NULL);
+		//ReadFile(hFile, LPVOID(pTile->byOption), sizeof(BYTE), &dwByte, NULL);
+		//ReadFile(hFile, LPVOID(pTile->byDrawID), sizeof(BYTE), &dwByte, NULL);
+
+
+		ReadFile(hFile, pTile, sizeof(TILE), &dwByte, nullptr);
+		if (0 == dwByte)
+		{
+			Safe_Delete(pTile);
+			break;
+		}
+
+		vecTile.push_back(pTile); // vecTile 세팅 완료
+	}
+
+	CloseHandle(hFile);
+}
+
+
+		*/
+	}
+
+		//CString strMapName = L"";
+
+		/*
+		//ReadFile(hFile, &strMapName, sizeof(CString), &dwByte, NULL);
+
+		pTerrain->Set_StageInfo(iTileX, iTileY); // 불러온 iTileX, Y값 세팅 완료
+		//pTerrain->Set_MyMap(strMapName); // 맵 이름 세팅 완료
+		*/
+
 	CDevice::Get_Instance()->Render_Begin();
-	pTerrain->Render();
+	pTerrain->Map_Render();
+	pTerrain->Load_TileRender();
 	CDevice::Get_Instance()->Render_End();
-	
+
+	pToolView->Invalidate(FALSE);
+	m_pMini->Invalidate(FALSE);
+
 }
 
 void CDlgTab3::OnBnClickedRadio2()

@@ -27,26 +27,29 @@ public:
 	void		Mini_MapRender(void);
 
 	// Re-Render ÇÔ¼ö
+	void		Load_TileRender(void);
 
 public:
 	void		Set_MainView(CToolView* pMainView) { m_pMainView = pMainView; }
 	void		Set_Ratio(D3DXMATRIX* pOut, float fRatioX, float fRatioY);
 	void		Set_MyMap(CString _MyMap) { m_strMyMap = _MyMap; }
 	void		Set_MapScale(float _fScale) { m_fMapScale = _fScale; }
-	float		Get_MapScale() { return m_fMapScale; }
+	void		Set_StageInfo(int _iX, int _iY)
+	{
+		m_iTileX = _iX;
+		m_iTileY = _iY;
+	}
 
 public:
+	vector<TILE*>		Get_VecTileForSave(void) { return m_vecTile; }
 	vector<TILE*>&		Get_VecTile(void) { return m_vecTile; }
-	vector<TILE*>*		Get_VecTilePtr(void) { return &m_vecTile; }
 	vector<MAP*>&		Get_VecMap(void) { return m_vecMap; }
+	void				Get_MapScale(float _fScale) { _fScale = m_fMapScale; }
 	int					Get_TileIndex(const D3DXVECTOR3& vPos);
-	void				Get_StageInfo(int& _iX, int& _iY)
-	{
-		_iX = m_iTileX;
-		_iY = m_iTileY;
-	}
-	//CString				Get_MapFileName() { return}
+	HRESULT				Save_TileData(const TCHAR* _pGetPath);
+	HRESULT				Load_TileData(const TCHAR* _pGetPath);
 
+public:
 	void	Tile_Change(const D3DXVECTOR3& vPos, const int& iDrawID);
 	bool	Picking(const D3DXVECTOR3& vPos, const int& iIndex);
 	bool	Picking_Dot(const D3DXVECTOR3& vPos, const int& iIndex);
