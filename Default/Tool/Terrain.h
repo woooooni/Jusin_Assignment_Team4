@@ -34,23 +34,15 @@ public:
 	void		Set_Ratio(D3DXMATRIX* pOut, float fRatioX, float fRatioY);
 	void		Set_MyMap(CString _MyMap) { m_strMyMap = _MyMap; }
 	void		Set_MapScale(float _fScale) { m_fMapScale = _fScale; }
-	void		Set_StageInfo(int _iX, int _iY)
+	void		Set_MapInfo(int _iWidth, int _iHeight)
 	{
-		m_iTileX = _iX;
-		m_iTileY = _iY;
+		m_iMapWidth = _iWidth;
+		m_iMapHeight = _iHeight;
 	}
 
 public:
-	vector<TILE*>		Get_VecTileForSave(void) { return m_vecTile; }
-	vector<TILE*>&		Get_VecTile(void) { return m_vecTile; }
-	vector<MAP*>&		Get_VecMap(void) { return m_vecMap; }
 	float				Get_MapScale() { return m_fMapScale; }
 	int					Get_TileIndex(const D3DXVECTOR3& vPos);
-	void				Get_StageInfo(int& _iX, int& _iY)
-	{
-		_iX = m_iTileX;
-		_iY = m_iTileY;
-	}
 	HRESULT				Save_TileData(const TCHAR* _pGetPath);
 	HRESULT				Load_TileData(const TCHAR* _pGetPath);
 
@@ -58,7 +50,6 @@ public:
 	void	Tile_Change(const D3DXVECTOR3& vPos, const int& iDrawID);
 	bool	Picking_Dot(const D3DXVECTOR3& vPos, const int& iIndex);
 	
-
 public:
 	INFO	m_tInfo;
 
@@ -70,12 +61,10 @@ public:
 
 public:
 	// Map ฐüทร
-	vector<MAP*>		m_vecMap;
+	CToolView*			m_pMainView;
 	CString				m_strMyMap;
 	int					m_iMapWidth;
 	int					m_iMapHeight;
 	float				m_fMapScale;
-	CToolView*			m_pMainView;
-
 };
 

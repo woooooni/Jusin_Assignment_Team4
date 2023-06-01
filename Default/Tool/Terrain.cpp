@@ -26,7 +26,7 @@ HRESULT CTerrain::Initialize(void)
 		AfxMessageBox(L"TileTexture Create Failed");
 		return E_FAIL;
 	}
-
+	/*
 	m_iTileX = m_iMapWidth / TILECX + 1;
 	m_iTileY = m_iMapHeight / (TILECY / 2.f) + 1;
 	
@@ -47,7 +47,7 @@ HRESULT CTerrain::Initialize(void)
 			m_vecTile.push_back(pTile);
 		}
 	}
-	
+	*/
 	// 맵 Texture
 	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(L"../Texture/Stage/Terrain/Map/Map%d.png", TEX_MULTI, L"Map", L"Map", 5)))
 	{
@@ -61,27 +61,23 @@ HRESULT CTerrain::Initialize(void)
 		return E_FAIL;
 	}
 
-	return S_OK;
+	//Render();
 
-	Render();
+	return S_OK;
 }
 
 HRESULT CTerrain::Init_Tile(void)
 {
-	//Release();
-	m_vecTile.clear();
-	m_vecTile.shrink_to_fit();
+	Release();
 
 	m_iTileX = m_iMapWidth / TILECX + 1;
 	m_iTileY = m_iMapHeight / (TILECY / 2.f) + 1;
-
-	//m_vecTile.resize(m_iTileX * m_iTileY);
 
 	for (int i = 0; i < m_iTileY; ++i)
 	{
 		for (int j = 0; j < m_iTileX; ++j)
 		{
-			TILE*		pTile = new TILE;
+			TILE*	pTile = new TILE;
 
 			float	fX = (j * TILECX) + ((i % 2) * (TILECX / 2.f));
 			float	fY = i * (TILECY / 2.f);
@@ -267,6 +263,8 @@ void CTerrain::Mini_TileRender(void)
 {
 	D3DXMATRIX	matWorld, matScale, matTrans;
 
+	CToolView*			pToolView = CToolMgr::GetInst()->GetMainFrm()->GetToolView();
+
 	if (!m_vecTile.empty()) // 맵 변경시 Tile vec clear하기 때문
 	{
 		for (int i = 0; i < m_iTileY; ++i)
@@ -281,8 +279,8 @@ void CTerrain::Mini_TileRender(void)
 				D3DXMatrixIdentity(&matWorld);
 				D3DXMatrixScaling(&matScale, m_fMapScale, m_fMapScale, 0.f);
 				D3DXMatrixTranslation(&matTrans,
-					m_vecTile[iIndex]->vPos.x * m_fMapScale,
-					m_vecTile[iIndex]->vPos.y * m_fMapScale,
+					m_vecTile[iIndex]->vPos.x * m_fMapScale - pToolView->GetScrollPos(0),
+					m_vecTile[iIndex]->vPos.y * m_fMapScale - pToolView->GetScrollPos(1),
 					0.f);
 
 				matWorld = matScale * matTrans;
@@ -332,11 +330,10 @@ void CTerrain::Mini_MapRender(void)
 		const TEXINFO*		pTexture = CTextureMgr::Get_Instance()->Get_Texture(
 			cstrObjKey, cstrStateKey, iCount);
 
-
 		m_iMapHeight = pTexture->tImgInfo.Height;
 		m_iMapWidth = pTexture->tImgInfo.Width;
 
-		CToolView*				pToolView = CToolMgr::GetInst()->GetMainFrm()->GetToolView();
+		CToolView*			pToolView = CToolMgr::GetInst()->GetMainFrm()->GetToolView();
 
 		D3DXMatrixScaling(&matScale, m_fMapScale, m_fMapScale, 0.f);
 		D3DXMatrixTranslation(&matTrans,
@@ -359,6 +356,10 @@ void CTerrain::Mini_MapRender(void)
 
 void CTerrain::Load_TileRender(void)
 {
+	CToolView* pToolView = CToolMgr::GetInst()->GetMainFrm()->GetToolView();
+	RECT rc{};
+	GetClientRect(pToolView->m_hWnd, &rc);
+
 	D3DXMATRIX	matWorld, matScale, matTrans;
 
 	TCHAR		szBuf[MIN_STR] = L"";
@@ -371,9 +372,6 @@ void CTerrain::Load_TileRender(void)
 		if (0 != isdigit(m_strMyMap[i]))
 			break;
 	}
-
-	m_iTileX = m_iMapWidth / TILECX + 1;
-	m_iTileY = m_iMapHeight / (TILECY / 2.f) + 1;
 
 	//vector subscript out of range
 	//_SCL_SECURE_OUT_OF_RANGE
@@ -391,8 +389,8 @@ void CTerrain::Load_TileRender(void)
 			D3DXMatrixScaling(&matScale, m_fMapScale, m_fMapScale, 0.f);
 
 			D3DXMatrixTranslation(&matTrans,
-				m_vecTile[iIndex]->vPos.x * m_fMapScale - m_pMainView->GetScrollPos(0), // 0일 경우 x 스크롤 값 얻어옴
-				m_vecTile[iIndex]->vPos.y * m_fMapScale - m_pMainView->GetScrollPos(1), // 1일 경우 y 스크롤 값 얻어옴
+				m_vecTile[iIndex]->vPos.x * m_fMapScale - pToolView->GetScrollPos(0), // 0일 경우 x 스크롤 값 얻어옴
+				m_vecTile[iIndex]->vPos.y * m_fMapScale - pToolView->GetScrollPos(1), // 1일 경우 y 스크롤 값 얻어옴
 				0.f);
 
 			matWorld = matScale * matTrans;
@@ -455,7 +453,11 @@ HRESULT CTerrain::Save_TileData(const TCHAR * _pGetPath)
 
 	for (auto iter : m_vecTile)
 	{
-		WriteFile(hFile, &iter, sizeof(TILE), &dwTileByte, NULL);
+		//WriteFile(hFile, &iter, sizeof(TILE), &dwTileByte, NULL);
+		WriteFile(hFile, &(iter->vPos), sizeof(D3DXVECTOR3), &dwTileByte, NULL);
+		WriteFile(hFile, &(iter->vSize), sizeof(D3DXVECTOR3), &dwTileByte, NULL);
+		WriteFile(hFile, &(iter->byOption), sizeof(BYTE), &dwTileByte, NULL);
+		WriteFile(hFile, &(iter->byDrawID), sizeof(BYTE), &dwTileByte, NULL);
 	}
 	
 	CloseHandle(hFile);
@@ -489,14 +491,11 @@ HRESULT CTerrain::Load_TileData(const TCHAR * _pGetPath)
 	ReadFile(hFile, &m_iTileY, sizeof(int), &dwByte, NULL);
 	ReadFile(hFile, &m_fMapScale, sizeof(float), &dwByte, NULL);
 
-	// LoadData에서 그대로 옮겨온 부분
-	// 안되면 그대로 복붙할 것 (수정ㄴ)
 	if (!m_vecTile.empty())
 	{
 		for (auto& iter : m_vecTile)
 		{
 			Safe_Delete(iter);
-			break;
 		}
 
 		m_vecTile.clear();
@@ -505,13 +504,17 @@ HRESULT CTerrain::Load_TileData(const TCHAR * _pGetPath)
 	DWORD	dwTlieByte = 0;
 	TILE*   pTile = nullptr;
 
-	m_vecTile.resize(m_iTileX * m_iTileY);
+	//m_vecTile.resize(m_iTileX * m_iTileY);
 
 	while (true)
 	{
 		pTile = new TILE;
 
-		ReadFile(hFile, pTile, sizeof(TILE), &dwTlieByte, nullptr);
+		//ReadFile(hFile, pTile, sizeof(TILE), &dwTlieByte, nullptr);
+		ReadFile(hFile, pTile->vPos, sizeof(D3DXVECTOR3), &dwTlieByte, NULL);
+		ReadFile(hFile, pTile->vSize, sizeof(D3DXVECTOR3), &dwTlieByte, NULL);
+		ReadFile(hFile, &(pTile->byOption), sizeof(BYTE), &dwTlieByte, NULL);
+		ReadFile(hFile, &(pTile->byDrawID), sizeof(BYTE), &dwTlieByte, NULL);
 
 		if (0 == dwTlieByte)
 		{

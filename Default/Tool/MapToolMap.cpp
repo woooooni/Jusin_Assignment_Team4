@@ -17,7 +17,6 @@ IMPLEMENT_DYNCREATE(CMapToolMap, CFormView)
 CMapToolMap::CMapToolMap()
 	: CFormView(IDD_MAPTOOL_MAP)
 {
-	//ZeroMemory(&m_tMapData, sizeof(MAP));
 }
 
 CMapToolMap::~CMapToolMap()
@@ -80,8 +79,6 @@ void CMapToolMap::OnInitialUpdate()
 	m_MapScaleSlider.SetTicFreq(1);
 	m_MapScaleSlider.SetPageSize(1);
 
-	m_MapCombo.AddString(L"Map");
-
 	if (m_MapCombo.GetCount() > 0)
 		m_MapCombo.SetCurSel(0);
 
@@ -93,7 +90,6 @@ BOOL CMapToolMap::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dw
 }
 
 BEGIN_MESSAGE_MAP(CMapToolMap, CFormView)
-	ON_CBN_SELCHANGE(IDC_COMBO1_JWA, &CMapToolMap::OnSelectMap)
 	ON_LBN_SELCHANGE(IDC_MAPLIST_JWA, &CMapToolMap::OnListBox)
 	ON_BN_CLICKED(IDC_BUTTON_APPLY_JWA, &CMapToolMap::OnBnClickedButtonApply)
 	ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_SLIDER_FORMAP_JWA, &CMapToolMap::OnMoveMapScaleSlider)
@@ -119,77 +115,14 @@ void CMapToolMap::Dump(CDumpContext& dc) const
 
 // CMapToolMap 메시지 처리기입니다.
 
-
-void CMapToolMap::OnSelectMap()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	/*
-	CString strSelect = L"";
-
-	int iSelect = m_MapCombo.GetCurSel();
-
-	if (LB_ERR == iSelect)
-		return;
-
-	m_MapCombo.GetLBText(iSelect, strSelect);
-
-	auto iter = m_mapPngImg.find(strSelect);
-	if (iter == m_mapPngImg.end())
-		return;
-
-	//m_MapPicControl.SetBitmap(*(iter->second));
-
-	int i = 0;
-	for (; i < strSelect.GetLength(); ++i)
-	{
-		if (0 != isdigit(strSelect[i]))
-			break;
-	}
-	// 현재 문자열의 index부터 count만큼 삭제한다.
-	strSelect.Delete(0, i);
-
-	// 문자열을 정수로 변환해주는 함수
-	m_iDrawID = _tstoi(strSelect);
-
-	CDevice::Get_Instance()->Render_Begin();
-
-	CMainFrame* pFrameWnd = dynamic_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd());
-	CToolView* pToolView = dynamic_cast<CToolView*>(pFrameWnd->m_SecondSplitter.GetPane(0, 0));
-
-	const TEXINFO* pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Map", L"Map", m_iDrawID);
-	if (nullptr == (pTexInfo))
-		return;
-
-	D3DXMATRIX mScale, mWorld, mTrans;
-	D3DXMatrixScaling(&mScale, WINCX / pTexInfo->tImgInfo.Width * 0.9f, WINCY / pTexInfo->tImgInfo.Height, 0.f);
-	D3DXMatrixTranslation(&mTrans, 55.f, 20.f, 0.f);
-
-	mWorld = mScale * mTrans;
-
-	CDevice::Get_Instance()->Get_Sprite()->SetTransform(&mWorld);
-
-	CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture, nullptr,
-		&D3DXVECTOR3(0.f, 0.f, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-
-	CDevice::Get_Instance()->Render_End(m_MapPicControl.m_hWnd);
-	*/
-}
-
 // 맵을 선택할 경우
 void CMapToolMap::OnListBox()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	// 맵 Preview까지만 OnListBox에서 진행.
-	// ToolView반영은 Apply버튼으로 옮길 것.
-	//UpdateData(TRUE);
-
 	int iSelect = m_MapListBox.GetCurSel();
 
 	if (LB_ERR == iSelect)
 		return;
 
-	// 맵 이름을 가지고 Terrain 내 함수를 이용해 세팅
 	CString strMapName = L"";
 	m_MapListBox.GetText(iSelect, strMapName);
 
@@ -222,6 +155,17 @@ void CMapToolMap::OnListBox()
 	if (nullptr == (pTexInfo))
 		return;
 
+	// 미리 MapHeight와 Width를 설정함.
+	const TEXINFO*		pTexture = CTextureMgr::Get_Instance()->Get_Texture(
+		L"Map", L"Map", m_iDrawID);
+	
+	int iMapHeight = pTexture->tImgInfo.Height;
+	int iMapWidth = pTexture->tImgInfo.Width;
+
+	CTerrain*		pTerrain = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain();
+	pTerrain->Set_MapInfo(iMapWidth, iMapHeight);
+	//
+
 	D3DXMATRIX mScale, mWorld, mTrans;
 	D3DXMatrixScaling(&mScale, WINCX / pTexInfo->tImgInfo.Width * 1.2f, WINCY / pTexInfo->tImgInfo.Height * 1.2f, 0.f);
 	D3DXMatrixTranslation(&mTrans, 10.f, 10.f, 0.f);
@@ -234,57 +178,43 @@ void CMapToolMap::OnListBox()
 		&D3DXVECTOR3(0.f, 0.f, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 	CDevice::Get_Instance()->Render_End(m_MapPicControl.m_hWnd);
-
-	//GetDlgItem(IDC_STATE_SIZE_JWA)->Invalidate(FALSE);
-
-	//UpdateData(FALSE);
 }
 
 void CMapToolMap::Set_Text_MapInfo(UINT _width, UINT _height)
 {
-	// 가로 세로 픽셀 길이 출력되도록 설정 예정
 	TCHAR szBuffer[MIN_STR];
 	wsprintf(szBuffer, L"%d x %d", _width, _height);
 
 	SetDlgItemText(IDC_STATE_SIZE_JWA, szBuffer);
-
-	//this->Invalidate(FALSE);
 }
 
 
 void CMapToolMap::OnBnClickedButtonApply()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_MapScaleSlider.SetPos(100);
+	m_pMyMap->Set_MapScale(1.f);
 
-	//m_pMyMap->Release();	 // 기존에 출력되던 타일 삭제 후
-	//m_pMyMap->Initialize();
 	m_pMyMap->Init_Tile();
-	m_pMyMap->Render();		 // 다시 Render
+	m_pMyMap->Render();
 
+	CToolView* pToolView = CToolMgr::GetInst()->GetMainFrm()->GetToolView();
 	CMiniView* pMiniview = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView()->GetDlgTab3()->GetMiniView();
 
+	// Apply버튼 눌렀을 경우 listbox 선택 해제시킴
+	m_MapListBox.SetCurSel(-1);
+
+	pToolView->Invalidate(FALSE);
 	pMiniview->Invalidate(FALSE);
 }
 
 
 void CMapToolMap::OnMoveMapScaleSlider(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	//wchar_t szScale[MIN_STR] = L"x";
-	//SetDlgItemText(IDC_SCALETXT_JWA, szScale);
-	//wcout << szScale << endl;
-	//UpdateData(FALSE);
-
-	// GetPos : 슬라이더의 현재 위치를 검색하는 함수
 	int iBarPos = m_MapScaleSlider.GetPos();
-	//m_fMapScale = m_fMapScale * iBarPos;
 	m_fMapScale = 0.2f + (0.008f * iBarPos);
-	// 100으로 세팅되어있는 상황에서 0.2f + 0.8f = 1.f가 됨.
+	m_pMyMap->Set_MapScale(m_fMapScale);
 
 	CDevice::Get_Instance()->Render_Begin();
-	// Scale setting -> Render
-	m_pMyMap->Set_MapScale(m_fMapScale);
 	m_pMyMap->Render();
 	CDevice::Get_Instance()->Render_End();
 

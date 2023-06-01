@@ -28,9 +28,9 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 public:
-	afx_msg void OnSelectMap();
 	afx_msg void OnListBox(); // 리스트 박스에서 맵 선택시 -> preview에 이미지 반영
 	afx_msg void OnBnClickedButtonApply();
+	afx_msg void OnMoveMapScaleSlider(NMHDR *pNMHDR, LRESULT *pResult);
 
 public:
 	float		Get_MapSacle(void) { return m_fMapScale; }
@@ -44,23 +44,16 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	MAP								m_tMapData;
-
-	int								m_iDrawID = 0;
+	int			m_iDrawID = 0;
+	float		m_fMapScale = 1.f;
 	CComboBox						m_MapCombo;
 	CListBox						m_MapListBox;
 	CSliderCtrl						m_MapScaleSlider; // 맵 배율 조절 slider
 	CStatic							m_MapPicControl; // 맵 preview pic control
-	CTerrain*						m_pMyMap;
-
-	map<CString, CImage*>			m_mapPngImg;
 	CButton							m_ButtonApply;
 
-private:
-	float		m_fMapScale;
-
-public:
-	afx_msg void OnMoveMapScaleSlider(NMHDR *pNMHDR, LRESULT *pResult);
+	map<CString, CImage*>			m_mapPngImg;
+	CTerrain*						m_pMyMap;
 };
 
 
