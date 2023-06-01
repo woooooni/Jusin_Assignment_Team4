@@ -226,12 +226,12 @@ void CHierarchyFormView::OnBnClickedSaveButton()
 void CHierarchyFormView::OnLbnSelchangeHierarchyList()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	/*int iSelect = m_HiararchyList.GetCurSel();
+	int iSelect = m_HiararchyList.GetCurSel();
 
 	if (LB_ERR == iSelect)
 		return;
 
 	CToolMgr::GetInst()->SetTargetObj(iSelect);
-	CToolMgr::GetInst()->UpdateAllView();*/
+	CToolMgr::GetInst()->UpdateAllView();
 }
 

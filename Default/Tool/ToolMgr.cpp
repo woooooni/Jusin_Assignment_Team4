@@ -33,7 +33,7 @@ void CToolMgr::SaveObjData()
 
 void CToolMgr::LoadObjData()
 {
-
+	// TODO :: LoadObjData
 }
 
 void CToolMgr::SetTargetObj(int _iIdx)
