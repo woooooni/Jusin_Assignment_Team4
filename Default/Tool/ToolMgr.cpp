@@ -93,11 +93,26 @@ void CToolMgr::RenderObj()
 
 	for (auto& obj : m_vecObj)
 	{
-		const TEXINFO* pTexInfo
-			= CTextureMgr::Get_Instance()->Get_Texture(L"Monster", L"Dash", 5);
+		TEXINFO* pTexInfo = nullptr;
+
+		if (obj->GetAnimMapSize() > 0)
+		{
+			const vector<ANIMINFO_KJM>& vecAnim = obj->GetCurAnimVec();
+			const ANIMINFO_KJM& tAnimInfo = vecAnim[obj->Get_AnimIdx()];
+
+			pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(tAnimInfo.wstrObjKey.c_str(), tAnimInfo.wstrStateKey.c_str(), obj->Get_AnimIdx());
+		}
+		else
+		{
+			pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(obj->Get_ObjKey().c_str(), L"Dash", obj->Get_AnimIdx());
+		}
+
 
 		int iCX = pTexInfo->tImgInfo.Width;
 		int iCY = pTexInfo->tImgInfo.Height;
+		
+
+		
 
 		obj->Set_Size({ float(iCX), float(iCY), 0.f });
 
@@ -121,6 +136,10 @@ void CToolMgr::RenderObj()
 			D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
 		
+
+
+
+
 }
 
 bool CToolMgr::ObjPicking_Dot(const D3DXVECTOR3 & vPos, const int & iIndex)

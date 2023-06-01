@@ -20,6 +20,9 @@ HRESULT CMonster::Initialize(void)
 		AfxMessageBox(L"TileTexture Create Failed");
 		return E_FAIL;
 	}
+
+	m_wstrObjKey = L"Monster";
+	m_wstrStateKey = L"Dash";
 	return E_NOTIMPL;
 }
 

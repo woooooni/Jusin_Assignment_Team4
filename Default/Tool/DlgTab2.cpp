@@ -6,7 +6,11 @@
 #include "DlgTab2.h"
 #include "afxdialogex.h"
 #include "FileInfo.h"  //  파일 명 다듬는 용 
-
+#include "ToolMgr.h"
+#include "MainFrm.h"
+#include "InspectorFormView.h"
+#include "Obj.h"
+#include "ToolView.h"
 
 // CDlgTab2 대화 상자입니다.
 
@@ -136,6 +140,12 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 
 
 
+		PathRemoveFileSpec(szFilePath);
+		PathRemoveFileSpec(szFilePath);
+		CString strObjkey = PathFindFileName(szFilePath);
+	
+
+
 		strFileName = szFileName;
 
 		auto	iter = m_mapPngImg.find(strFileName);
@@ -147,6 +157,10 @@ void CDlgTab2::OnDropFiles(HDROP hDropInfo)
 
 
 			m_vecPicturePath.push_back(strRelative);  // 드롭 파일 할 때 경로 저장 
+			m_vecPictureObjkey.push_back(strObjkey);
+
+
+
 			m_mapPngImg.insert({ strFileName, pPngImg });
 			m_PictureListBox.AddString(szFileName);
 		}
@@ -339,7 +353,7 @@ void CDlgTab2::OnBnClickedButtonAdd()
 
 
 	m_vecAnimPath.push_back(m_vecPicturePath[iSelect]);
-
+	m_vecAnimObjkey.push_back(m_vecPictureObjkey[iSelect]);
 
 	UpdateData(FALSE);
 }
@@ -438,15 +452,21 @@ void CDlgTab2::OnTimer(UINT_PTR nIDEvent)
 	if (iter == m_mapPngImg.end())
 		return;
 
+	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
+	if (pObj != nullptr)
+	{
+		//pObj->Set_AnimIndex(m_nCurrentIndex);
+		CToolMgr::GetInst()->RenderObj();
+	}
 
+	
+
+	// 애니메이션 뷰에서 보여줄 친구
 	CRect rect;//픽쳐 컨트롤의 크기를 저장할 CRect 객체
 	m_AnimPicture.GetWindowRect(rect);//GetWindowRect를 사용해서 픽쳐 컨트롤의 크기를 받는다.
 	CDC* dc; //픽쳐 컨트롤의 DC를 가져올  CDC 포인터
 	dc = m_AnimPicture.GetDC(); //픽쳐 컨트롤의 DC를 얻는다.
 	(*iter->second).StretchBlt(dc->m_hDC, 0, 0, rect.Width(), rect.Height(), SRCCOPY);//이미지를 픽쳐 컨트롤 크기로 조정
-	
-
-
 }
 	
 
@@ -575,10 +595,14 @@ void CDlgTab2::OnBnClickedButtonAllKjm()
 		// 2. 가져온 항목을 대상 리스트 박스로 옮기기
 		pDestListBox->AddString(strItemText);
 
-
+		m_vecAnimPath.push_back(m_vecPicturePath[iSelect]);
+		m_vecAnimObjkey.push_back(m_vecPictureObjkey[iSelect]);
 		// 3. 원본 리스트 박스에서 선택된 항목 제거
 		//pSrcListBox->DeleteString(nCurSel);
 		iSelect++;
+
+
+
 	}
 
 
@@ -611,8 +635,33 @@ void CDlgTab2::OnCbnSelchangeComboStatekeyKjm()
 // 애니메이션 적용 버튼
 void CDlgTab2::OnBnClickedButtonApplyAniminfoKjm()
 {
+	CObj* pObj = CToolMgr::GetInst()->GetTargetedObj();
+	if (pObj == nullptr)
+		return;
+	CString str;
+	GetDlgItemText(IDC_COMBO_STATEKEY_KJM, str);
 
+	vector<ANIMINFO_KJM> vecAnim;
 
+	int iCount = m_vecAnimPath.size();
+	for (UINT i = 0; i < iCount; ++i)
+	{
+		ANIMINFO_KJM tInfo;
 
+		// TODO :: Obj키 세팅.
+		//tInfo.wstrObjKey;
+		tInfo.wstrObjKey = m_vecAnimObjkey.back();
+		tInfo.wstrStateKey = m_StateKey;
+		tInfo.wstrPath = m_vecAnimPath.back();
+		tInfo.fFrame = 0.f;
+		tInfo.fMax = (float)m_AnimCount;
+		tInfo.iAnimSpeed = m_CurrentSpeed;
 
+		vecAnim.push_back(tInfo);
+	}
+
+	pObj->SetAnimationInfo(wstring(str), vecAnim);
+	pObj->Set_ObjState(wstring(m_StateKey));
+
+	CToolMgr::GetInst()->UpdateAllView();
 }

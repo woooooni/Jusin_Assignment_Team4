@@ -91,6 +91,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	CObj::SetScroll({ float(GetScrollPos(0)), float(GetScrollPos(1)), 0 });
+
 	CDevice::Get_Instance()->Render_Begin();
 
 	m_pTerrain->Render();
@@ -173,10 +174,10 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	if (m_eEditMode == EDIT_MODE::EDIT_TILE)
 	{
-		CInspectorFormView*	pInspectorForm	= CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
-		CDlgTab3*			pMapTool		= pInspectorForm->dlg3;
-		CMapToolTile*		pTileTool		= pMapTool->m_pTileForm;
-		CMiniView*			pMiniview		= pMapTool->GetMiniView();
+		CInspectorFormView*	pInspectorForm	=	CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
+		CDlgTab3*			pMapTool		=	pInspectorForm->dlg3;
+		CMapToolTile*		pTileTool		=	pMapTool->m_pTileForm;
+		CMiniView*			pMiniview		=	pMapTool->GetMiniView();
 
 		if (m_bIsSelectTile)
 		{

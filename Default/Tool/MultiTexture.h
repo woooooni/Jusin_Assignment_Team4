@@ -9,7 +9,7 @@ public:
 	virtual ~CMultiTexture();
 
 public:
-	virtual const TEXINFO * Get_Texture(const TCHAR * pStateKey = L"", const int & iCount = 0) override;
+	virtual TEXINFO * Get_Texture(const TCHAR * pStateKey = L"", const int & iCount = 0) override;
 	virtual HRESULT Insert_Texture(const TCHAR * pFilePath, const TCHAR * pStateKey = L"", const int & iCount = 0) override;
 	virtual void Release(void) override;
 

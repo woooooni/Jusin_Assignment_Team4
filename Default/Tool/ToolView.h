@@ -76,7 +76,6 @@ public:
 	bool			m_bIsSelectTile = false;
 	int				m_iTileIndex;
 
-
 private:
 	EDIT_MODE		m_eEditMode;
 

@@ -12,7 +12,7 @@ private:
 	~CTextureMgr();
 
 public:
-	const TEXINFO*		Get_Texture(const TCHAR* pObjKey,
+	TEXINFO*		Get_Texture(const TCHAR* pObjKey,
 									const TCHAR* pStateKey = L"",
 									const int& iCount = 0);
 

@@ -9,7 +9,7 @@ public:
 
 public:
 	// CTexture을(를) 통해 상속됨
-	virtual const TEXINFO * Get_Texture(const TCHAR * pStateKey = L"", const int & iCount = 0) override
+	virtual TEXINFO* Get_Texture(const TCHAR * pStateKey = L"", const int & iCount = 0) override
 	{
 		return m_pTexInfo;
 	}
