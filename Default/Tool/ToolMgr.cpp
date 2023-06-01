@@ -96,6 +96,11 @@ void CToolMgr::RenderObj()
 		const TEXINFO* pTexInfo
 			= CTextureMgr::Get_Instance()->Get_Texture(L"Monster", L"Dash", 5);
 
+		int iCX = pTexInfo->tImgInfo.Width;
+		int iCY = pTexInfo->tImgInfo.Height;
+
+		obj->Set_Size({ float(iCX), float(iCY), 0.f });
+
 		D3DXMatrixIdentity(&matWorld);
 
 		D3DXMatrixScaling(&matScale, fMapScale, fMapScale, 0.f);
@@ -107,9 +112,6 @@ void CToolMgr::RenderObj()
 
 		matWorld = matScale * matTrans;
 		pTerrain->Set_Ratio(&matWorld, fX, fY);
-
-		int iCX = pTexInfo->tImgInfo.Width;
-		int iCY = pTexInfo->tImgInfo.Height;
 
 		CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
 		CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture,

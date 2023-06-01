@@ -168,16 +168,15 @@ CToolDoc* CToolView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지
 void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
 	CScrollView::OnLButtonDown(nFlags, point);
 
 
 	if (m_eEditMode == EDIT_MODE::EDIT_TILE)
 	{
-		CInspectorFormView*	pInspectorForm = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
-		CDlgTab3*			pMapTool = pInspectorForm->dlg3;
-		CMapToolTile*		pTileTool = pMapTool->m_pTileForm;
-		CMiniView*			pMiniview = pMapTool->GetMiniView();
+		CInspectorFormView*	pInspectorForm	= CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
+		CDlgTab3*			pMapTool		= pInspectorForm->dlg3;
+		CMapToolTile*		pTileTool		= pMapTool->m_pTileForm;
+		CMiniView*			pMiniview		= pMapTool->GetMiniView();
 
 		if (m_bIsSelectTile)
 		{
@@ -200,10 +199,10 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		if (m_eEditMode == EDIT_MODE::EDIT_TILE)
 		{
-			CInspectorFormView*	pInspectorForm = CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
-			CDlgTab3*			pMapTool = pInspectorForm->dlg3;
-			CMapToolTile*		pTileTool = pMapTool->m_pTileForm;
-			CMiniView*			pMiniview = pMapTool->GetMiniView();
+			CInspectorFormView*	pInspectorForm	= CToolMgr::GetInst()->GetMainFrm()->GetInspectorView();
+			CDlgTab3*			pMapTool		= pInspectorForm->dlg3;
+			CMapToolTile*		pTileTool		= pMapTool->m_pTileForm;
+			CMiniView*			pMiniview		= pMapTool->GetMiniView();
 
 
 			m_pTerrain->Tile_Change({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f }, pTileTool->m_iDrawID);
@@ -213,9 +212,7 @@ void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else
 		{
-			// TODO :: MOVE PICKING OBJ
 			bool bPicked = CToolMgr::GetInst()->PickObj({ float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f });
-
 			if (bPicked)
 			{
 				const D3DXVECTOR3& vMousePos = { float(point.x + GetScrollPos(0)), float(point.y + GetScrollPos(1)), 0.f };
