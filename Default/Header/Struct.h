@@ -73,6 +73,7 @@ typedef struct tagTexturePath
 typedef struct tagAnimInfo_KJM
 {
 
+	wstring		wstrObjKey = L"";
 	wstring		wstrStateKey = L"";  // statekey 값 
 	wstring		wstrPath = L""; // 경로 정보 
 

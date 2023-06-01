@@ -59,6 +59,8 @@ protected:
 
 public:
 
+	vector<CString>				m_vecPictureObjkey;
+	vector<CString>				m_vecAnimObjkey;
 
 	vector<CString>				m_vecPicturePath;	// picture listbox의 원소 별 경로 정보 저장
 	vector<CString>				m_vecAnimPath;		// Animation listbox의 원소 별 경로 정보  저장

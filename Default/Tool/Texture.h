@@ -9,7 +9,7 @@ public:
 	virtual ~CTexture();
 
 public:
-	virtual const TEXINFO*		Get_Texture(const TCHAR* pStateKey = L"",
+	virtual TEXINFO*		Get_Texture(const TCHAR* pStateKey = L"",
 											const int& iCount = 0)PURE;
 
 	virtual HRESULT		Insert_Texture(const TCHAR* pFilePath, 

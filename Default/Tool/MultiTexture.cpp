@@ -13,7 +13,7 @@ CMultiTexture::~CMultiTexture()
 	Release();
 }
 
-const TEXINFO * CMultiTexture::Get_Texture(const TCHAR * pStateKey, const int & iCount)
+TEXINFO * CMultiTexture::Get_Texture(const TCHAR * pStateKey, const int & iCount)
 {
 	auto	iter = find_if(m_mapMultiTex.begin(), m_mapMultiTex.end(), [&](auto& MyPair)->bool
 	{
