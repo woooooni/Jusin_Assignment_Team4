@@ -163,9 +163,8 @@ void CHierarchyFormView::OnBnClickedDeleteObjButton()
 
 	if (LB_ERR == iSelect)
 		return;
-
-	m_HiararchyList.GetText(iSelect, strFindName);
 	
+	m_HiararchyList.GetText(iSelect, strFindName); 
 
 	if (m_HiararchyList.GetCurSel() < 0)
 		m_HiararchyList.SetCurSel(0);
