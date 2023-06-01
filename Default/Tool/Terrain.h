@@ -41,6 +41,7 @@ public:
 	}
 
 public:
+	CString				Get_MapName() { return m_strMyMap; }
 	float				Get_MapScale() { return m_fMapScale; }
 	int					Get_TileIndex(const D3DXVECTOR3& vPos);
 	HRESULT				Save_TileData(const TCHAR* _pGetPath);

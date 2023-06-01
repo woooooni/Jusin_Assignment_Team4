@@ -120,13 +120,20 @@ void CDlgTab3::OnSaveData()
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"Data Files(*.dat) | *.dat||", this);
 
 	TCHAR	szPath[MAX_PATH] = L"";
+	CString strMap = L"";
+
+	CTerrain*		pTerrain = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain();
+	strMap = pTerrain->Get_MapName();
+
+	const TCHAR* szMap = strMap.GetString();
+
 
 	GetCurrentDirectory(MAX_PATH, szPath);
 	PathRemoveFileSpec(szPath);
-	lstrcat(szPath, L"\\SaveData");
-	Dlg.m_ofn.lpstrInitialDir = szPath;
+	lstrcat(szPath, L"\\Data\\");
+	lstrcat(szPath, szMap);
 
-	CTerrain*		pTerrain = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain();
+	Dlg.m_ofn.lpstrInitialDir = szPath;
 
 	if (IDOK == Dlg.DoModal())
 	{
@@ -147,7 +154,7 @@ void CDlgTab3::OnLoadData()
 	TCHAR szPath[MAX_PATH] = L"";
 	GetCurrentDirectory(MAX_PATH, szPath);
 	PathRemoveFileSpec(szPath);
-	lstrcat(szPath, L"\\SaveData");
+	lstrcat(szPath, L"\\Data");
 	Dlg.m_ofn.lpstrInitialDir = szPath;
 
 	CToolView*		pToolView = CToolMgr::GetInst()->GetMainFrm()->GetToolView();
