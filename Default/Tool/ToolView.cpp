@@ -75,6 +75,12 @@ void CToolView::OnInitialUpdate()
 		return;
 	}
 
+	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(L"../Texture/Temp.png", TEX_SINGLE, L"Temp")))
+	{
+		AfxMessageBox(L"CubeTexture Create Failed");
+		return;
+	}
+
 	m_pTerrain = new CTerrain;
 	if (FAILED(m_pTerrain->Initialize()))
 	{

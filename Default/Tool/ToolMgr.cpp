@@ -96,7 +96,7 @@ void CToolMgr::RenderObj()
 		}
 		else
 		{
-			pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(obj->Get_ObjKey().c_str(), L"Dash", obj->Get_AnimIdx());
+			pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Temp");
 		}
 
 

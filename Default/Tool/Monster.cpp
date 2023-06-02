@@ -15,14 +15,9 @@ CMonster::~CMonster()
 
 HRESULT CMonster::Initialize(void)
 {
-	if (FAILED(CTextureMgr::Get_Instance()->Insert_Texture(L"../Texture/Stage/Player/Dash/AKIHA_AKI_%d.png", TEX_MULTI, L"Monster", L"Dash", 10)))
-	{
-		AfxMessageBox(L"TileTexture Create Failed");
-		return E_FAIL;
-	}
-
 	m_wstrObjKey = L"Monster";
 	m_wstrStateKey = L"Dash";
+	m_tInfo.vSize = {200.f, 200.f, 0.f};
 	return E_NOTIMPL;
 }
 
