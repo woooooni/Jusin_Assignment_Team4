@@ -37,7 +37,7 @@ public:
 
 public:
 	void UpdateHierarchyView();
-
+	
 public:
 
 	afx_msg void OnBnClickedAddObjButton();
@@ -51,6 +51,9 @@ public:
 	CComboBox				m_ComboObjType;
 
 	afx_msg void OnLbnSelchangeHierarchyList();
+
+private:
+	HRESULT Save_ObjData(const TCHAR* _pPath);
 };
 
 

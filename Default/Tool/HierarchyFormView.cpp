@@ -9,6 +9,9 @@
 #include "Player.h"
 #include "Monster.h"
 #include "ToolMgr.h"
+#include "MainFrm.h"
+#include "Terrain.h"
+#include "ToolView.h"
 
 // CHierarchyFormView
 
@@ -104,6 +107,8 @@ void CHierarchyFormView::UpdateHierarchyView()
 
 
 
+
+
 void CHierarchyFormView::OnBnClickedAddObjButton()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -187,10 +192,116 @@ void CHierarchyFormView::OnBnClickedDeleteObjButton()
 
 void CHierarchyFormView::OnBnClickedSaveButton()
 {
-	CToolMgr::GetInst()->SaveObjData();
+	// TODO :: SAVE.
+
+	vector<CObj*>& vecObj = CToolMgr::GetInst()->GetObjVec();
+	for (auto& obj : vecObj)
+	{
+		if (obj->GetAnimInfoMapSize() != 4)
+		{
+			wstring strErr = obj->Get_ObjName() + L"애니메이션을 모두 세팅해야 합니다.";
+			AfxMessageBox(strErr.c_str());
+			return;
+		}
+	}
+
+	CFileDialog		Dlg(FALSE, L"dat", L"*.dat",
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"Data Files(*.dat) | *.dat||", this);
+
+	TCHAR	szPath[MAX_PATH] = L"";
+	CString strMap = L"";
+
+	CTerrain*		pTerrain = CToolMgr::GetInst()->GetMainFrm()->GetToolView()->GetTerrain();
+	strMap = pTerrain->Get_MapName();
+
+	const TCHAR* szMap = strMap.GetString();
+
+
+	GetCurrentDirectory(MAX_PATH, szPath);
+	PathRemoveFileSpec(szPath);
+	lstrcat(szPath, L"\\Data\\");
+	lstrcat(szPath, szMap);
+
+	Dlg.m_ofn.lpstrInitialDir = szPath;
+
+	if (IDOK == Dlg.DoModal())
+	{
+		CString		strTemp = Dlg.GetPathName().GetString();
+		const TCHAR* pGetPath = strTemp.GetString();
+
+		Save_ObjData(pGetPath);
+	}
 	CToolMgr::GetInst()->UpdateAllView();
 }
 
+
+HRESULT CHierarchyFormView::Save_ObjData(const TCHAR * _pPath)
+{
+	HANDLE hFile = CreateFile(_pPath, GENERIC_WRITE, 0, 0,
+		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		ERR_MSG(L"SAVE FAILED");
+		return E_FAIL;
+	}
+
+	DWORD	dwByte = 0;
+	const vector<CObj*>& vecObj = CToolMgr::GetInst()->GetObjVec();
+
+	for (auto& iter : vecObj)
+	{
+		WriteFile(hFile, &(iter->Get_Info()), sizeof(INFO), &dwByte, NULL);
+
+		float fAngle = iter->Get_Angle();
+		WriteFile(hFile, &fAngle, sizeof(float), &dwByte, NULL);
+
+		OBJID eID = iter->Get_ObjID();
+		WriteFile(hFile, &eID, sizeof(float), &dwByte, NULL);
+
+		const wchar_t* strObjKey = iter->Get_ObjKey().c_str();
+		WriteFile(hFile, strObjKey, wcslen(strObjKey) * sizeof(wchar_t), &dwByte, NULL);
+
+		const wchar_t* strObjName = iter->Get_ObjName().c_str();
+		WriteFile(hFile, strObjName, wcslen(strObjName) * sizeof(wchar_t), &dwByte, NULL);
+
+
+		// 애니메이션 정보 저장.
+		const map<wstring, vector<ANIMINFO_KJM>> mapAnimInfo = iter->GetAnimInfoMap();
+		auto iter = mapAnimInfo.begin();
+		while (iter != mapAnimInfo.end())
+		{
+			const wchar_t* strStateKey = iter->first.c_str();
+			WriteFile(hFile, strStateKey, wcslen(strStateKey) * sizeof(wchar_t), &dwByte, NULL);
+
+			for (UINT i = 0; i < iter->second.size(); ++i)
+			{
+				ANIMINFO_KJM tAnimInfo = iter->second[i];
+				
+				WriteFile(hFile, &tAnimInfo.fFrame, sizeof(float), &dwByte, NULL);
+				WriteFile(hFile, &tAnimInfo.fMax, sizeof(float), &dwByte, NULL);
+				WriteFile(hFile, &tAnimInfo.iAnimSpeed, sizeof(int), &dwByte, NULL);
+				
+				const wchar_t* strObjKey = tAnimInfo.wstrObjKey.c_str();
+				WriteFile(hFile, strObjKey, wcslen(strObjKey) * sizeof(wchar_t), &dwByte, NULL);
+				
+				const wchar_t* strPath = tAnimInfo.wstrPath.c_str();
+				WriteFile(hFile, strPath, wcslen(strPath) * sizeof(wchar_t), &dwByte, NULL);
+				
+				
+				const wchar_t* strAnimState = tAnimInfo.wstrStateKey.c_str();
+				WriteFile(hFile, strAnimState, wcslen(strAnimState) * sizeof(wchar_t), &dwByte, NULL);
+			}
+
+			++iter;
+		}
+	}
+
+	CloseHandle(hFile);
+	AfxMessageBox(L"저장되었습니다.");
+
+	return S_OK;
+}
 
 
 //void CHierarchyFormView::OnBnClickedButtonRenameObj()
