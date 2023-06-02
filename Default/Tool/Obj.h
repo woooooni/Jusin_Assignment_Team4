@@ -58,6 +58,7 @@ public:
 	void						InsertAnimationInfo(const wstring& _strObjKey, const vector<ANIMINFO_KJM> _vecAnim);
 	void						InsertAnimTexture(const wstring& _strObjKey, const vector<CTexture*>& _vecAnim);
 
+	const map<wstring, vector<ANIMINFO_KJM>>& GetAnimInfoMap() { return m_mapAnimInfo; }
 	const vector<ANIMINFO_KJM>& GetCurAnimInfoVec() { return m_mapAnimInfo.find(m_wstrStateKey)->second; }
 	const vector<CTexture*>&	GetCurAnimTexVec()	{ return m_mapAnimTex.find(m_wstrStateKey)->second; }
 

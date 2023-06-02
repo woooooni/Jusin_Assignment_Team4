@@ -14,4 +14,7 @@ public:
 	virtual void Late_Update_Scene()PURE;
 	virtual void Render_Scene()PURE;
 	virtual void Release_Scene()PURE;
+
+protected:
+	void LoadMapData();
 };

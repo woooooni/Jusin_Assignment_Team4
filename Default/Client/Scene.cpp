@@ -10,3 +10,7 @@ CScene::CScene()
 CScene::~CScene()
 {
 }
+
+void CScene::LoadMapData()
+{
+}

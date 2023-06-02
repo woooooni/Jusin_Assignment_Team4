@@ -667,6 +667,6 @@ void CDlgTab2::OnBnClickedButtonApplyAniminfoKjm()
 	pObj->InsertAnimTexture(wstring(str), vecTex);
 
 	pObj->Set_ObjState(wstring(m_StateKey));
-
+	pObj->Set_AnimIdx(0);
 	CToolMgr::GetInst()->UpdateAllView();
 }

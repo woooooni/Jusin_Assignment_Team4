@@ -9,8 +9,6 @@ class CToolMgr
 public:
 	
 	void				SwapObj(CObj* _pSrc, CObj* _pDest);
-	void				SaveObjData();
-	void				LoadObjData();
 
 public:
 	void				AddObj(CObj* _pObj)				{ m_vecObj.push_back(_pObj); }

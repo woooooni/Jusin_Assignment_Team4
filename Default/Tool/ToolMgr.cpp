@@ -27,27 +27,6 @@ void CToolMgr::SwapObj(CObj * _pSrc, CObj * _pDest)
 
 }
 
-void CToolMgr::SaveObjData()
-{
-	// TODO :: SAVE.
-	for (auto& obj : m_vecObj)
-	{
-		if (obj->GetAnimInfoMapSize() != 4)
-		{
-			wstring strErr = obj->Get_ObjName() + L"애니메이션을 모두 세팅해야 합니다.";
-			AfxMessageBox(strErr.c_str());
-			return;
-		}
-	}
-
-
-
-}
-
-void CToolMgr::LoadObjData()
-{
-	// TODO :: LoadObjData
-}
 
 void CToolMgr::SetTargetObj(int _iIdx)
 {
