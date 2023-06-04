@@ -1,8 +1,6 @@
 #pragma once
 #include "afxcmn.h"
 
-
-
 // CInspectorFormView Æû ºäÀÔ´Ï´Ù.
 
 #include "DlgTab1.h"
@@ -35,17 +33,18 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CTabCtrl m_tab;
+	CDlgTab3* GetDlgTab3() { return dlg3; }
+	void UpdateInspectorView();
+
+public:
+	CTabCtrl		m_tab;
 	afx_msg void OnSelchangeInspectorTab(NMHDR *pNMHDR, LRESULT *pResult);
 
-	CDlgTab1* dlg1;
-	CDlgTab2* dlg2;
-	CDlgTab3* dlg3;
-	CDlgTab4* dlg4;
-
+	CDlgTab1*		dlg1;
+	CDlgTab2*		dlg2;
+	CDlgTab3*		dlg3;
+	CDlgTab4*		dlg4;
 	virtual void OnInitialUpdate();
-
-
 };
 
 

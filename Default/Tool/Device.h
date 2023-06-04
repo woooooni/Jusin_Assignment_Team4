@@ -2,6 +2,8 @@
 
 #include "Include.h"
 
+// Tool°ú µ¿ÀÏ
+
 class CDevice
 {
 	DECLARE_SINGLETON(CDevice)

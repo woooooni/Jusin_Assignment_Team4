@@ -19,10 +19,12 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
+	afx_msg void OnListBox();
+	afx_msg void OnDropFiles(HDROP hDropInfo);
+
 
 	DECLARE_MESSAGE_MAP()
 public:
 	CListBox m_ListBox;
-	afx_msg void OnListBox();
-	afx_msg void OnDropFiles(HDROP hDropInfo);
+
 };

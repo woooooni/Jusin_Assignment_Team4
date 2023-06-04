@@ -1,10 +1,12 @@
 #pragma once
 #include "afxcmn.h"
+#include "afxwin.h"
 
 
 
 // CHierarchyFormView Æû ºäÀÔ´Ï´Ù.
 
+class CInspectorFormView;
 class CHierarchyFormView : public CFormView
 {
 	DECLARE_DYNCREATE(CHierarchyFormView)
@@ -29,13 +31,29 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CTreeCtrl m_TreeControl;
 	virtual void OnInitialUpdate();
 
 	//void AddObj(CObj* _pObj);
 
+public:
+	void UpdateHierarchyView();
+	
+public:
+
+	afx_msg void OnBnClickedAddObjButton();
+	afx_msg void OnBnClickedDeleteObjButton();
+	afx_msg void OnBnClickedSaveButton();
+
+public:
+	static UINT				m_iObjCount;
+
+	CListBox				m_HiararchyList;
+	CComboBox				m_ComboObjType;
+
+	afx_msg void OnLbnSelchangeHierarchyList();
+
 private:
-	HTREEITEM m_rootItem;
+	HRESULT Save_ObjData(const TCHAR* _pPath);
 };
 
 

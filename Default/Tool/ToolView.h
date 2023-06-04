@@ -6,7 +6,8 @@
 
 #include "Include.h"
 #include "Terrain.h"
-
+#include "DlgTab3.h"
+#include "ToolMgr.h"
 class CToolDoc;
 class CToolView : public CScrollView
 {
@@ -44,15 +45,42 @@ protected:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-	virtual void OnInitialUpdate();
-	afx_msg void OnDestroy();
+	virtual void	OnInitialUpdate();
+	afx_msg void	OnDestroy();
 
 public:
-	CTerrain*			m_pTerrain;
+	afx_msg void	OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void	OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void	OnMouseHover(UINT nFlags, CPoint point);
+	afx_msg void	OnMouseLeave();
+
 
 public:
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	void			UpdateToolView();
+	void			SetToolMode(EDIT_MODE _eState)
+	{
+		if (m_eEditMode == _eState)
+			return;
+		m_eEditMode = _eState;
+
+		CToolMgr::GetInst()->UpdateAllView();
+	}
+	EDIT_MODE		GetToolMode() { return m_eEditMode; }
+public: // 추가
+	CTerrain*		GetTerrain() { return m_pTerrain; }
+	void			Set_TileIndex(int _iIndex) { m_iTileIndex = _iIndex; }
+
+public:
+	CTerrain*		m_pTerrain;
+	CDlgTab3*		m_pTileTool;
+	bool			m_bIsSelectTile = false;
+	int				m_iTileIndex;
+
+private:
+	EDIT_MODE		m_eEditMode;
+
+public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

@@ -14,6 +14,8 @@
 
 #define		TILEX			20
 #define		TILEY			30
+#define		TILE_TEX		36			// TILE TEXTURE 개수
+#define		MAP_TEX			5			// MAP TEXTURE 개수
 
 #define		MIN_STR			64
 #define		MAX_STR			256
@@ -21,9 +23,6 @@
 #define		RUBY			0x01		// -> 0001
 #define		DIAMOND			0x02		// -> 0010
 #define		SAPPHIRE		0x04		// -> 0100
-
-
-
 
 
 #define ERR_MSG(message)								\
@@ -71,5 +70,6 @@ void ClassName::Destroy_Instance()						\
 
 
 extern HWND		g_hWnd;
+extern BOOL		g_bIndex;
 
 // 선언과 동시에 초기화 불가능, 먼저 선언된 전역변수와 자료형, 변수명까지 일치하는 상태에서만 사용 가능
